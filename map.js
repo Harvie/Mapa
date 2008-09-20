@@ -1,6 +1,8 @@
 var map;
 var icons;
 
+var mediaColors = [ "#000", "#0C0", "#A22", "#8DF", "#A2A", "#0FF", "#F00", "#CCC", "#FFF", "#F80" ]
+
 LabeledMarker.prototype = new GMarker(new GLatLng(0, 0));
 
 function LabeledMarker(latlng, options)
@@ -83,9 +85,14 @@ function readData(doc)
 		var link = jsonData.links[i];
 		var latlng1 = new GLatLng(link.lat1, link.lng1); 
 		var latlng2 = new GLatLng(link.lat2, link.lng2); 
+		
 		var linePoints = [ latlng1, latlng2 ];
-		map.addOverlay(new GPolyline(linePoints, "black", 5, 1));
-		map.addOverlay(new GPolyline(linePoints, "#AAAAAA", 3, 1));
+		var color = mediaColors[link.media];
+		var width = link.backbone ? 3 : 1;
+		var opacity = link.active ? 1 : 0.4;
+		
+		map.addOverlay(new GPolyline(linePoints, "black", width + 2, opacity));
+		map.addOverlay(new GPolyline(linePoints, color, width, opacity));
 	}
 }
 

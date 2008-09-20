@@ -7,9 +7,8 @@ try {
 	$nodes_sql = "SELECT name,lat,lng,type,status FROM nodes ".
 	              "WHERE lat < ? AND lng < ? AND lat > ? AND lng > ?";
 	
-	$links_sql = "SELECT n1.lat, n1.lng, n2.lat, n2.lng FROM links ".
-	             "JOIN nodes AS n1 ON node1 = n1.id ".
-	             "JOIN nodes AS n2 ON node2 = n2.id ".
+	$links_sql = "SELECT n1.lat,n1.lng,n2.lat,n2.lng,media,active,backbone FROM links ".
+	             "JOIN nodes AS n1 ON node1 = n1.id JOIN nodes AS n2 ON node2 = n2.id ".
 	             "WHERE (n1.lat < ? AND n1.lng < ? AND n1.lat > ? AND n1.lng > ?) ".
 	                "OR (n2.lat < ? AND n2.lng < ? AND n2.lat > ? AND n2.lng > ?)";
 	
@@ -36,6 +35,6 @@ try {
 	"links":
 	[
 	<? foreach ($links as $row): ?>
-	{ lat1: <?=$row[0]?>, lng1: <?=$row[1]?>, lat2: <?=$row[2]?>, lng2: <?=$row[3]?> },
+	{ lat1: <?=$row[0]?>, lng1: <?=$row[1]?>, lat2: <?=$row[2]?>, lng2: <?=$row[3]?>, media: <?=$row['media']?>, active: <?=$row['active']?>, backbone: <?=$row['backbone']?> },
 	<? endforeach ?>]
 }
