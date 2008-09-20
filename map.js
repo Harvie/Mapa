@@ -46,6 +46,23 @@ LabeledMarker.prototype.remove = function()
 	GMarker.prototype.remove.apply(this, arguments);
 }
 
+function loadIcons()
+{
+	var types = [0,1,9,10,98,99];
+	var states = [1,40,79,80,90];
+	
+	icons = new Object();
+	for (i in types)
+		for (j in states)
+		{
+			iconindex = types[i] * 100 + states[j];
+			icons[iconindex] = new GIcon();
+			icons[iconindex].image = "/images/node/" + types[i] + "-" + states[j] + ".png";
+			icons[iconindex].iconSize = new GSize(15,15);
+			icons[iconindex].iconAnchor = new GPoint(7,7);
+		}
+}
+
 function readData(doc)
 {
 	var jsonData = eval('(' + doc + ')');
@@ -55,7 +72,8 @@ function readData(doc)
 	{
 		var point = jsonData.points[i];
  		var latlng = new GLatLng(point.lat, point.lng); 
- 		var options = { icon: icons[0], title: point.label };
+ 		var iconindex = point.type * 100 + point.status;
+ 		var options = { icon: icons[iconindex], title: point.label };
 		var marker = new LabeledMarker(latlng, options);
 		map.addOverlay(marker);
 	}
@@ -73,12 +91,6 @@ function readData(doc)
 
 function loadData()
 {
-	icons = new Array();
-	icons[0] = new GIcon();
-	icons[0].image = "/images/ap.png";
-	icons[0].iconSize = new GSize(15,15);
-	icons[0].iconAnchor = new GPoint(7,7);
-	
 	var bounds = map.getBounds();
 	var north = bounds.getNorthEast().lat();
 	var east = bounds.getNorthEast().lng();
@@ -97,7 +109,7 @@ function mapMoved()
 function showMap()
 {
 	map = new GMap2(document.getElementById("map"));
-	map.setCenter(new GLatLng(50.006915, 14.422809), 14);
+	map.setCenter(new GLatLng(50.006915, 14.422809), 18);
 	
 	map.addControl(new GLargeMapControl());
 	map.addControl(new GMapTypeControl());
@@ -108,6 +120,7 @@ function showMap()
 	map.enableScrollWheelZoom();
 	map.enableDoubleClickZoom();
 	
+	loadIcons();
 	mapMoved();
 	GEvent.addListener(map, "moveend", mapMoved);
 }
