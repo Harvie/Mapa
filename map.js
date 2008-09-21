@@ -1,7 +1,10 @@
 var map;
 var icons;
+var lastHash;
 
-var mediaColors = [ "#000", "#0C0", "#A22", "#8DF", "#A2A", "#0FF", "#F00", "#CCC", "#FFF", "#F80" ]
+var mediaColors = [ "#000", "#0C0", "#A22", "#8DF", "#A2A", "#0FF", "#F00", "#CCC", "#FFF", "#F80" ];
+var defaultPos = { lat: 50.006915, lng: 14.422809, zoom: 18 };
+
 
 LabeledMarker.prototype = new GMarker(new GLatLng(0, 0));
 
@@ -47,6 +50,46 @@ LabeledMarker.prototype.remove = function()
 	this.div = null;
 	GMarker.prototype.remove.apply(this, arguments);
 }
+
+
+function updateURL()
+{
+	var lat = map.getCenter().lat();
+	var lng = map.getCenter().lng();
+	var zoom = map.getZoom();
+	
+	var hash = "#zoom=" + zoom + "&lat=" + lat + "&lng=" + lng;
+	document.location.hash = hash;
+	lastHash = hash;
+}
+
+function checkURL()
+{
+	if (lastHash != document.location.hash)
+	{
+		lastHash = document.location.hash;
+		decodeURL(lastHash);
+	}
+}
+
+function decodeURL(hash)
+{
+	var paramList = hash.substring(1).split("&");
+	var paramObj = defaultPos;
+	
+	for (i in paramList)
+	{
+		varval = paramList[i].split("=");
+		paramObj[varval[0]] = varval[1];
+	}
+	
+	var lat = parseFloat(paramObj.lat);
+	var lng = parseFloat(paramObj.lng);
+	var zoom = parseInt(paramObj.zoom);
+	
+	map.setCenter(new GLatLng(lat, lng), zoom);
+}
+
 
 function loadIcons()
 {
@@ -110,13 +153,13 @@ function loadData()
 
 function mapMoved()
 {
+	updateURL();
 	loadData();
 }
 
 function showMap()
 {
 	map = new GMap2(document.getElementById("map"));
-	map.setCenter(new GLatLng(50.006915, 14.422809), 18);
 	
 	map.addControl(new GLargeMapControl());
 	map.addControl(new GMapTypeControl());
@@ -126,6 +169,9 @@ function showMap()
 	map.setMapType(G_SATELLITE_MAP);
 	map.enableScrollWheelZoom();
 	map.enableDoubleClickZoom();
+	
+	checkURL();
+	window.setInterval(checkURL, 500);
 	
 	loadIcons();
 	mapMoved();
