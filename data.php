@@ -7,10 +7,11 @@ try {
 	$nodes_sql = "SELECT name,lat,lng,type,status FROM nodes ".
 	              "WHERE lat < ? AND lng < ? AND lat > ? AND lng > ?";
 	
-	$links_sql = "SELECT n1.lat,n1.lng,n2.lat,n2.lng,media,active,backbone FROM links ".
-	             "JOIN nodes AS n1 ON node1 = n1.id JOIN nodes AS n2 ON node2 = n2.id ".
+	$links_sql = "SELECT n1.lat,n1.lng,n2.lat,n2.lng,media,active,backbone ".
+	             "FROM nodes AS n1 JOIN links ON (n1.id = node1 OR n1.id = node2) ".
+	             "JOIN nodes AS n2 ON ((n2.id = node1 OR n2.id = node2) AND n1.id != n2.id) ".
 	             "WHERE (n1.lat < ? AND n1.lng < ? AND n1.lat > ? AND n1.lng > ?) ".
-	                "OR (n2.lat < ? AND n2.lng < ? AND n2.lat > ? AND n2.lng > ?)";
+	             "AND (n1.id > n2.id OR NOT (n2.lat < ? AND n2.lng < ? AND n2.lat > ? AND n2.lng > ?))";
 	
 	foreach (array('north','east','south','west') as $i => $var)
 		$bounds[$i] = floatval(@$_GET[$var]);
