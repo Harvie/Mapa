@@ -4,6 +4,9 @@ var CzfPanel =
 	element: null,
 	geocoder: null,
 	addressField: null,
+	nameField: null,
+	results: null,
+	nameSelect: null,
 	
 	initialize: function(id)
 	{
@@ -56,20 +59,20 @@ var CzfPanel =
 		}
 	},
 	
-	addressSearch: function(form)
+	addressSearch: function(id)
 	{
-		this.addressField = form.childNodes[1];
+		this.addressField = document.getElementById(id);
 		this.addressField.disabled = true;
 		
 		var address = this.addressField.value;
-		this.geocoder.getLatLng(address, this.methodCall(this.searchDone));
+		this.geocoder.getLatLng(address, this.methodCall(this.addressDone));
 		return false;
 	},
 	
-	searchDone: function(latlng)
+	addressDone: function(latlng)
 	{
 		this.addressField.disabled = false;
-		this.addressField.style.backgroundColor = latlng ? "white" : "#FF8080";
+		this.addressField.className = latlng ? "normal" : "error";
 		
 		if (latlng != null)
 		{
@@ -78,6 +81,64 @@ var CzfPanel =
 			this.state.zoom = 18;
 			CzfMap.setPosition(this.state);
 		}
+	},
+	
+	nodeSearch: function(id)
+	{
+		this.nameField = document.getElementById(id);
+		this.nameField.disabled = true;
+		
+		var query = this.nameField.value;
+		GDownloadUrl("search.php?query=" + query, this.methodCall(this.nodeDone));
+		return false;
+	},
+	
+	nodeDone: function(doc)
+	{
+		this.results = eval('(' + doc + ')');
+		
+		if (this.results.length == 0)
+		{
+			this.nameField.className = "error";
+			return;
+		}
+		
+		this.nameField.className = "normal";
+		
+		select = document.createElement("SELECT");
+		select.onchange = this.methodCall(this.nodeChange);
+		
+		select.options.add(new Option("(new search)", -2))
+		select.options.add(new Option("(choose result)", -1))
+		select.options[1].selected = true;
+		
+		for (i in this.results)
+			select.options.add(new Option(this.results[i].name, i));
+		
+		this.nameSelect = select;
+		this.nameField.parentNode.replaceChild(this.nameSelect, this.nameField);
+	},
+	
+	nodeChange: function()
+	{
+		var i = this.nameSelect.value;
+		
+		if (i == -2)
+		{
+			this.nameSelect.parentNode.replaceChild(this.nameField,this.nameSelect);
+			this.nameField.disabled = false;
+			return;
+		}
+		
+		if (i < 0)
+			return;
+		
+		var node = this.results[i];
+		
+		this.state.lat = node.lat
+		this.state.lng = node.lng;
+		this.state.zoom = 18;
+		CzfMap.setPosition(this.state);
 	},
 	
 	methodCall: function(fn)

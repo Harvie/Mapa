@@ -5,12 +5,12 @@ function CzfAnchor(callback, defaults)
 	
 	this.update = function(state)
 	{
-		var hash = "#";
+		var hash = "";
 		for (param in state)
 			hash += param + "=" + state[param] + "&";
 		
 		document.location.hash = hash;
-		this.lastHash = hash;
+		this.lastHash = "#" + hash;
 	}
 	
 	this.check = function()

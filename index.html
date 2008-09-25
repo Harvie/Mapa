@@ -37,9 +37,13 @@
         <img src="images/plus.png" alt="+" id="search.img"><b>Search</b>
       </div>
       <div class="panelpart" id="search.block">
-        Search address:<br />
-        <form action="#" method="get" onsubmit="return CzfPanel.addressSearch(this)">
+        <form action="#" method="get" onsubmit="return CzfPanel.addressSearch('address')">
+        <label for="address">Search address:</label><br />
         <input type="text" name="address" id="address" size="15" maxlength="50" />
+        </form>
+        <form action="#" method="get" onsubmit="return CzfPanel.nodeSearch('nodename')">
+        <label for="nodename">Search node name:</label><br />
+        <input type="text" name="nodename" id="nodename" size="15" maxlength="50" />
         </form>
       </div>
     
