@@ -37,6 +37,7 @@ var CzfMap =
 		
 		this.moved();
 		GEvent.addListener(this.map, "moveend", this.methodCall(this.moved));
+		GEvent.addListener(this.map, "zoomend", this.methodCall(this.zoomed));
 	},
 	
 	setPosition: function(state)
@@ -56,9 +57,28 @@ var CzfMap =
 		state.lat = this.map.getCenter().lat();
 		state.lng = this.map.getCenter().lng();
 		state.zoom = this.map.getZoom();
+
 		this.anchor.update(state);
-		
 		this.loadData(state);
+	},
+	
+	zoomed: function(oldZoom, newZoom)
+	{
+		var state = CzfPanel.getState();
+		
+		if (newZoom <= 16)
+		{
+			state.aponly = 1;
+			state.bbonly = 1;
+		}
+		
+		if (newZoom <= 14)
+		{
+			state.actlink = 1;
+			state.actnode = 1;
+		}
+		
+		CzfPanel.setState(state);
 	},
 	
 	loadIcons: function()
