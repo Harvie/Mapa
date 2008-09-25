@@ -1,18 +1,27 @@
-var CzfMap = {
+var CzfMap =
+{
 	mediaColors: [ "#000", "#0C0", "#A22", "#8DF", "#A2A", "#0FF", "#F00", "#CCC", "#FFF", "#F80" ],
 	defaultPos: { lat: 50.006915, lng: 14.422809, zoom: 18 },
 	icons: new Object(),
 	map: null,
 	
-	initialize: function()
+	initialize: function(mapID, panelID)
 	{
 		if (GBrowserIsCompatible())
-			this.showMap();
+		{
+			CzfPanel.initialize(panelID);
+			this.show(document.getElementById(mapID));
+		}
 	},
 	
-	showMap: function()
+	unload: function()
 	{
-		this.map = new GMap2(document.getElementById("map"));
+		GUnload();
+	},
+	
+	show: function(element)
+	{
+		this.map = new GMap2(element);
 		
 		this.map.addControl(new GLargeMapControl());
 		this.map.addControl(new GMapTypeControl());
@@ -23,31 +32,33 @@ var CzfMap = {
 		this.map.enableScrollWheelZoom();
 		this.map.enableDoubleClickZoom();
 		
-		this.anchor = new CzfAnchor(this.methodCall(this.setPosition), this.defaultPos);
+		this.anchor = new CzfAnchor(this.methodCall(this.setPosition));
 		this.loadIcons();
 		
-		this.mapMoved();
-		GEvent.addListener(this.map, "moveend", this.methodCall(this.mapMoved));
+		this.moved();
+		GEvent.addListener(this.map, "moveend", this.methodCall(this.moved));
 	},
 	
 	setPosition: function(state)
 	{
-		var lat = parseFloat(state.lat);
-		var lng = parseFloat(state.lng);
-		var zoom = parseInt(state.zoom);
+		CzfPanel.setState(state);
+		
+		var lat = state.lat ? parseFloat(state.lat) : this.defaultPos.lat;
+		var lng = state.lng ? parseFloat(state.lng) : this.defaultPos.lng;
+		var zoom = state.zoom ? parseInt(state.zoom) : this.defaultPos.zoom;
 		
 		this.map.setCenter(new GLatLng(lat, lng), zoom);
 	},
 	
-	mapMoved: function()
+	moved: function()
 	{
-		var state = new Object();
+		var state = CzfPanel.getState();
 		state.lat = this.map.getCenter().lat();
 		state.lng = this.map.getCenter().lng();
 		state.zoom = this.map.getZoom();
 		this.anchor.update(state);
 		
-		this.loadData();
+		this.loadData(state);
 	},
 	
 	loadIcons: function()
@@ -66,7 +77,7 @@ var CzfMap = {
 			}
 	},
 	
-	loadData: function()
+	loadData: function(state)
 	{
 		var bounds = this.map.getBounds();
 		var north = bounds.getNorthEast().lat();
@@ -75,6 +86,11 @@ var CzfMap = {
 		var west = bounds.getSouthWest().lng();
 		
 		var query = "?north=" + north + "&east=" + east + "&south=" + south + "&west=" + west;
+		if (state.aponly) query += "&aponly=1";
+		if (state.bbonly) query += "&bbonly=1";
+		if (state.actnode) query += "&actnode=1";
+		if (state.actlink) query += "&actlink=1";
+		
 		GDownloadUrl("data.php" + query, this.methodCall(this.readData));
 	},
 	
@@ -113,5 +129,5 @@ var CzfMap = {
 	{
 		var _this = this;
 		return function() { fn.apply(_this, arguments); };
-	}
+	},
 }

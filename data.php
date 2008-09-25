@@ -13,6 +13,25 @@ try {
 	             "WHERE (n1.lat < ? AND n1.lng < ? AND n1.lat > ? AND n1.lng > ?) ".
 	             "AND (n1.id > n2.id OR NOT (n2.lat < ? AND n2.lng < ? AND n2.lat > ? AND n2.lng > ?))";
 	
+	if (isset($_GET['aponly']))
+	{
+		$nodes_sql .= "AND type IN(9,10)";
+		$links_sql .= "AND n1.type IN(9,10) AND n2.type IN(9,10)";
+	}
+	
+	if (isset($_GET['actnode']))
+	{
+		$nodes_sql .= "AND status = 1";
+		$links_sql .= "AND n1.status = 1 AND n2.status = 1";
+	}
+	
+	if (isset($_GET['bbonly']))
+		$links_sql .= "AND backbone = 1";
+	
+	if (isset($_GET['actlink']))
+		$links_sql .= "AND active = 1";
+	
+	
 	foreach (array('north','east','south','west') as $i => $var)
 		$bounds[$i] = floatval(@$_GET[$var]);
 	

@@ -2,11 +2,13 @@ function CzfAnchor(callback, defaults)
 {
 	this.lastHash = null;
 	this.callback = callback;
-	this.defaults = defaults;
 	
-	this.update = function(s)
+	this.update = function(state)
 	{
-		var hash = "#zoom=" + s.zoom + "&lat=" + s.lat + "&lng=" + s.lng;
+		var hash = "#";
+		for (param in state)
+			hash += param + "=" + state[param] + "&";
+		
 		document.location.hash = hash;
 		this.lastHash = hash;
 	}
@@ -23,12 +25,13 @@ function CzfAnchor(callback, defaults)
 	this.decode = function(hash)
 	{
 		var paramList = hash.substring(1).split("&");
-		var paramObj = this.defaults;
+		var paramObj = new Object();
 		
 		for (i in paramList)
 		{
 			varval = paramList[i].split("=");
-			paramObj[varval[0]] = varval[1];
+			if (varval.length == 2)
+				paramObj[varval[0]] = varval[1];
 		}
 		
 		this.callback(paramObj);

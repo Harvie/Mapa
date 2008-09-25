@@ -1,5 +1,7 @@
-html, body, #map { width: 100%; height: 100%; }
+html, body, #map { height: 100%; }
 body { margin-top: 0; margin-right: 0; margin-left: 0; margin-bottom: 0; }
+#panel { position: absolute; top: 0; right: 0; width: 11em;}
+#map { margin-right: 11.5em; overflow: hidden; }
 
 .MarkerLabel {
 	background-color: black;
