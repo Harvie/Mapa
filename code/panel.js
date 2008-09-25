@@ -2,10 +2,14 @@ var CzfPanel =
 {
 	state: new Object(),
 	element: null,
+	geocoder: null,
+	addressField: null,
 	
 	initialize: function(id)
 	{
 		this.element = document.getElementById(id);
+		this.geocoder = new GClientGeocoder();
+		this.toggle("filters");
 	},
 	
 	getState: function()
@@ -50,5 +54,35 @@ var CzfPanel =
 			node.style.display = "none";
 			img.src = "images/plus.png";
 		}
+	},
+	
+	addressSearch: function(form)
+	{
+		this.addressField = form.childNodes[1];
+		this.addressField.disabled = true;
+		
+		var address = this.addressField.value;
+		this.geocoder.getLatLng(address, this.methodCall(this.searchDone));
+		return false;
+	},
+	
+	searchDone: function(latlng)
+	{
+		this.addressField.disabled = false;
+		this.addressField.style.backgroundColor = latlng ? "white" : "#FF8080";
+		
+		if (latlng != null)
+		{
+			this.state.lat = latlng.lat();
+			this.state.lng = latlng.lng();
+			this.state.zoom = 18;
+			CzfMap.setPosition(this.state);
+		}
+	},
+	
+	methodCall: function(fn)
+	{
+		var _this = this;
+		return function() { fn.apply(_this, arguments); };
 	},
 }
