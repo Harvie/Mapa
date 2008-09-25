@@ -1,7 +1,35 @@
-html, body, #map { height: 100%; }
-body { margin-top: 0; margin-right: 0; margin-left: 0; margin-bottom: 0; }
-#panel { position: absolute; top: 0; right: 0; width: 11em;}
-#map { margin-right: 11.5em; overflow: hidden; }
+html, body, #map {
+	height: 100%;
+}
+
+body {
+	margin-top: 0;
+	margin-right: 0;
+	margin-left: 0;
+	margin-bottom: 0;
+}
+
+#map { 
+	margin-right: 11.5em;
+	overflow: hidden;
+}
+#panel {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 11em;
+}
+
+#panel img {
+	margin-right: 3px;
+}
+
+.panelpart { 
+	margin-left: 5px;
+	padding-left: 7px;
+	display: none;
+	border-left: 1px dotted black;
+}
 
 .MarkerLabel {
 	background-color: black;

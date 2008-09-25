@@ -34,4 +34,21 @@ var CzfPanel =
 		
 		CzfMap.moved();
 	},
+	
+	toggle: function(id)
+	{
+		node = document.getElementById(id + ".block");
+		img = document.getElementById(id + ".img");
+		
+		if(node.style.display != "block")
+		{
+			node.style.display = "block";
+			img.src = "images/minus.png";
+		}
+		else
+		{  
+			node.style.display = "none";
+			img.src = "images/plus.png";
+		}
+	},
 }

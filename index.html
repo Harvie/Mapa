@@ -11,21 +11,28 @@
     <script type="text/javascript" src="code/anchor.js"></script>
     <script type="text/javascript" src="code/panel.js"></script>
   </head>
+  
   <body onload="CzfMap.initialize('map','panel')" onunload="CzfMap.unload()">
     <div id="map"></div>
-    <div id="panel" onload="CzfPanel.initialize('panel')">
+    <div id="panel" onload="CzfPanel.initialize('filters')">
       <b>CZFree Node Monitor</b><br />
-      <br />
-      <b>Node filter: </b><br />
-      <input type="checkbox" name="actnode" id="actnode" onchange="CzfPanel.changed(this)"/>
-      <label for="actnode">Only active</label><br />
-      <input type="checkbox" name="aponly" id="aponly" onchange="CzfPanel.changed(this)"/>
-      <label for="aponly">Only AP</label><br />
-      <b>Link filter: </b><br />
-      <input type="checkbox" name="actlink" id="actlink" onchange="CzfPanel.changed(this)"/>
-      <label for="actlink">Only active</label><br />
-      <input type="checkbox" name="bbonly" id="bbonly" onchange="CzfPanel.changed(this)"/>
-      <label for="bbonly">Only backbone</label><br />
+      
+      <div onclick="CzfPanel.toggle('filters')">
+        <img src="images/plus.png" alt="+" id="filters.img"><b>Filters</b>
+      </div>
+      <div class="panelpart" id="filters.block">
+        <b>Node filter: </b><br />
+        <input type="checkbox" name="actnode" id="actnode" onchange="CzfPanel.changed(this)"/>
+        <label for="actnode">Only active</label><br />
+        <input type="checkbox" name="aponly" id="aponly" onchange="CzfPanel.changed(this)"/>
+        <label for="aponly">Only AP</label><br />
+        <b>Link filter: </b><br />
+        <input type="checkbox" name="actlink" id="actlink" onchange="CzfPanel.changed(this)"/>
+        <label for="actlink">Only active</label><br />
+        <input type="checkbox" name="bbonly" id="bbonly" onchange="CzfPanel.changed(this)"/>
+        <label for="bbonly">Only backbone</label><br />
+      </div>
+    
     </div>
   </body>
 </html>
