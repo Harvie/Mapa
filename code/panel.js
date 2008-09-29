@@ -78,7 +78,7 @@ var CzfPanel =
 		{
 			this.state.lat = latlng.lat();
 			this.state.lng = latlng.lng();
-			this.state.zoom = 18;
+			this.state.zoom = 17;
 			CzfMap.setPosition(this.state);
 		}
 	},
@@ -107,16 +107,21 @@ var CzfPanel =
 		
 		select = document.createElement("SELECT");
 		select.onchange = this.methodCall(this.nodeChange);
-		
 		select.options.add(new Option("(new search)", -2))
-		select.options.add(new Option("(choose result)", -1))
-		select.options[1].selected = true;
+		
+		if (this.results.length > 1)
+			select.options.add(new Option("(choose result)", -1))
 		
 		for (i in this.results)
 			select.options.add(new Option(this.results[i].name, i));
 		
+		select.options[1].selected = true;
+		
 		this.nameSelect = select;
 		this.nameField.parentNode.replaceChild(this.nameSelect, this.nameField);
+		
+		if (this.results.length == 1)
+			this.nodeChange();
 	},
 	
 	nodeChange: function()
@@ -137,7 +142,7 @@ var CzfPanel =
 		
 		this.state.lat = node.lat
 		this.state.lng = node.lng;
-		this.state.zoom = 18;
+		this.state.zoom = 17;
 		CzfMap.setPosition(this.state);
 	},
 	
