@@ -25,6 +25,12 @@ try {
 		$links_sql .= "AND n1.status = 1 AND n2.status = 1";
 	}
 	
+	if (!isset($_GET['obsolete']))
+	{
+		$nodes_sql .= "AND status != 90 AND type != 0";
+		$links_sql .= "AND n1.status != 90 AND n2.status != 90";
+	}
+	
 	if (isset($_GET['bbonly']))
 		$links_sql .= "AND backbone = 1";
 	
