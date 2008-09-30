@@ -99,17 +99,21 @@ var CzfMap =
 	
 	loadData: function(state)
 	{
-		var bounds = this.map.getBounds();
-		var north = bounds.getNorthEast().lat();
-		var east = bounds.getNorthEast().lng();
-		var south = bounds.getSouthWest().lat();
-		var west = bounds.getSouthWest().lng();
+		urlParams = new Object();
 		
-		var query = "?north=" + north + "&east=" + east + "&south=" + south + "&west=" + west;
-		if (state.aponly) query += "&aponly=1";
-		if (state.bbonly) query += "&bbonly=1";
-		if (state.actnode) query += "&actnode=1";
-		if (state.actlink) query += "&actlink=1";
+		var bounds = this.map.getBounds();
+		urlParams.north = bounds.getNorthEast().lat();
+		urlParams.east = bounds.getNorthEast().lng();
+		urlParams.south = bounds.getSouthWest().lat();
+		urlParams.west = bounds.getSouthWest().lng();
+		
+		for (i in state)
+			if (!(i in this.defaultPos))
+				urlParams[i] = state[i];
+		
+		var query = "?";
+		for (i in urlParams)
+			query += i + "=" + urlParams[i] + "&";
 		
 		GDownloadUrl("data.php" + query, this.methodCall(this.readData));
 	},
