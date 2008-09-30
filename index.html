@@ -14,11 +14,11 @@
   
   <body onload="CzfMap.initialize('map','filters.block')" onunload="CzfMap.unload()">
     <div id="map"></div>
-    <div id="panel" onload="CzfPanel.initialize('filters')">
+    <div id="panel">
       <b>CZFree Node Monitor</b><br />
       
       <div onclick="CzfPanel.toggle('filters')">
-        <img src="images/plus.png" alt="+" id="filters.img"><b>Filters</b>
+        <img src="images/plus.png" alt="+" id="filters.img" /><b>Filters</b>
       </div>
       <div class="panelpart" id="filters.block">
         Node filter:<br />
@@ -36,17 +36,17 @@
       </div>
     
       <div onclick="CzfPanel.toggle('search')">
-        <img src="images/plus.png" alt="+" id="search.img"><b>Search</b>
+        <img src="images/plus.png" alt="+" id="search.img" /><b>Search</b>
       </div>
       <div class="panelpart" id="search.block">
         <form action="#" method="get" onsubmit="return CzfPanel.addressSearch('address')">
-        <label for="address">Search address:</label><br />
+        <div><label for="address">Search address:</label><br />
         <input type="text" name="address" id="address" size="15" maxlength="50" />
-        </form>
+        </div></form>
         <form action="#" method="get" onsubmit="return CzfPanel.nodeSearch('nodename')">
-        <label for="nodename">Search node name:</label><br />
+        <div><label for="nodename">Search node name:</label><br />
         <input type="text" name="nodename" id="nodename" size="15" maxlength="50" />
-        </form>
+        </div></form>
       </div>
     
     </div>

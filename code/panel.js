@@ -150,5 +150,5 @@ var CzfPanel =
 	{
 		var _this = this;
 		return function() { fn.apply(_this, arguments); };
-	},
+	}
 }
