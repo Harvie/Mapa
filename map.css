@@ -9,26 +9,46 @@ body {
 	margin-bottom: 0;
 }
 
+h1 {
+	font-weight: bold;
+	font-size: 110%;
+	margin: 0;
+}
+
 #map { 
-	margin-right: 11.5em;
+	margin-right: 12.3em;
 	overflow: hidden;
 }
+
 #panel {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width: 11em;
+	width: 12em;
+	padding: 0.1em;
 }
 
 #panel img {
 	margin-right: 3px;
 }
 
-.panelpart { 
+.panelpart {
 	margin-left: 5px;
 	padding-left: 7px;
 	display: none;
 	border-left: 1px dotted black;
+}
+
+#nodeinfo p {
+	margin: 0;
+	padding-top: 1ex;
+}
+
+#nodeinfo div {
+	margin: 0;
+	margin-left: 0.4em;
+	font-style: italic;
+	font-size: 90%;
 }
 
 .MarkerLabel {

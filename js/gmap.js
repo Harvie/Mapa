@@ -3,6 +3,9 @@ var CzfMap =
 	mediaColors: [ "#000", "#0C0", "#A22", "#8DF", "#A2A", "#0FF", "#F00", "#CCC", "#FFF", "#F80" ],
 	ajaxParams: { actnode: 1, aponly: 1, obsolete: 1, alien: 1, actlink: 1, bbonly: 1 },
 	defaultPos: { lat: 50.006915, lng: 14.422809, zoom: 18 },
+	nodeTypes: { 0: "Unknown", 1: "Client", 9: "Full AP", 10: "Steet access AP", 98: "InfoPoint", 99: "Non-CZF" },
+	nodeStates: { 1: "Active", 40: "In testing", 79: "Under (re)construction", 80: "In planning", 90: "Obsolete" },
+	
 	icons: new Object(),
 	map: null,
 	
@@ -95,15 +98,12 @@ var CzfMap =
 	
 	loadIcons: function()
 	{
-		var types = [0,1,9,10,98,99];
-		var states = [1,40,79,80,90];
-		
-		for (i in types)
-			for (j in states)
+		for (t in this.nodeTypes)
+			for (s in this.nodeStates)
 			{
-				iconindex = types[i] * 100 + states[j];
+				iconindex = parseInt(t) * 100 + parseInt(s);
 				this.icons[iconindex] = new GIcon();
-				this.icons[iconindex].image = "/images/node/" + types[i] + "-" + states[j] + ".png";
+				this.icons[iconindex].image = "/images/node/" + t + "-" + s + ".png";
 				this.icons[iconindex].iconSize = new GSize(15,15);
 				this.icons[iconindex].iconAnchor = new GPoint(7,7);
 			}

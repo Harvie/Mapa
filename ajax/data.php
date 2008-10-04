@@ -57,7 +57,7 @@ $links->execute(array_merge($bounds, $bounds));
 	"points":
 	[
 	<? foreach ($nodes as $row): ?>
-	{ id: <?=$row['id']?>, label: "<?=addslashes($row['name'])?>", lat: <?=$row['lat']?>, lng: <?=$row['lng']?>, type: <?=$row['type']?>, status: <?=$row['status']?> },
+	{ id: <?=$row['id']?>, label: "<?=escape($row['name'])?>", lat: <?=$row['lat']?>, lng: <?=$row['lng']?>, type: <?=$row['type']?>, status: <?=$row['status']?> },
 	<? endforeach ?>],
 	
 	"links":

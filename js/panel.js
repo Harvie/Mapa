@@ -152,7 +152,39 @@ var CzfPanel =
 	
 	showInfo: function(nodeid)
 	{
-		this.info.innerHTML = nodeid;
+		GDownloadUrl("ajax/nodeinfo.php?id=" + nodeid, this.methodCall(this.infoDone));
+	},
+	
+	infoDone: function(doc)
+	{
+		if (doc.length == 0)
+			return;
+		
+		info = eval('(' + doc + ')');
+		
+		html = "<p>";
+		html += "Node ID: " + info.id + "\n";
+		html += "Name: " + info.name + "\n";
+		html += "Type: " + CzfMap.nodeTypes[info.type] + "\n";
+		html += "Status: " + CzfMap.nodeStates[info.status] + "\n";
+		html += "</p>";
+		
+		html += "<p>";
+		if (info.url_thread)
+			html += "<a href=\"" + info.url_thread + "\">Thread</a> ";
+		if (info.url_photos)
+			html += "<a href=\"" + info.url_photos + "\">Photos</a> ";
+		if (info.url_homepage)
+			html += "<a href=\"" + info.url_homepage + "\">Homepage</a> ";
+		html += "</p>";
+		
+		html += "<p>Coordinates: <div>" + info.lat + " " + info.lng + "</div></p>";
+		if (info.address)
+			html += "<p>Address: <div>" + info.address + "</div></p>";
+		if (info.visibility)
+			html += "<p>Visibility description: <div>" + info.visibility + "</div></p>";
+		
+		this.info.innerHTML = html.replace(/\n/g, "<br/>");
 	},
 	
 	methodCall: function(fn)

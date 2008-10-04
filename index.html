@@ -12,10 +12,10 @@
     <script type="text/javascript" src="js/panel.js"></script>
   </head>
   
-  <body onload="CzfMap.initialize('map','filters.block','nodeinfo.block')" onunload="CzfMap.unload()">
+  <body onload="CzfMap.initialize('map','filters.block','nodeinfo')" onunload="CzfMap.unload()">
     <div id="map"></div>
     <div id="panel">
-      <b>CZFree Node Monitor</b><br />
+      <h1>CZFree Node Monitor</h1>
       
       <div onclick="CzfPanel.toggle('search')">
         <img src="images/plus.png" alt="+" id="search.img" /><b>Search</b>
@@ -23,11 +23,11 @@
       <div class="panelpart" id="search.block">
         <form action="#" method="get" onsubmit="return CzfPanel.addressSearch('address')">
         <div><label for="address">Search address:</label><br />
-        <input type="text" name="address" id="address" size="15" maxlength="50" />
+        <input type="text" name="address" id="address" size="17" maxlength="50" />
         </div></form>
         <form action="#" method="get" onsubmit="return CzfPanel.nodeSearch('nodename')">
         <div><label for="nodename">Search node name:</label><br />
-        <input type="text" name="nodename" id="nodename" size="15" maxlength="50" />
+        <input type="text" name="nodename" id="nodename" size="17" maxlength="50" />
         </div></form>
       </div>
     
@@ -61,6 +61,7 @@
         <img src="images/plus.png" alt="+" id="nodeinfo.img" /><b>Node info</b>
       </div>
       <div class="panelpart" id="nodeinfo.block">
+        <div id="nodeinfo"></div>
       </div>
     </div>
   </body>

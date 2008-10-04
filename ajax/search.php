@@ -10,6 +10,6 @@ $select->execute(array($query));
 ?>
 [
 <? foreach ($select as $row): ?>
-	{ id: <?=$row['id']?>, name: "<?=addslashes($row['name'])?>", lat: <?=$row['lat']?>, lng: <?=$row['lng']?> },
+	{ id: <?=$row['id']?>, name: "<?=escape($row['name'])?>", lat: <?=$row['lat']?>, lng: <?=$row['lng']?> },
 <? endforeach ?>
 ]
