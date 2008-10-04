@@ -127,7 +127,7 @@ var CzfMap =
 		for (i in urlParams)
 			query += i + "=" + urlParams[i] + "&";
 		
-		GDownloadUrl("data.php" + query, this.methodCall(this.readData));
+		GDownloadUrl("ajax/data.php" + query, this.methodCall(this.readData));
 	},
 	
 	readData: function(doc)

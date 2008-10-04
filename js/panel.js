@@ -93,7 +93,7 @@ var CzfPanel =
 		this.nameField.disabled = true;
 		
 		var query = this.nameField.value;
-		GDownloadUrl("search.php?query=" + query, this.methodCall(this.nodeDone));
+		GDownloadUrl("ajax/search.php?query=" + query, this.methodCall(this.nodeDone));
 		return false;
 	},
 	
