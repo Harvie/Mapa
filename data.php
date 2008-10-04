@@ -31,6 +31,12 @@ try {
 		$links_sql .= "AND n1.status != 90 AND n2.status != 90";
 	}
 	
+	if (!isset($_GET['alien']))
+	{
+		$nodes_sql .= "AND type != 99";
+		$links_sql .= "AND n1.type != 99 AND n2.type != 99";
+	}
+	
 	if (isset($_GET['bbonly']))
 		$links_sql .= "AND backbone = 1";
 	
