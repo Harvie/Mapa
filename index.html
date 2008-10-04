@@ -21,6 +21,12 @@
         <img src="images/plus.png" alt="+" id="filters.img" /><b>Filters</b>
       </div>
       <div class="panelpart" id="filters.block">
+        <input type="checkbox" name="hideall" id="hideall" onchange="CzfPanel.changed(this)"/>
+        <label for="hideall">Hide everything</label><br />
+        <input type="checkbox" name="hidelabels" id="hidelabels" onchange="CzfPanel.changed(this)"/>
+        <label for="hidelabels">Hide labels</label><br />
+        <input type="checkbox" name="hidelinks" id="hidelinks" onchange="CzfPanel.changed(this)"/>
+        <label for="hidelinks">Hide lines</label><br />
         Node filter:<br />
         <input type="checkbox" name="actnode" id="actnode" onchange="CzfPanel.changed(this)"/>
         <label for="actnode">Only active</label><br />

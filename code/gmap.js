@@ -1,6 +1,7 @@
 var CzfMap =
 {
 	mediaColors: [ "#000", "#0C0", "#A22", "#8DF", "#A2A", "#0FF", "#F00", "#CCC", "#FFF", "#F80" ],
+	ajaxParams: { actnode: 1, aponly: 1, obsolete: 1, alien: 1, actlink: 1, bbonly: 1 },
 	defaultPos: { lat: 50.006915, lng: 14.422809, zoom: 18 },
 	icons: new Object(),
 	map: null,
@@ -59,7 +60,11 @@ var CzfMap =
 		state.zoom = this.map.getZoom();
 
 		this.anchor.update(state);
-		this.loadData(state);
+		
+		if (state.hideall)
+			this.map.clearOverlays();
+		else
+			this.loadData(state);
 	},
 	
 	zoomed: function(oldZoom, newZoom)
@@ -108,7 +113,7 @@ var CzfMap =
 		urlParams.west = bounds.getSouthWest().lng();
 		
 		for (i in state)
-			if (!(i in this.defaultPos))
+			if (i in this.ajaxParams)
 				urlParams[i] = state[i];
 		
 		var query = "?";
@@ -120,6 +125,7 @@ var CzfMap =
 	
 	readData: function(doc)
 	{
+		var state = CzfPanel.getState();
 		var jsonData = eval('(' + doc + ')');
 		this.map.clearOverlays();
 		
@@ -129,9 +135,13 @@ var CzfMap =
 			var latlng = new GLatLng(point.lat, point.lng); 
 			var iconindex = point.type * 100 + point.status;
 			var options = { icon: this.icons[iconindex], title: point.label };
-			var marker = new CzfMarker(latlng, options);
+			var marker = state.hidelabels ? new GMarker(latlng, options)
+			                              : new CzfMarker(latlng, options);
 			this.map.addOverlay(marker);
 		}
+		
+		if (state.hidelinks)
+			return;
 		
 		for (i in jsonData.links)
 		{
