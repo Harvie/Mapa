@@ -1,18 +1,22 @@
 var CzfPanel =
 {
 	state: new Object(),
-	element: null,
+	filters: null,
+	info: null,
 	geocoder: null,
 	addressField: null,
 	nameField: null,
 	results: null,
 	nameSelect: null,
 	
-	initialize: function(id)
+	initialize: function(filtersID, infoID)
 	{
-		this.element = document.getElementById(id);
+		this.filters = document.getElementById(filtersID);
+		this.info = document.getElementById(infoID);
 		this.geocoder = new GClientGeocoder();
-		this.toggle("filters");
+		
+		this.toggle("search");
+		this.toggle("nodeinfo");
 	},
 	
 	getState: function()
@@ -24,9 +28,9 @@ var CzfPanel =
 	{
 		this.state = newState;
 		
-		for (i in this.element.childNodes)
+		for (i in this.filters.childNodes)
 		{
-			child = this.element.childNodes[i];
+			child = this.filters.childNodes[i];
 			if (child.nodeName == "INPUT")
 				child.checked = !!this.state[child.name];
 		}
@@ -144,6 +148,11 @@ var CzfPanel =
 		this.state.lng = node.lng;
 		this.state.zoom = 17;
 		CzfMap.setPosition(this.state);
+	},
+	
+	showInfo: function(nodeid)
+	{
+		this.info.innerHTML = nodeid;
 	},
 	
 	methodCall: function(fn)

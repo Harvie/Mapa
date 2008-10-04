@@ -4,7 +4,7 @@ header('Content-Type: text/plain');
 try {
 	$dbh = new PDO('pgsql:dbname=map;user=www');
 	
-	$nodes_sql = "SELECT name,lat,lng,type,status FROM nodes ".
+	$nodes_sql = "SELECT id,name,lat,lng,type,status FROM nodes ".
 	              "WHERE lat < ? AND lng < ? AND lat > ? AND lng > ?";
 	
 	$links_sql = "SELECT n1.lat,n1.lng,n2.lat,n2.lng,media,active,backbone ".
@@ -61,7 +61,7 @@ try {
 	"points":
 	[
 	<? foreach ($nodes as $row): ?>
-	{ label: "<?=addslashes($row['name'])?>", lat: <?=$row['lat']?>, lng: <?=$row['lng']?>, type: <?=$row['type']?>, status: <?=$row['status']?> },
+	{ id: <?=$row['id']?>, label: "<?=addslashes($row['name'])?>", lat: <?=$row['lat']?>, lng: <?=$row['lng']?>, type: <?=$row['type']?>, status: <?=$row['status']?> },
 	<? endforeach ?>],
 	
 	"links":

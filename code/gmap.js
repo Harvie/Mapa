@@ -6,11 +6,11 @@ var CzfMap =
 	icons: new Object(),
 	map: null,
 	
-	initialize: function(mapID, panelID)
+	initialize: function(mapID, panelID, infoID)
 	{
 		if (GBrowserIsCompatible())
 		{
-			CzfPanel.initialize(panelID);
+			CzfPanel.initialize(panelID, infoID);
 			this.show(document.getElementById(mapID));
 		}
 	},
@@ -35,10 +35,11 @@ var CzfMap =
 		
 		this.anchor = new CzfAnchor(this.methodCall(this.setPosition));
 		this.loadIcons();
-		
 		this.moved();
+		
 		GEvent.addListener(this.map, "moveend", this.methodCall(this.moved));
 		GEvent.addListener(this.map, "zoomend", this.methodCall(this.zoomed));
+		GEvent.addListener(this.map, "click", this.methodCall(this.clicked));
 	},
 	
 	setPosition: function(state)
@@ -84,6 +85,12 @@ var CzfMap =
 		}
 		
 		CzfPanel.setState(state);
+	},
+	
+	clicked: function(overlay, point)
+	{
+		if (overlay && overlay.nodeid)
+			CzfPanel.showInfo(overlay.nodeid);
 	},
 	
 	loadIcons: function()
@@ -137,6 +144,7 @@ var CzfMap =
 			var options = { icon: this.icons[iconindex], title: point.label };
 			var marker = state.hidelabels ? new GMarker(latlng, options)
 			                              : new CzfMarker(latlng, options);
+			marker.nodeid = point.id;
 			this.map.addOverlay(marker);
 		}
 		
