@@ -1,6 +1,7 @@
 var CzfPanel =
 {
 	state: new Object(),
+	anchor: null,
 	filters: null,
 	info: null,
 	geocoder: null,
@@ -14,6 +15,7 @@ var CzfPanel =
 		this.filters = document.getElementById(filtersID);
 		this.info = document.getElementById(infoID);
 		this.geocoder = new GClientGeocoder();
+		this.anchor = new CzfAnchor(this.methodCall(this.anchorChanged));
 		
 		this.toggle("search");
 		this.toggle("nodeinfo");
@@ -24,10 +26,29 @@ var CzfPanel =
 		return this.state;
 	},
 	
-	setState: function(newState)
+	anchorChanged: function(newState)
 	{
 		this.state = newState;
 		
+		if (this.state.node)
+			this.setNode(this.state.node);
+		
+		this.updateFilters();
+		CzfMap.setPosition(this.state);
+	},
+	
+	updateState: function(newState)
+	{
+		this.state = newState;
+		
+		if (this.anchor)
+			this.anchor.update(this.state);
+		
+		this.updateFilters();
+	},
+	
+	updateFilters: function()
+	{
 		for (i in this.filters.childNodes)
 		{
 			child = this.filters.childNodes[i];
@@ -43,6 +64,7 @@ var CzfPanel =
 		else
 			delete this.state[box.name];
 		
+		this.anchor.update(this.state);
 		CzfMap.moved();
 	},
 	
@@ -150,8 +172,13 @@ var CzfPanel =
 		CzfMap.setPosition(this.state);
 	},
 	
-	showInfo: function(nodeid)
+	setNode: function(nodeid)
 	{
+		this.state.node = nodeid;
+		
+		if (this.anchor)
+			this.anchor.update(this.state);
+		
 		GDownloadUrl("ajax/nodeinfo.php?id=" + nodeid, this.methodCall(this.infoDone));
 	},
 	

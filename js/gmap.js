@@ -13,8 +13,8 @@ var CzfMap =
 	{
 		if (GBrowserIsCompatible())
 		{
-			CzfPanel.initialize(panelID, infoID);
 			this.show(document.getElementById(mapID));
+			CzfPanel.initialize(panelID, infoID);
 		}
 	},
 	
@@ -36,9 +36,7 @@ var CzfMap =
 		this.map.enableScrollWheelZoom();
 		this.map.enableDoubleClickZoom();
 		
-		this.anchor = new CzfAnchor(this.methodCall(this.setPosition));
 		this.loadIcons();
-		this.moved();
 		
 		GEvent.addListener(this.map, "moveend", this.methodCall(this.moved));
 		GEvent.addListener(this.map, "zoomend", this.methodCall(this.zoomed));
@@ -47,8 +45,6 @@ var CzfMap =
 	
 	setPosition: function(state)
 	{
-		CzfPanel.setState(state);
-		
 		var lat = state.lat ? parseFloat(state.lat) : this.defaultPos.lat;
 		var lng = state.lng ? parseFloat(state.lng) : this.defaultPos.lng;
 		var zoom = state.zoom ? parseInt(state.zoom) : this.defaultPos.zoom;
@@ -62,8 +58,7 @@ var CzfMap =
 		state.lat = this.map.getCenter().lat();
 		state.lng = this.map.getCenter().lng();
 		state.zoom = this.map.getZoom();
-
-		this.anchor.update(state);
+		CzfPanel.updateState(state);
 		
 		if (state.hideall)
 			this.map.clearOverlays();
@@ -87,13 +82,13 @@ var CzfMap =
 			state.actnode = 1;
 		}
 		
-		CzfPanel.setState(state);
+		CzfPanel.updateState(state);
 	},
 	
 	clicked: function(overlay, point)
 	{
 		if (overlay && overlay.nodeid)
-			CzfPanel.showInfo(overlay.nodeid);
+			CzfPanel.setNode(overlay.nodeid);
 	},
 	
 	loadIcons: function()
