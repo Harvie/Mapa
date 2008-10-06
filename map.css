@@ -1,5 +1,6 @@
 html, body, #map {
 	height: 100%;
+	overflow: hidden;
 }
 
 body {
@@ -11,28 +12,31 @@ body {
 
 h1 {
 	font-weight: bold;
-	font-size: 110%;
+	font-size: 115%;
+	text-align: center;
 	margin: 0;
+	margin-bottom: 0.5ex;
 }
 
 #map { 
-	margin-right: 12.3em;
-	overflow: hidden;
+	margin-right: 13.3em;
 }
 
 #panel {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width: 12em;
+	width: 13em;
 	padding: 0.1em;
+	height: 100%;
+	overflow: auto;
 }
 
 #panel img {
 	margin-right: 3px;
 }
 
-.panelpart {
+#panel .panelpart {
 	margin-left: 5px;
 	padding-left: 7px;
 	display: none;
@@ -51,6 +55,36 @@ h1 {
 	font-size: 90%;
 }
 
+#nodeinfo td {
+	font-size: 90%;
+}
+
+#nodeinfo span[onclick] {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+#nodeinfo .peerinfo {
+	float: left;
+	font-style: normal;
+	margin-left: 0;
+	clear: both;
+}
+
+#nodeinfo .linkinfo {
+	float: right;
+	font-style: normal;
+	margin-left: 0.5em;
+}
+
+#nodeinfo .backbone {
+	font-weight: bold;
+}
+
+#nodeinfo .planned {
+	color: gray;
+}
+
 .MarkerLabel {
 	background-color: black;
 	color: white;
@@ -62,4 +96,8 @@ h1 {
 
 .error {
 	background-color: #FF8080;
+}
+
+.clear {
+	clear: both;
 }

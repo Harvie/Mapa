@@ -5,6 +5,7 @@ var CzfMap =
 	defaultPos: { lat: 50.006915, lng: 14.422809, zoom: 18 },
 	nodeTypes: { 0: "Unknown", 1: "Client", 9: "Full AP", 10: "Steet access AP", 98: "InfoPoint", 99: "Non-CZF" },
 	nodeStates: { 1: "Active", 40: "In testing", 79: "Under (re)construction", 80: "In planning", 90: "Obsolete" },
+	linkMedia: { 0: "N/A", 1: "WiFi", 2: "FSO", 3: "Ethernet", 4: "Fiber", 5: "VPN", 6: "FSO + WiFi", 7: "5GHz", 8: "10GHz", 9: "FWA", 99: "Other" },
 	
 	icons: new Object(),
 	map: null,

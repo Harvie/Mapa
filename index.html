@@ -10,6 +10,7 @@
     <script type="text/javascript" src="js/gmap.js"></script>
     <script type="text/javascript" src="js/anchor.js"></script>
     <script type="text/javascript" src="js/panel.js"></script>
+    <script type="text/javascript" src="js/nodeinfo.js"></script>
   </head>
   
   <body onload="CzfMap.initialize('map','filters.block','nodeinfo')" onunload="CzfMap.unload()">
@@ -23,11 +24,11 @@
       <div class="panelpart" id="search.block">
         <form action="#" method="get" onsubmit="return CzfPanel.addressSearch('address')">
         <div><label for="address">Search address:</label><br />
-        <input type="text" name="address" id="address" size="17" maxlength="50" />
+        <input type="text" name="address" id="address" size="18" maxlength="50" />
         </div></form>
         <form action="#" method="get" onsubmit="return CzfPanel.nodeSearch('nodename')">
         <div><label for="nodename">Search node name:</label><br />
-        <input type="text" name="nodename" id="nodename" size="17" maxlength="50" />
+        <input type="text" name="nodename" id="nodename" size="18" maxlength="50" />
         </div></form>
       </div>
     

@@ -3,7 +3,6 @@ var CzfPanel =
 	state: new Object(),
 	anchor: null,
 	filters: null,
-	info: null,
 	geocoder: null,
 	addressField: null,
 	nameField: null,
@@ -13,9 +12,11 @@ var CzfPanel =
 	initialize: function(filtersID, infoID)
 	{
 		this.filters = document.getElementById(filtersID);
-		this.info = document.getElementById(infoID);
 		this.geocoder = new GClientGeocoder();
+		CzfNodeInfo.initialize(infoID);
+		
 		this.anchor = new CzfAnchor(this.methodCall(this.anchorChanged));
+		this.anchor.update(this.state);
 		
 		this.toggle("search");
 		this.toggle("nodeinfo");
@@ -79,7 +80,7 @@ var CzfPanel =
 			img.src = "images/minus.png";
 		}
 		else
-		{  
+		{
 			node.style.display = "none";
 			img.src = "images/plus.png";
 		}
@@ -116,7 +117,6 @@ var CzfPanel =
 		
 		var query = this.nameField.value;
 		GDownloadUrl("ajax/search.php?query=" + query, this.methodCall(this.nodeDone));
-		return false;
 	},
 	
 	nodeDone: function(doc)
@@ -165,9 +165,13 @@ var CzfPanel =
 			return;
 		
 		var node = this.results[i];
-		
-		this.state.lat = node.lat
-		this.state.lng = node.lng;
+		this.setPos(node.lat, node.lng);
+	},
+	
+	setPos: function(lat, lng)
+	{
+		this.state.lat = lat
+		this.state.lng = lng;
 		this.state.zoom = 17;
 		CzfMap.setPosition(this.state);
 	},
@@ -179,39 +183,7 @@ var CzfPanel =
 		if (this.anchor)
 			this.anchor.update(this.state);
 		
-		GDownloadUrl("ajax/nodeinfo.php?id=" + nodeid, this.methodCall(this.infoDone));
-	},
-	
-	infoDone: function(doc)
-	{
-		if (doc.length == 0)
-			return;
-		
-		info = eval('(' + doc + ')');
-		
-		html = "<p>";
-		html += "Node ID: " + info.id + "\n";
-		html += "Name: " + info.name + "\n";
-		html += "Type: " + CzfMap.nodeTypes[info.type] + "\n";
-		html += "Status: " + CzfMap.nodeStates[info.status] + "\n";
-		html += "</p>";
-		
-		html += "<p>";
-		if (info.url_thread)
-			html += "<a href=\"" + info.url_thread + "\">Thread</a> ";
-		if (info.url_photos)
-			html += "<a href=\"" + info.url_photos + "\">Photos</a> ";
-		if (info.url_homepage)
-			html += "<a href=\"" + info.url_homepage + "\">Homepage</a> ";
-		html += "</p>";
-		
-		html += "<p>Coordinates: <div>" + info.lat + " " + info.lng + "</div></p>";
-		if (info.address)
-			html += "<p>Address: <div>" + info.address + "</div></p>";
-		if (info.visibility)
-			html += "<p>Visibility description: <div>" + info.visibility + "</div></p>";
-		
-		this.info.innerHTML = html.replace(/\n/g, "<br/>");
+		CzfNodeInfo.setNode(nodeid);
 	},
 	
 	methodCall: function(fn)
