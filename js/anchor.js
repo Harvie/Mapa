@@ -1,7 +1,8 @@
 function CzfAnchor(callback, defaults)
 {
-	this.lastHash = null;
 	this.callback = callback;
+	this.defaults = defaults;
+	this.lastHash = null;
 	
 	this.update = function(state)
 	{
@@ -27,12 +28,17 @@ function CzfAnchor(callback, defaults)
 		var paramList = hash.substring(1).split("&");
 		var paramObj = new Object();
 		
-		for (i in paramList)
+		if (paramList.length > 1)
 		{
-			varval = paramList[i].split("=");
-			if (varval.length == 2)
-				paramObj[varval[0]] = varval[1];
+			for (i in paramList)
+			{
+				varval = paramList[i].split("=");
+				if (varval.length == 2)
+					paramObj[varval[0]] = varval[1];
+			}
 		}
+		else
+			paramObj = this.defaults;
 		
 		this.callback(paramObj);
 	}

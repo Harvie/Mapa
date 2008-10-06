@@ -1,11 +1,12 @@
 var CzfMap =
 {
 	mediaColors: [ "#000", "#0C0", "#A22", "#8DF", "#A2A", "#0FF", "#F00", "#CCC", "#FFF", "#F80" ],
-	ajaxParams: { actnode: 1, aponly: 1, obsolete: 1, alien: 1, actlink: 1, bbonly: 1 },
-	defaultPos: { lat: 50.006915, lng: 14.422809, zoom: 18 },
-	nodeTypes: { 0: "Unknown", 1: "Client", 9: "Full AP", 10: "Steet access AP", 98: "InfoPoint", 99: "Non-CZF" },
-	nodeStates: { 1: "Active", 40: "In testing", 79: "Under (re)construction", 80: "In planning", 90: "Obsolete" },
-	linkMedia: { 0: "N/A", 1: "WiFi", 2: "FSO", 3: "Ethernet", 4: "Fiber", 5: "VPN", 6: "FSO + WiFi", 7: "5GHz", 8: "10GHz", 9: "FWA", 99: "Other" },
+	ajaxParams:  { actnode: 1, aponly: 1, obsolete: 1, alien: 1, actlink: 1, bbonly: 1 },
+	defaults:    { lat: 50.006915, lng: 14.422809, zoom: 15, autofilter: 1 },
+	autoFilter:  { actnode: 1, aponly: 1, actlink: 1, bbonly: 1 },
+	nodeTypes:   { 0: "Unknown", 1: "Client", 9: "Full AP", 10: "Steet access AP", 98: "InfoPoint", 99: "Non-CZF" },
+	nodeStates:  { 1: "Active", 40: "In testing", 79: "Under (re)construction", 80: "In planning", 90: "Obsolete" },
+	linkMedia:   { 0: "N/A", 1: "WiFi", 2: "FSO", 3: "Ethernet", 4: "Fiber", 5: "VPN", 6: "FSO + WiFi", 7: "5GHz", 8: "10GHz", 9: "FWA", 99: "Other" },
 	
 	icons: new Object(),
 	map: null,
@@ -46,9 +47,9 @@ var CzfMap =
 	
 	setPosition: function(state)
 	{
-		var lat = state.lat ? parseFloat(state.lat) : this.defaultPos.lat;
-		var lng = state.lng ? parseFloat(state.lng) : this.defaultPos.lng;
-		var zoom = state.zoom ? parseInt(state.zoom) : this.defaultPos.zoom;
+		var lat = state.lat ? parseFloat(state.lat) : this.defaults.lat;
+		var lng = state.lng ? parseFloat(state.lng) : this.defaults.lng;
+		var zoom = state.zoom ? parseInt(state.zoom) : this.defaults.zoom;
 		
 		this.map.setCenter(new GLatLng(lat, lng), zoom);
 	},
@@ -59,7 +60,7 @@ var CzfMap =
 		state.lat = this.map.getCenter().lat();
 		state.lng = this.map.getCenter().lng();
 		state.zoom = this.map.getZoom();
-		CzfPanel.updateState(state);
+		CzfPanel.setState(state);
 		
 		if (state.hideall)
 			this.map.clearOverlays();
@@ -69,21 +70,7 @@ var CzfMap =
 	
 	zoomed: function(oldZoom, newZoom)
 	{
-		var state = CzfPanel.getState();
-		
-		if (newZoom <= 16)
-		{
-			state.aponly = 1;
-			state.bbonly = 1;
-		}
-		
-		if (newZoom <= 14)
-		{
-			state.actlink = 1;
-			state.actnode = 1;
-		}
-		
-		CzfPanel.updateState(state);
+		CzfPanel.updateAutoFilter(newZoom);
 	},
 	
 	clicked: function(overlay, point)

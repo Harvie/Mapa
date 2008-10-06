@@ -15,7 +15,7 @@ var CzfPanel =
 		this.geocoder = new GClientGeocoder();
 		CzfNodeInfo.initialize(infoID);
 		
-		this.anchor = new CzfAnchor(this.methodCall(this.anchorChanged));
+		this.anchor = new CzfAnchor(this.methodCall(this.anchorChanged), CzfMap.defaults);
 		this.anchor.update(this.state);
 		
 		this.toggle("search");
@@ -38,14 +38,42 @@ var CzfPanel =
 		CzfMap.setPosition(this.state);
 	},
 	
-	updateState: function(newState)
+	setState: function(newState)
 	{
 		this.state = newState;
 		
 		if (this.anchor)
 			this.anchor.update(this.state);
-		
-		this.updateFilters();
+	},
+	
+	updateAutoFilter: function(newZoom)
+	{
+		if (this.state.autofilter)
+		{
+			if (newZoom <= 16)
+			{
+				this.state.aponly = 1;
+				this.state.bbonly = 1;
+			}
+			else
+			{
+				delete this.state.aponly;
+				delete this.state.bbonly;
+			}
+			
+			if (newZoom <= 14)
+			{
+				this.state.actlink = 1;
+				this.state.actnode = 1;
+			}
+			else
+			{
+				delete this.state.actlink;
+				delete this.state.actnode;
+			}
+			
+			this.updateFilters();
+		}
 	},
 	
 	updateFilters: function()
@@ -54,7 +82,11 @@ var CzfPanel =
 		{
 			child = this.filters.childNodes[i];
 			if (child.nodeName == "INPUT")
+			{
 				child.checked = !!this.state[child.name];
+				if (CzfMap.autoFilter[child.name])
+					child.disabled = !!this.state.autofilter;
+			}
 		}
 	},
 	
@@ -64,6 +96,14 @@ var CzfPanel =
 			this.state[box.name] = 1;
 		else
 			delete this.state[box.name];
+		
+		if (box.name == "autofilter")
+		{
+			if (box.checked)
+				this.updateAutoFilter(this.state.zoom);
+			else
+				this.updateFilters();
+		}
 		
 		this.anchor.update(this.state);
 		CzfMap.moved();
@@ -127,6 +167,7 @@ var CzfPanel =
 		if (this.results.length == 0)
 		{
 			this.nameField.className = "error";
+			this.nameField.disabled = false;
 			return;
 		}
 		
