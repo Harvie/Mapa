@@ -117,6 +117,7 @@ var CzfPanel =
 		
 		var query = this.nameField.value;
 		GDownloadUrl("ajax/search.php?query=" + query, this.methodCall(this.nodeDone));
+		return false;
 	},
 	
 	nodeDone: function(doc)
@@ -166,6 +167,7 @@ var CzfPanel =
 		
 		var node = this.results[i];
 		this.setPos(node.lat, node.lng);
+		this.setNode(node.id);
 	},
 	
 	setPos: function(lat, lng)
