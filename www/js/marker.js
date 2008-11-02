@@ -9,7 +9,7 @@ CzfMarker.prototype.initialize = function(map) {
 	GMarker.prototype.initialize.apply(this, arguments);
 	
 	var div = document.createElement("div");
-	div.className = "MarkerLabel";
+	div.className = "label";
 	div.innerHTML = this.getTitle();
 	div.style.position = "absolute";
 	map.getPane(G_MAP_MARKER_PANE).appendChild(div);

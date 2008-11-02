@@ -92,7 +92,7 @@ var CzfNodeInfo =
 			html += '</div>';
 		}
 		
-		html += '<div class="clear"></div>';
+		html += '<div class="clear">&nbsp;</div>';
 		return html;
 	},
 	

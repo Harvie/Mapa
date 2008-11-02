@@ -85,13 +85,14 @@ h1 {
 	color: gray;
 }
 
-.MarkerLabel {
+.label {
 	background-color: black;
 	color: white;
 	padding-left: 1px;
 	padding-right: 1px;
 	font-family: arial, sans-serif;
 	font-size: 11px;
+	white-space: nowrap;
 }
 
 .error {
