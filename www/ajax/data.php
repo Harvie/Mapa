@@ -14,8 +14,8 @@ $links_sql = "SELECT n1.lat,n1.lng,n2.lat,n2.lng,media,active,backbone ".
 
 if (isset($_GET['aponly']))
 {
-	$nodes_sql .= "AND type IN(9,10)";
-	$links_sql .= "AND n1.type IN(9,10) AND n2.type IN(9,10)";
+	$nodes_sql .= "AND type IN(9,10,11)";
+	$links_sql .= "AND n1.type IN(9,10,11) AND n2.type IN(9,10,11)";
 }
 
 if (isset($_GET['actnode']))
