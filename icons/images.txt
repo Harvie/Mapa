@@ -1,0 +1,7 @@
+0	unknown.svg
+1	point.svg
+9	node.svg	#F94
+10	node.svg	#FFF
+11	node.svg	#D00
+98	info.svg
+99	nonczf.svg
