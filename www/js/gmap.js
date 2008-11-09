@@ -1,6 +1,6 @@
 var CzfMap =
 {
-	mediaColors: [ "#000", "#0C0", "#A22", "#8DF", "#A2A", "#0FF", "#F00", "#CCC", "#FFF", "#F80" ],
+	mediaColors: [ "#000000", "#00CC00", "#AA2222", "#88DDFF", "#AA22AA", "#00FFFF", "#FF0000", "#CCCCCC", "#FFFFFF", "#FF8800" ],
 	ajaxParams:  { actnode: 1, aponly: 1, obsolete: 1, alien: 1, actlink: 1, bbonly: 1 },
 	defaults:    { lat: 50.006915, lng: 14.422809, zoom: 15, autofilter: 1 },
 	autoFilter:  { actnode: 1, aponly: 1, actlink: 1, bbonly: 1 },
@@ -145,7 +145,7 @@ var CzfMap =
 			var width = link.backbone ? 3 : 1;
 			var opacity = link.active ? 1 : 0.4;
 			
-			this.map.addOverlay(new GPolyline(linePoints, "black", width + 2, opacity));
+			this.map.addOverlay(new GPolyline(linePoints, "#000000", width + 2, opacity));
 			this.map.addOverlay(new GPolyline(linePoints, color, width, opacity));
 		}
 	},
