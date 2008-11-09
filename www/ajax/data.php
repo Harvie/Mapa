@@ -4,13 +4,12 @@ header('Content-Type: text/plain');
 require_once('db.inc.php');
 
 $nodes_sql = "SELECT id,name,lat,lng,type,status FROM nodes ".
-				"WHERE lat < ? AND lng < ? AND lat > ? AND lng > ?";
+             "WHERE lat < ? AND lng < ? AND lat > ? AND lng > ?";
 
-$links_sql = "SELECT n1.lat,n1.lng,n2.lat,n2.lng,media,active,backbone ".
-				"FROM nodes AS n1 JOIN links ON (n1.id = node1 OR n1.id = node2) ".
-				"JOIN nodes AS n2 ON ((n2.id = node1 OR n2.id = node2) AND n1.id != n2.id) ".
-				"WHERE (n1.lat < ? AND n1.lng < ? AND n1.lat > ? AND n1.lng > ?) ".
-				"AND (n1.id > n2.id OR NOT (n2.lat < ? AND n2.lng < ? AND n2.lat > ? AND n2.lng > ?))";
+$links_sql = "SELECT lat1,lng1,lat2,lng2,media,active,backbone FROM links ".
+             "JOIN nodes AS n1 ON node1 = n1.id JOIN nodes AS n2 ON node2 = n2.id ".
+             "WHERE ((lat1 < ? AND lng1 < ? AND lat2 > ? AND lng2 > ?) ".
+                 "OR (lat1 < ? AND lng2 < ? AND lat2 > ? AND lng1 > ?))";
 
 if (isset($_GET['aponly']))
 {
