@@ -7,7 +7,7 @@ function escape($string)
 }
 
 try {
-	$db = new PDO('pgsql:dbname=map;user=www');
+	$db = new PDO('pgsql:dbname=map');
 } catch (PDOException $e) {
 	die("Database error: " . $e->getMessage());
 }
