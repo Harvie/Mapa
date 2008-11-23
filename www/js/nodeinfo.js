@@ -83,7 +83,7 @@ var CzfNodeInfo =
 			var classes = "" + (l.backbone ? " backbone" : "") + (l.active ? "" : " planned");
 			
 			html += '<div class="peerinfo' + classes + '">';
-			html += '<img src="' + '/images/node/' + l.type + '-' + l.status + '.png" />';
+			html += '<img src="' + 'images/node/' + l.type + '-' + l.status + '.png" />';
 			html += '<span onclick="return CzfNodeInfo.showPeer(' + i + ')">' + l.peername + '</span>';
 			html += '</div>';
 			
