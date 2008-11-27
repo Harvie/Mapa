@@ -40,7 +40,7 @@ $links_query->execute(array($id, $id));
 			status: <?=$row['status']?>,
 			media: <?=$row['media']?>,
 			active: <?=$row['active']?>,
-			backbone: <?=$row['backbone']?>,
+			backbone: <?=$row['backbone']?>
 		},
 	<? endforeach ?>]
 }

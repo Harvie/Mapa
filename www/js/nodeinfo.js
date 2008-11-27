@@ -90,6 +90,7 @@ var CzfNodeInfo =
 			html += '<div class="linkinfo">';
 			html += CzfMap.linkMedia[l.media] + ' - ' + Math.round(l.dist) + 'm';
 			html += '</div>';
+			html += '<div class="clear"></div>';
 		}
 		
 		html += '<div class="clear">&nbsp;</div>';
