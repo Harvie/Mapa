@@ -1,7 +1,6 @@
 <?php
 
 header('Content-Type: text/plain');
-require_once('db.inc.php');
 
 $nodes_sql = "SELECT id,name,lat,lng,type,status FROM nodes ".
              "WHERE lat < ? AND lng < ? AND lat > ? AND lng > ?";

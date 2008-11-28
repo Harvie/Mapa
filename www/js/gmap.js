@@ -107,6 +107,11 @@ var CzfMap =
 			}
 	},
 	
+	ajax: function(reqName, query, callback)
+	{
+		GDownloadUrl("ajax.php?request=" + reqName + "&" + query, callback);
+	},
+	
 	loadData: function(state)
 	{
 		urlParams = new Object();
@@ -121,11 +126,11 @@ var CzfMap =
 			if (i in this.ajaxParams)
 				urlParams[i] = state[i];
 		
-		var query = "?";
+		var query = "";
 		for (i in urlParams)
 			query += i + "=" + urlParams[i] + "&";
 		
-		GDownloadUrl("ajax/data.php" + query, this.methodCall(this.readData));
+		this.ajax("data", query, this.methodCall(this.readData));
 	},
 	
 	readData: function(doc)

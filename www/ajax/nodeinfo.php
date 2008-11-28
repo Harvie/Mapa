@@ -1,7 +1,6 @@
 <?php
 
 header('Content-Type: text/plain');
-require_once('db.inc.php');
 
 $id = intval(@$_GET['id']);
 

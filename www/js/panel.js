@@ -156,7 +156,7 @@ var CzfPanel =
 		this.nameField.disabled = true;
 		
 		var query = this.nameField.value;
-		GDownloadUrl("ajax/search.php?query=" + query, this.methodCall(this.nodeDone));
+		CzfMap.ajax("search", "query=" + query, this.methodCall(this.nodeDone));
 		return false;
 	},
 	

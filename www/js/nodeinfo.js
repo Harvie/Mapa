@@ -10,7 +10,7 @@ var CzfNodeInfo =
 	
 	setNode: function(nodeid)
 	{
-		GDownloadUrl("ajax/nodeinfo.php?id=" + nodeid, this.methodCall(this.infoDone));
+		CzfMap.ajax("nodeinfo", "id=" + nodeid, this.methodCall(this.infoDone));
 	},
 	
 	infoDone: function(doc)
