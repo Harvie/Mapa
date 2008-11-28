@@ -88,7 +88,8 @@ var CzfNodeInfo =
 			html += '</div>';
 			
 			html += '<div class="linkinfo">';
-			html += CzfMap.linkMedia[l.media] + ' - ' + this.formatDist(l.dist);
+			html += '<span title="' + CzfMap.linkMedia[l.media][1] + '">'
+			html += CzfMap.linkMedia[l.media][0] + '</span>' + ' - ' + this.formatDist(l.dist);
 			html += '</div>';
 			html += '<div class="clear"></div>';
 		}

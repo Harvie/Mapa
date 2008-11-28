@@ -6,7 +6,19 @@ var CzfMap =
 	autoFilter:  { actnode: 1, aponly: 1, actlink: 1, bbonly: 1 },
 	nodeTypes:   { 0: "Unknown", 1: "Client", 9: "Full AP", 10: "Steet access AP", 11: "Router", 98: "InfoPoint", 99: "Non-CZF" },
 	nodeStates:  { 1: "Active", 10: "Down", 40: "In testing", 79: "Under (re)construction", 80: "In planning", 90: "Obsolete" },
-	linkMedia:   { 0: "N/A", 1: "2.4G", 2: "FSO", 3: "UTP", 4: "Fiber", 5: "VPN", 6: "FSO + WiFi", 7: "5G", 8: "10G", 9: "FWA", 99: "Other" },
+	
+	linkMedia: {
+		 0: [ "N/A", "Unknown type of link" ],
+		 1: [ "2.4G", "Wireless link in 2.4GHz band (802.11b/g)" ],
+		 2: [ "FSO", "Free Space Optical link (Ronja, Crusader)" ],
+		 3: [ "UTP", "Ethernet over metallic cable" ],
+		 4: [ "Fiber", "Ethernet over optical fiber" ],
+		 5: [ "VPN", "VPN over Internet" ],
+		 6: [ "FSO + WiFi", "Free Space Optical link backed by Wi-Fi" ],
+		 7: [ "5G", "Wireless link in 5.4 - 5.8 GHz band (802.11a)" ],
+		 8: [ "10G", "Wireless link in 10 GHz band" ],
+		 9: [ "Licensed", "Wireless link in licensed band" ],
+		99: [ "Other", "Other type of link" ] },
 	
 	icons: new Object(),
 	map: null,
