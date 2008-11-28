@@ -88,7 +88,7 @@ var CzfNodeInfo =
 			html += '</div>';
 			
 			html += '<div class="linkinfo">';
-			html += CzfMap.linkMedia[l.media] + ' - ' + Math.round(l.dist) + 'm';
+			html += CzfMap.linkMedia[l.media] + ' - ' + this.formatDist(l.dist);
 			html += '</div>';
 			html += '<div class="clear"></div>';
 		}
@@ -100,6 +100,24 @@ var CzfNodeInfo =
 	roundAngle: function(angle)
 	{
 		return Math.round(angle * 100000) / 100000;
+	},
+	
+	formatDist: function(meters)
+	{
+		str = Math.round(meters).toString();
+		digits = str.length;
+		
+		if (digits > 3)
+		{
+			km = str.substr(0, digits - 3);
+			
+			if (digits < 6)
+				km += "." + str.substr(digits - 2, 6 - digits);
+			
+			str = km + "k";
+		}
+		
+		return str + "m";
 	},
 	
 	methodCall: function(fn)
