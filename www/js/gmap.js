@@ -2,7 +2,7 @@ var CzfMap =
 {
 	mediaColors: [ "#000000", "#00CC00", "#AA2222", "#88DDFF", "#AA22AA", "#00FFFF", "#FF0000", "#CCCCCC", "#FFFFFF", "#FF8800" ],
 	ajaxParams:  { actnode: 1, aponly: 1, obsolete: 1, alien: 1, actlink: 1, bbonly: 1 },
-	defaults:    { lat: 50.006915, lng: 14.422809, zoom: 15, autofilter: 1 },
+	defaults:    { lat: 50.006915, lng: 14.422809, zoom: 15, autofilter: 1, type: "k" },
 	autoFilter:  { actnode: 1, aponly: 1, actlink: 1, bbonly: 1 },
 	nodeTypes:   { 0: "Unknown", 1: "Client", 9: "Full AP", 10: "Steet access AP", 11: "Router", 98: "InfoPoint", 99: "Non-CZF" },
 	nodeStates:  { 1: "Active", 10: "Down", 40: "In testing", 79: "Under (re)construction", 80: "In planning", 90: "Obsolete" },
@@ -34,7 +34,6 @@ var CzfMap =
 		this.map.addControl(new GOverviewMapControl());
 		this.map.addControl(new GScaleControl());
 		
-		this.map.setMapType(G_SATELLITE_MAP);
 		this.map.enableScrollWheelZoom();
 		this.map.enableDoubleClickZoom();
 		
@@ -43,6 +42,7 @@ var CzfMap =
 		GEvent.addListener(this.map, "moveend", this.methodCall(this.moved));
 		GEvent.addListener(this.map, "zoomend", this.methodCall(this.zoomed));
 		GEvent.addListener(this.map, "click", this.methodCall(this.clicked));
+		GEvent.addListener(this.map, "maptypechanged", this.methodCall(this.typechanged));
 	},
 	
 	setPosition: function(state)
@@ -50,6 +50,14 @@ var CzfMap =
 		var lat = state.lat ? parseFloat(state.lat) : this.defaults.lat;
 		var lng = state.lng ? parseFloat(state.lng) : this.defaults.lng;
 		var zoom = state.zoom ? parseInt(state.zoom) : this.defaults.zoom;
+		var type = state.type ? state.type : this.defaults.type;
+		
+		switch (type)
+		{	//The API has conversion to string, but not the other way around
+			case "m": this.map.setMapType(G_NORMAL_MAP); break;
+			case "h": this.map.setMapType(G_HYBRID_MAP); break;
+			default: this.map.setMapType(G_SATELLITE_MAP); break;
+		}
 		
 		this.map.setCenter(new GLatLng(lat, lng), zoom);
 	},
@@ -71,6 +79,13 @@ var CzfMap =
 	zoomed: function(oldZoom, newZoom)
 	{
 		CzfPanel.updateAutoFilter(newZoom);
+	},
+	
+	typechanged: function()
+	{
+		var state = CzfPanel.getState();
+		state.type = this.map.getCurrentMapType().getUrlArg();
+		CzfPanel.setState(state);
 	},
 	
 	clicked: function(overlay, point)
