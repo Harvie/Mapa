@@ -11,6 +11,7 @@ $links_sql = "SELECT lat1,lng1,lat2,lng2,media,active,backbone FROM links ".
              "WHERE ((lat1 < ? AND lng1 < ? AND lat2 > ? AND lng2 > ?) ".
                  "OR (lat1 < ? AND lng2 < ? AND lat2 > ? AND lng1 > ?))";
 
+
 if (isset($_GET['aponly']))
 {
 	$nodes_sql .= "AND type IN(9,10,11)";
@@ -40,6 +41,11 @@ if (isset($_GET['bbonly']))
 
 if (isset($_GET['actlink']))
 	$links_sql .= "AND active = 1";
+
+if (!isset($_GET['vpn']))
+{
+	$links_sql .= "AND media != 5";
+}
 
 
 foreach (array('north','east','south','west') as $i => $var)

@@ -1,7 +1,7 @@
 var CzfMap =
 {
 	mediaColors: [ "#000000", "#00CC00", "#AA2222", "#88DDFF", "#AA22AA", "#00FFFF", "#FF0000", "#CCCCCC", "#FFFFFF", "#FF8800" ],
-	ajaxParams:  { actnode: 1, aponly: 1, obsolete: 1, alien: 1, actlink: 1, bbonly: 1 },
+	ajaxParams:  { actnode: 1, aponly: 1, obsolete: 1, alien: 1, actlink: 1, bbonly: 1, vpn: 1 },
 	defaults:    { lat: 50.006915, lng: 14.422809, zoom: 15, autofilter: 1, type: "k" },
 	autoFilter:  { actnode: 1, aponly: 1, actlink: 1, bbonly: 1 },
 	nodeTypes:   { 0: "Unknown", 1: "Client", 9: "Full AP", 10: "Steet access AP", 11: "Router", 98: "InfoPoint", 99: "Non-CZF" },
