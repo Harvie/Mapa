@@ -30,13 +30,20 @@ var CzfNodeInfo =
 		return false;
 	},
 	
+	editNode: function()
+	{
+		this.element.innerHTML = this.createEdit(this.info);
+	},
+	
 	createInfo: function(info)
 	{
-		var html = '<p>';
-		html += 'Node ID: ' + info.id + '<br/>';
-		html += 'Name: ' + info.name + '<br/>';
-		html += 'Type: ' + CzfConst.nodeTypes[info.type] + '<br/>';
-		html += 'Status: ' + CzfConst.nodeStates[info.status] + '<br/>';
+		var html = CzfHtml.button("Edit node", "CzfNodeInfo.editNode()");
+		
+		html += '<p>';
+		html += CzfHtml.info("Node ID", info.id);
+		html += CzfHtml.info("Name", info.name);
+		html += CzfHtml.info("Type", CzfConst.nodeTypes[info.type]);
+		html += CzfHtml.info("Status", CzfConst.nodeStates[info.status]);
 		html += '</p>';
 		
 		html += '<p>';
@@ -48,13 +55,39 @@ var CzfNodeInfo =
 			html += CzfHtml.link("Homepage", info.url_homepage) + " ";
 		html += '</p>';
 		
-		html += CzfHtml.longText("Coordinates",
+		html += CzfHtml.longInfo("Coordinates",
 				this.roundAngle(info.lat) + "&nbsp;&nbsp;" + this.roundAngle(info.lng));
 		
 		if (info.address)
-			html += CzfHtml.longText("Address", info.address);
+			html += CzfHtml.longInfo("Address", info.address);
 		if (info.visibility)
-			html += CzfHtml.longText("Visibility description", info.visibility);
+			html += CzfHtml.longInfo("Visibility description", info.visibility);
+		
+		if (info.links.length > 0)
+			html += this.createLinkInfo(info);
+		
+		return html;
+	},
+	
+	createEdit: function(info)
+	{
+		var html = '<p>';
+		html += CzfHtml.edit("name", "Name", info.name);
+		html += CzfHtml.select("type", "Type", info.type, CzfConst.nodeTypes);
+		html += CzfHtml.select("status", "Status", info.status, CzfConst.nodeStates);
+		html += '</p>';
+		
+		html += '<p>';
+		html += CzfHtml.edit("url_thread", "Thread", info.url_thread);
+		html += CzfHtml.edit("url_photos", "Photos", info.url_photos);
+		html += CzfHtml.edit("url_homepage", "Homepage", info.url_homepage);
+		html += '</p>';
+		
+		html += CzfHtml.longEdit("address", "Address", info.address);
+		html += CzfHtml.longEdit("visibility", "Visibility description", info.visibility);
+		
+		html += CzfHtml.longInfo("Coordinates",
+				this.roundAngle(info.lat) + "&nbsp;&nbsp;" + this.roundAngle(info.lng));
 		
 		if (info.links.length > 0)
 			html += this.createLinkInfo(info);
