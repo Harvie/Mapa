@@ -33,33 +33,33 @@ var CzfNodeInfo =
 	createInfo: function(info)
 	{
 		var html = '<p>';
-		html += 'Node ID: ' + info.id + '\n';
-		html += 'Name: ' + info.name + '\n';
-		html += 'Type: ' + CzfConst.nodeTypes[info.type] + '\n';
-		html += 'Status: ' + CzfConst.nodeStates[info.status] + '\n';
+		html += 'Node ID: ' + info.id + '<br/>';
+		html += 'Name: ' + info.name + '<br/>';
+		html += 'Type: ' + CzfConst.nodeTypes[info.type] + '<br/>';
+		html += 'Status: ' + CzfConst.nodeStates[info.status] + '<br/>';
 		html += '</p>';
 		
 		html += '<p>';
 		if (info.url_thread)
-			html += '<a href="' + info.url_thread + '">Thread</a> ';
+			html += CzfHtml.link("Thread", info.url_thread) + " ";
 		if (info.url_photos)
-			html += '<a href="' + info.url_photos + '">Photos</a> ';
+			html += CzfHtml.link("Photos", info.url_photos) + " ";
 		if (info.url_homepage)
-			html += '<a href="' + info.url_homepage + '">Homepage</a> ';
+			html += CzfHtml.link("Homepage", info.url_homepage) + " ";
 		html += '</p>';
 		
-		html += '<p>Coordinates: <div>' + this.roundAngle(info.lat) + '&nbsp;&nbsp;'
-		                                + this.roundAngle(info.lng) + '</div></p>';
+		html += CzfHtml.longText("Coordinates",
+				this.roundAngle(info.lat) + "&nbsp;&nbsp;" + this.roundAngle(info.lng));
 		
 		if (info.address)
-			html += '<p>Address: <div>' + info.address + '</div></p>';
+			html += CzfHtml.longText("Address", info.address);
 		if (info.visibility)
-			html += '<p>Visibility description: <div>' + info.visibility + '</div></p>';
+			html += CzfHtml.longText("Visibility description", info.visibility);
 		
 		if (info.links.length > 0)
 			html += this.createLinkInfo(info);
 		
-		return html.replace(/\n/g, "<br/>");
+		return html;
 	},
 	
 	createLinkInfo: function(info)
@@ -83,18 +83,19 @@ var CzfNodeInfo =
 			var classes = "" + (l.backbone ? " backbone" : "") + (l.active ? "" : " planned");
 			
 			html += '<div class="peerinfo' + classes + '">';
-			html += '<img src="' + 'images/node/' + l.type + '-' + l.status + '.png" />';
-			html += '<span onclick="return CzfNodeInfo.showPeer(' + i + ')">' + l.peername + '</span>';
+			html += CzfHtml.img(CzfConst.nodeStates[l.status] + " " + CzfConst.nodeTypes[l.type],
+					"images/node/" + l.type + "-" + l.status + ".png");
+			html += CzfHtml.click(l.peername, "return CzfNodeInfo.showPeer(" + i + ")");
 			html += '</div>';
 			
 			html += '<div class="linkinfo">';
-			html += '<span title="' + CzfConst.linkMedia[l.media][1] + '">'
-			html += CzfConst.linkMedia[l.media][0] + '</span>' + ' - ' + this.formatDist(l.dist);
+			html += CzfHtml.expl(CzfConst.linkMedia[l.media][1], CzfConst.linkMedia[l.media][0]);
+			html += ' - ' + this.formatDist(l.dist);
 			html += '</div>';
-			html += '<div class="clear"></div>';
+			html += CzfHtml.clear();
 		}
 		
-		html += '<div class="clear">&nbsp;</div>';
+		html += CzfHtml.clear(true);
 		return html;
 	},
 	
