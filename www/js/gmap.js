@@ -166,26 +166,20 @@ var CzfMap =
 			this.map.addOverlay(this.marker);
 	},
 	
-	setMarkerPos: function(pos)
+	addMarker: function(pos, fn)
 	{
-		if (!this.marker)
+		this.marker = new GMarker(pos, {draggable: true});
+		this.map.addOverlay(this.marker);
+		GEvent.addListener(this.marker, "dragend", fn);
+	},
+	
+	removeMarker: function()
+	{
+		if (this.marker)
 		{
-			if (!pos) return;
-			
-			this.marker = new GMarker(pos, {draggable: true});
-			this.map.addOverlay(this.marker);
-			
-			fn = CzfNodeInfo.methodCall(CzfNodeInfo.markerMoved);
-			GEvent.addListener(this.marker, "dragend", fn);
-		}
-		
-		if (pos)
-		{
-			this.marker.setLatLng(pos);
-			this.marker.show();
-		}
-		else
 			this.marker.hide();
+			this.marker = null;
+		}
 	},
 	
 	methodCall: function(fn)

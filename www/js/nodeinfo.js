@@ -1,7 +1,8 @@
 var CzfNodeInfo =
 {
-	element: null,
 	info: null,
+	element: null,
+	editData: new Object(),
 	
 	initialize: function(infoID)
 	{
@@ -10,6 +11,12 @@ var CzfNodeInfo =
 	
 	setNode: function(nodeid)
 	{
+		if (this.editData[nodeid])
+		{
+			this.setInfo(this.editData[nodeid]);
+			return;
+		}
+		
 		CzfMap.ajax("nodeinfo", "id=" + nodeid, this.methodCall(this.infoDone));
 	},
 	
@@ -18,9 +25,36 @@ var CzfNodeInfo =
 		if (doc.length == 0)
 			return;
 		
-		this.info = eval('(' + doc + ')');
-		this.element.innerHTML = this.createInfo(this.info);
-		CzfMap.setMarkerPos(null);
+		var info = eval('(' + doc + ')');
+		this.setInfo(info);
+	},
+	
+	setInfo: function(newInfo)
+	{
+		if (this.info && this.info.editing)
+			this.copyFormData();
+		
+		this.info = newInfo;
+		this.updateMarker();
+		this.updateInfo();
+	},
+	
+	updateInfo: function()
+	{
+		this.element.innerHTML = this.info.editing ? this.createEdit(this.info)
+		                                           : this.createInfo(this.info);
+	},
+	
+	updateMarker: function()
+	{
+		CzfMap.removeMarker();
+		
+		if (this.info.editing)
+		{
+			var pos = new GLatLng(this.info.lat, this.info.lng);
+			var callback = this.methodCall(this.markerMoved);
+			CzfMap.addMarker(pos, callback);
+		}
 	},
 	
 	showPeer: function(linknum)
@@ -33,15 +67,32 @@ var CzfNodeInfo =
 	
 	editNode: function()
 	{
-		this.element.innerHTML = this.createEdit(this.info);
-		CzfMap.setMarkerPos(new GLatLng(this.info.lat, this.info.lng));
+		this.info.editing = true;
+		this.editData[this.info.id] = this.info;
+		
+		this.updateMarker();
+		this.updateInfo();
 	},
 	
 	markerMoved: function(pos)
 	{
 		this.info.lat = pos.lat();
 		this.info.lng = pos.lng();
-		this.element.innerHTML = this.createEdit(this.info);
+		
+		this.copyFormData();
+		this.updateInfo();
+	},
+	
+	copyFormData: function()
+	{
+		if (!document.nodeform)
+			return;
+		
+		var fields = [ "name", "type", "status", "url_thread", "url_photos",
+		               "url_homepage", "address", "visibility" ];
+		
+		for (i in fields)
+			this.info[fields[i]] = document.nodeform[fields[i]].value;
 	},
 	
 	createInfo: function(info)
@@ -80,7 +131,9 @@ var CzfNodeInfo =
 	
 	createEdit: function(info)
 	{
-		var html = '<p>';
+		var html = '<form name="nodeform" onsubmit="return false;" method="get" action="#">';
+		
+		html += '<p>';
 		html += CzfHtml.edit("name", "Name", info.name);
 		html += CzfHtml.select("type", "Type", info.type, CzfConst.nodeTypes);
 		html += CzfHtml.select("status", "Status", info.status, CzfConst.nodeStates);
@@ -101,7 +154,7 @@ var CzfNodeInfo =
 		if (info.links.length > 0)
 			html += this.createLinkInfo(info);
 		
-		return html;
+		return html + '</form>';
 	},
 	
 	createLinkInfo: function(info)
