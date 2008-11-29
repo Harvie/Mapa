@@ -2,6 +2,7 @@ var CzfMap =
 {
 	icons: new Object(),
 	map: null,
+	marker: null,
 	
 	initialize: function(mapID, panelID, infoID)
 	{
@@ -160,6 +161,31 @@ var CzfMap =
 			this.map.addOverlay(new GPolyline(linePoints, "#000000", width + 2, opacity));
 			this.map.addOverlay(new GPolyline(linePoints, color, width, opacity));
 		}
+		
+		if (this.marker)
+			this.map.addOverlay(this.marker);
+	},
+	
+	setMarkerPos: function(pos)
+	{
+		if (!this.marker)
+		{
+			if (!pos) return;
+			
+			this.marker = new GMarker(pos, {draggable: true});
+			this.map.addOverlay(this.marker);
+			
+			fn = CzfNodeInfo.methodCall(CzfNodeInfo.markerMoved);
+			GEvent.addListener(this.marker, "dragend", fn);
+		}
+		
+		if (pos)
+		{
+			this.marker.setLatLng(pos);
+			this.marker.show();
+		}
+		else
+			this.marker.hide();
 	},
 	
 	methodCall: function(fn)

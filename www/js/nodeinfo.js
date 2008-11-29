@@ -20,6 +20,7 @@ var CzfNodeInfo =
 		
 		this.info = eval('(' + doc + ')');
 		this.element.innerHTML = this.createInfo(this.info);
+		CzfMap.setMarkerPos(null);
 	},
 	
 	showPeer: function(linknum)
@@ -32,6 +33,14 @@ var CzfNodeInfo =
 	
 	editNode: function()
 	{
+		this.element.innerHTML = this.createEdit(this.info);
+		CzfMap.setMarkerPos(new GLatLng(this.info.lat, this.info.lng));
+	},
+	
+	markerMoved: function(pos)
+	{
+		this.info.lat = pos.lat();
+		this.info.lng = pos.lng();
 		this.element.innerHTML = this.createEdit(this.info);
 	},
 	
