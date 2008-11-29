@@ -15,7 +15,7 @@ var CzfPanel =
 		this.geocoder = new GClientGeocoder();
 		CzfNodeInfo.initialize(infoID);
 		
-		this.anchor = new CzfAnchor(this.methodCall(this.anchorChanged), CzfMap.defaults);
+		this.anchor = new CzfAnchor(this.methodCall(this.anchorChanged), CzfConst.defaults);
 		this.anchor.update(this.state);
 		
 		this.toggle("search");
@@ -84,7 +84,7 @@ var CzfPanel =
 			if (child.nodeName == "INPUT")
 			{
 				child.checked = !!this.state[child.name];
-				if (CzfMap.autoFilter[child.name])
+				if (CzfConst.autoFilter[child.name])
 					child.disabled = !!this.state.autofilter;
 			}
 		}

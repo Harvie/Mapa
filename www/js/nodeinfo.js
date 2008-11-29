@@ -35,8 +35,8 @@ var CzfNodeInfo =
 		var html = '<p>';
 		html += 'Node ID: ' + info.id + '\n';
 		html += 'Name: ' + info.name + '\n';
-		html += 'Type: ' + CzfMap.nodeTypes[info.type] + '\n';
-		html += 'Status: ' + CzfMap.nodeStates[info.status] + '\n';
+		html += 'Type: ' + CzfConst.nodeTypes[info.type] + '\n';
+		html += 'Status: ' + CzfConst.nodeStates[info.status] + '\n';
 		html += '</p>';
 		
 		html += '<p>';
@@ -88,8 +88,8 @@ var CzfNodeInfo =
 			html += '</div>';
 			
 			html += '<div class="linkinfo">';
-			html += '<span title="' + CzfMap.linkMedia[l.media][1] + '">'
-			html += CzfMap.linkMedia[l.media][0] + '</span>' + ' - ' + this.formatDist(l.dist);
+			html += '<span title="' + CzfConst.linkMedia[l.media][1] + '">'
+			html += CzfConst.linkMedia[l.media][0] + '</span>' + ' - ' + this.formatDist(l.dist);
 			html += '</div>';
 			html += '<div class="clear"></div>';
 		}
