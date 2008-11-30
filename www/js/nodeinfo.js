@@ -98,12 +98,19 @@ var CzfNodeInfo =
 	
 	save: function()
 	{
+		this.copyFormData();
 		CzfAjax.post("submit", this.info, this.methodCall(this.saveDone));
 	},
 	
 	saveDone: function(result)
 	{
-		alert(result);
+		if (result == "OK")
+		{
+			this.cancelEdit();
+			CzfMap.moved();
+		}
+		else
+			alert(result);
 	},
 	
 	cancelEdit: function()

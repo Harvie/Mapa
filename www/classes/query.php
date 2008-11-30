@@ -60,13 +60,20 @@ class Query
 
 	public function execute($values)
 	{
-		foreach ($columns as $col)
-			$this->stmt->bindParam(":$col", $values[$col]);
+		foreach ($this->columns as $col)
+			if ($values[$col] === '') //Empty strings are stored as NULL
+				$this->stmt->bindParam(":$col", $null = null);
+			else
+				$this->stmt->bindParam(":$col", $values[$col]);
 		
 		if ($this->type == 'update')
 			$this->stmt->bindParam(':id', $values['id']);
 		
-		return $this->stmt->execute();
+		if (!$this->stmt->execute($row))
+		{
+			$error = $this->stmt->errorInfo();
+			throw new Exception($error[2]);
+		}
 	}
 	
 	private static $db = null;

@@ -9,6 +9,6 @@ try {
 	User::initialize();
 	Query::initialize();
 	Controller::run();
-} catch (PDOException $e) {
-	die("Error: " . $e->getMessage());
+} catch (Exception $e) {
+	die($e->getMessage());
 }
