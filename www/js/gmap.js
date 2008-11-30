@@ -100,11 +100,6 @@ var CzfMap =
 			}
 	},
 	
-	ajax: function(reqName, query, callback)
-	{
-		GDownloadUrl("ajax.php?request=" + reqName + "&" + query, callback);
-	},
-	
 	loadData: function(state)
 	{
 		urlParams = new Object();
@@ -119,11 +114,7 @@ var CzfMap =
 			if (i in CzfConst.ajaxParams)
 				urlParams[i] = state[i];
 		
-		var query = "";
-		for (i in urlParams)
-			query += i + "=" + urlParams[i] + "&";
-		
-		this.ajax("data", query, this.methodCall(this.readData));
+		CzfAjax.get("data", urlParams, this.methodCall(this.readData));
 	},
 	
 	readData: function(doc)

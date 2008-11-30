@@ -155,8 +155,8 @@ var CzfPanel =
 		this.nameField = document.getElementById(id);
 		this.nameField.disabled = true;
 		
-		var query = this.nameField.value;
-		CzfMap.ajax("search", "query=" + query, this.methodCall(this.nodeDone));
+		var params = { query: this.nameField.value };
+		CzfAjax.get("search", params, this.methodCall(this.nodeDone));
 		return false;
 	},
 	

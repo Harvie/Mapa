@@ -17,7 +17,7 @@ var CzfNodeInfo =
 			return;
 		}
 		
-		CzfMap.ajax("nodeinfo", "id=" + nodeid, this.methodCall(this.infoDone));
+		CzfAjax.get("nodeinfo", { id: nodeid }, this.methodCall(this.infoDone));
 	},
 	
 	infoDone: function(doc)
@@ -78,6 +78,7 @@ var CzfNodeInfo =
 	{
 		this.info.lat = pos.lat();
 		this.info.lng = pos.lng();
+		this.info.moved = true;
 		
 		this.copyFormData();
 		this.updateInfo();
