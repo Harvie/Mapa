@@ -5,6 +5,7 @@ class Query
 	public static function initialize()
 	{
 		self::$db = new PDO(Config::$mapDB['dsn']);
+		self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 	
 	//Only factory methods are public
@@ -19,6 +20,11 @@ class Query
 	}
 	
 	public static function select($sql)
+	{
+		return self::$db->prepare($sql);
+	}
+	
+	public static function delete($sql)
 	{
 		return self::$db->prepare($sql);
 	}
@@ -69,11 +75,7 @@ class Query
 		if ($this->type == 'update')
 			$this->stmt->bindParam(':id', $values['id']);
 		
-		if (!$this->stmt->execute($row))
-		{
-			$error = $this->stmt->errorInfo();
-			throw new Exception($error[2]);
-		}
+		return $this->stmt->execute($row);
 	}
 	
 	private static $db = null;
