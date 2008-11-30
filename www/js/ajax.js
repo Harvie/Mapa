@@ -12,6 +12,7 @@ var CzfAjax =
 		GDownloadUrl(query, callback, this.serialize(data));
 	}
 	,
+	// PHP deserializes this as nested associative arrays
 	serialize: function(data, prefix)
 	{
 		var query = "";

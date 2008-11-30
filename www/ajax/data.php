@@ -50,10 +50,10 @@ if (!isset($_GET['vpn']))
 foreach (array('north','east','south','west') as $i => $var)
 	$bounds[$i] = floatval(@$_GET[$var]);
 
-$nodes = $db->prepare($nodes_sql);
+$nodes = self::$db->prepare($nodes_sql);
 $nodes->execute($bounds);
 
-$links = $db->prepare($links_sql);
+$links = self::$db->prepare($links_sql);
 $links->execute(array_merge($bounds, $bounds));
 
 ?>
@@ -61,7 +61,7 @@ $links->execute(array_merge($bounds, $bounds));
 	"points":
 	[
 	<? foreach ($nodes as $row): ?>
-	{ id: <?=$row['id']?>, label: "<?=escape($row['name'])?>", lat: <?=$row['lat']?>, lng: <?=$row['lng']?>, type: <?=$row['type']?>, status: <?=$row['status']?> },
+	{ id: <?=$row['id']?>, label: "<?=self::escape($row['name'])?>", lat: <?=$row['lat']?>, lng: <?=$row['lng']?>, type: <?=$row['type']?>, status: <?=$row['status']?> },
 	<? endforeach ?>],
 	
 	"links":
