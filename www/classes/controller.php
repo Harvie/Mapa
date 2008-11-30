@@ -2,13 +2,6 @@
 
 class Controller
 {
-	private static $db;
-	
-	public static function initialize()
-	{
-		self::$db = new PDO(Config::$mapDB['dsn']);
-	}
-	
 	public static function run()
 	{
 		if (isset($_GET['request']))

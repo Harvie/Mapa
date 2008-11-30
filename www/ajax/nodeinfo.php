@@ -4,13 +4,13 @@ header('Content-Type: text/plain');
 
 $id = intval(@$_GET['id']);
 
-$info_query = self::$db->prepare('SELECT * FROM nodes WHERE id = ?');
+$info_query = Query::select('SELECT * FROM nodes WHERE id = ?');
 $info_query->execute(array($id));
 
 $info = $info_query->fetch();
 if (!$info) return;
 
-$links_query = self::$db->prepare(
+$links_query = Query::select(
 	'SELECT * FROM links JOIN nodes ON node2 = nodes.id WHERE node1 = ?'.
 	' UNION ALL '.
 	'SELECT * FROM links JOIN nodes ON node1 = nodes.id WHERE node2 = ?'

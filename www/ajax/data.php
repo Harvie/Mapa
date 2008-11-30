@@ -50,10 +50,10 @@ if (!isset($_GET['vpn']))
 foreach (array('north','east','south','west') as $i => $var)
 	$bounds[$i] = floatval(@$_GET[$var]);
 
-$nodes = self::$db->prepare($nodes_sql);
+$nodes = Query::select($nodes_sql);
 $nodes->execute($bounds);
 
-$links = self::$db->prepare($links_sql);
+$links = Query::select($links_sql);
 $links->execute(array_merge($bounds, $bounds));
 
 ?>
