@@ -96,6 +96,22 @@ var CzfNodeInfo =
 			this.info[fields[i]] = document.nodeform[fields[i]].value;
 	},
 	
+	save: function()
+	{
+		CzfAjax.post("submit", this.info, this.methodCall(this.saveDone));
+	},
+	
+	saveDone: function(result)
+	{
+		alert(result);
+	},
+	
+	cancelEdit: function()
+	{
+		delete this.editData[this.info.id];
+		this.setNode(this.info.id);
+	},
+	
 	createInfo: function(info)
 	{
 		var html = CzfHtml.button("Edit node", "CzfNodeInfo.editNode()");
@@ -151,6 +167,12 @@ var CzfNodeInfo =
 		
 		html += CzfHtml.longInfo("Coordinates",
 				this.roundAngle(info.lat) + "&nbsp;&nbsp;" + this.roundAngle(info.lng));
+		
+		html += '<p>';
+		html += CzfHtml.button("Save", "CzfNodeInfo.save()");
+		html += "&nbsp;&nbsp;";
+		html += CzfHtml.button("Cancel", "CzfNodeInfo.cancelEdit()");
+		html += '</p>';
 		
 		if (info.links.length > 0)
 			html += this.createLinkInfo(info);
