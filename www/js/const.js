@@ -6,6 +6,8 @@ var CzfConst =
 	autoFilter:  { actnode: 1, aponly: 1, actlink: 1, bbonly: 1 },
 	nodeTypes:   { 0: "Unknown", 1: "Client", 9: "Full AP", 10: "Steet access AP", 11: "Router", 98: "InfoPoint", 99: "Non-CZF" },
 	nodeStates:  { 1: "Active", 10: "Down", 40: "In testing", 79: "Under (re)construction", 80: "In planning", 90: "Obsolete" },
+	newInfo:     { id: "new", name: "", type: 1, status: 80, url_thread: "", url_photos: "",
+	               url_homepage: "", address: "", visibility: "", links: new Array() },
 	
 	linkMedia: {
 		 0: [ "N/A", "Unknown type of link" ],
@@ -19,4 +21,14 @@ var CzfConst =
 		 8: [ "10G", "Wireless link in 10 GHz band" ],
 		 9: [ "Licensed", "Wireless link in licensed band" ],
 		99: [ "Other", "Other type of link" ] },
+	
+	clone: function(varName)
+	{
+		copy = new Object();
+		
+		for (i in this[varName])
+			copy[i] = this[varName][i]
+		
+		return copy;
+	}
 }

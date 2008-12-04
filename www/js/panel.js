@@ -15,7 +15,7 @@ var CzfPanel =
 		this.geocoder = new GClientGeocoder();
 		CzfNodeInfo.initialize(infoID);
 		
-		this.anchor = new CzfAnchor(this.methodCall(this.anchorChanged), CzfConst.defaults);
+		this.anchor = new CzfAnchor(this.methodCall(this.anchorChanged), CzfConst.clone("defaults"));
 		this.anchor.update(this.state);
 		
 		this.toggle("search");

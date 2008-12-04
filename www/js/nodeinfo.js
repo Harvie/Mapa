@@ -41,15 +41,24 @@ var CzfNodeInfo =
 	
 	updateInfo: function()
 	{
-		this.element.innerHTML = this.info.editing ? this.createEdit(this.info)
-		                                           : this.createInfo(this.info);
+		var html;
+		
+		if (this.info)
+			if (this.info.editing)
+				html = this.createEdit(this.info);
+			else
+				html = this.createInfo(this.info);
+		else
+			html = "";
+		
+		this.element.innerHTML = html;
 	},
 	
 	updateMarker: function()
 	{
 		CzfMap.removeMarker();
 		
-		if (this.info.editing)
+		if (this.info && this.info.editing)
 		{
 			var pos = new GLatLng(this.info.lat, this.info.lng);
 			var callback = this.methodCall(this.markerMoved);
@@ -72,6 +81,26 @@ var CzfNodeInfo =
 		
 		this.updateMarker();
 		this.updateInfo();
+	},
+	
+	addNode: function()
+	{
+		if (this.editData["new"])
+		{
+			this.setInfo(this.editData["new"]);
+			return false;
+		}
+		
+		info = CzfConst.clone("newInfo");
+		info.editing = true;
+		
+		var latlng = CzfMap.getCenter();
+		info.lat = latlng.lat();
+		info.lng = latlng.lng();
+		
+		this.editData["new"] = info;
+		this.setInfo(info);
+		return false;
 	},
 	
 	markerMoved: function(pos)
@@ -102,21 +131,29 @@ var CzfNodeInfo =
 		CzfAjax.post("submit", this.info, this.methodCall(this.saveDone));
 	},
 	
-	saveDone: function(result)
+	saveDone: function(doc)
 	{
-		if (result == "OK")
+		alert(doc);
+		var result = eval('(' + doc + ')');
+		
+		if (!result.error)
 		{
+			this.info.id = result.id;
 			this.cancelEdit();
 			CzfMap.moved();
 		}
 		else
-			alert(result);
+			alert(result.error);
 	},
 	
 	cancelEdit: function()
 	{
 		delete this.editData[this.info.id];
-		this.setNode(this.info.id);
+		
+		if (this.info.id == "new")
+			this.setInfo(null)
+		else
+			this.setNode(this.info.id);
 	},
 	
 	createInfo: function(info)
@@ -147,7 +184,7 @@ var CzfNodeInfo =
 		if (info.visibility)
 			html += CzfHtml.longInfo("Visibility description", info.visibility);
 		
-		if (info.links.length > 0)
+		if (info.links && info.links.length > 0)
 			html += this.createLinkInfo(info);
 		
 		return html;
@@ -181,7 +218,7 @@ var CzfNodeInfo =
 		html += CzfHtml.button("Cancel", "CzfNodeInfo.cancelEdit()");
 		html += '</p>';
 		
-		if (info.links.length > 0)
+		if (info.links && info.links.length > 0)
 			html += this.createLinkInfo(info);
 		
 		return html + '</form>';

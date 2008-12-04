@@ -1,8 +1,14 @@
 <?php
 
-$data = $_POST;
-$id = intval(@$data['id']);
 $columns = array('name', 'type', 'status', 'address', 'visibility', 'url_photos', 'url_homepage', 'url_thread');
+
+$data = $_POST;
+if (!isset($data['id']))
+	return;
+
+$id = $data['id'];
+if ($id !== "new")
+	$id = intval($id);
 
 Query::beginTransaction();
 
@@ -11,12 +17,12 @@ Query::beginTransaction();
 // links are always stored that lat1 <= lat2. So if the node was moved,
 // the coordinates must be updated and also sometimes the line endpoints
 // have to be swapped.
-if ($data['moved'])
+if ($id !== "new" && $data['moved'])
 {
 	$columns[] = 'lat';
 	$columns[] = 'lng';
 	
-	$select = Query::select('SELECT * FROM links WHERE node1 = ? OR node2 = ?');
+	$select = Query::select('SELECT * FROM links WHERE node1 = ? OR node2 = ? FOR UPDATE');
 	$select->execute(array($id, $id));
 	$links = $select->fetchAll(PDO::FETCH_ASSOC);
 	
@@ -50,8 +56,19 @@ if ($data['moved'])
 	}
 }
 
-$stmt = Query::update('nodes', $columns);
-$stmt->execute($data);
-Query::commit();
+if ($id === "new")
+{
+	$columns[] = 'lat';
+	$columns[] = 'lng';
+	
+	$insert = Query::insert('nodes', $columns);
+	$id = $insert->execute($data);
+}
+else
+{
+	$update = Query::update('nodes', $columns);
+	$update->execute($data);
+}
 
-echo "OK";
+Query::commit();
+echo "{ id: $id }";

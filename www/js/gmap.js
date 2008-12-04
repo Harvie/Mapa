@@ -173,6 +173,11 @@ var CzfMap =
 		}
 	},
 	
+	getCenter: function()
+	{
+		return this.map.getCenter();
+	},
+	
 	methodCall: function(fn)
 	{
 		var _this = this;
