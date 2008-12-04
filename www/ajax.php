@@ -11,8 +11,8 @@ try {
 		Query::initialize();
 		Controller::run();
 	} catch (PDOException $e) {
-		die($e->errorInfo[2]);
+		Controller::fail($e->errorInfo[2]);
 	}
 } catch (Exception $e) {
-	die($e->getMessage());
+	Controller::fail($e->getMessage());
 }

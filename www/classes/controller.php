@@ -14,6 +14,11 @@ class Controller
 		}
 	}
 	
+	public static function fail($message)
+	{	//Output correct JSON even in case of failure
+		die('{ error: "'.self::escape($message).'" }');
+	}
+	
 	private static function render()
 	{
 		include func_get_arg(0);
