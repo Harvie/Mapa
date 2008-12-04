@@ -64,6 +64,16 @@ class Query
 		return self::$db->rollBack();
 	}
 
+	public static function lastInsertId()
+	{
+		$id = self::$db->lastInsertId();
+		
+		if ($id === false) //Hack for PostgreSQL, requires version >= 8.1
+			$id = self::$db->query('SELECT lastval()')->fetchColumn();
+		
+		return $id;
+	}
+	
 	public function execute($values)
 	{
 		foreach ($this->columns as $col)
@@ -72,10 +82,16 @@ class Query
 			else
 				$this->stmt->bindParam(":$col", $values[$col]);
 		
-		if ($this->type == 'update')
+		if ($this->type != 'insert')
 			$this->stmt->bindParam(':id', $values['id']);
 		
-		return $this->stmt->execute($row);
+		$result = $this->stmt->execute($row);
+		if ($this->type == 'insert')
+			return self::lastInsertId();
+		else
+			return $result;
+		
+		return ($this->type == 'insert') ? self::$db->lastInsertId("nodes_id_seq") : $result;
 	}
 	
 	private static $db = null;
