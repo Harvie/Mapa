@@ -2,14 +2,26 @@ var CzfAjax =
 {
 	get: function(reqName, params, callback)
 	{
-		var query = "ajax.php?request=" + reqName;
-		GDownloadUrl(query + this.serialize(params), callback);
+		var query = this.makeQuery(reqName);
+		var fn = this.makeCallback(callback);
+		GDownloadUrl(query + this.serialize(params), fn);
 	}
 	,
 	post: function(reqName, data, callback)
 	{
-		var query = "ajax.php?request=" + reqName;
-		GDownloadUrl(query, callback, this.serialize(data));
+		var query = this.makeQuery(reqName);
+		var fn = this.makeCallback(callback);
+		GDownloadUrl(query, fn, this.serialize(data));
+	}
+	,
+	makeQuery: function(reqName)
+	{
+		return "ajax.php?request=" + reqName;
+	}
+	,
+	makeCallback: function(fn)
+	{
+		return function(doc) { return doc.length ? fn(eval('(' + doc + ')')) : null; };
 	}
 	,
 	// PHP deserializes this as nested associative arrays

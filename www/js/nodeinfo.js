@@ -17,16 +17,7 @@ var CzfNodeInfo =
 			return;
 		}
 		
-		CzfAjax.get("nodeinfo", { id: nodeid }, this.methodCall(this.infoDone));
-	},
-	
-	infoDone: function(doc)
-	{
-		if (doc.length == 0)
-			return;
-		
-		var info = eval('(' + doc + ')');
-		this.setInfo(info);
+		CzfAjax.get("nodeinfo", { id: nodeid }, this.methodCall(this.setInfo));
 	},
 	
 	setInfo: function(newInfo)
@@ -131,12 +122,9 @@ var CzfNodeInfo =
 		CzfAjax.post("submit", this.info, this.methodCall(this.saveDone));
 	},
 	
-	saveDone: function(doc)
+	saveDone: function(result)
 	{
-		alert(doc);
-		var result = eval('(' + doc + ')');
-		
-		if (!result.error)
+		if (result.error === undefined)
 		{
 			this.info.id = result.id;
 			this.cancelEdit();

@@ -160,9 +160,9 @@ var CzfPanel =
 		return false;
 	},
 	
-	nodeDone: function(doc)
+	nodeDone: function(results)
 	{
-		this.results = eval('(' + doc + ')');
+		this.results = results;
 		
 		if (this.results.length == 0)
 		{

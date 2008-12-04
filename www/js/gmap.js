@@ -117,10 +117,9 @@ var CzfMap =
 		CzfAjax.get("data", urlParams, this.methodCall(this.readData));
 	},
 	
-	readData: function(doc)
+	readData: function(jsonData)
 	{
 		var state = CzfPanel.getState();
-		var jsonData = eval('(' + doc + ')');
 		this.map.clearOverlays();
 		
 		for (i in jsonData.points)
