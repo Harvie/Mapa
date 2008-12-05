@@ -4,12 +4,12 @@ var CzfMap =
 	map: null,
 	marker: null,
 	
-	initialize: function(mapID, panelID, infoID)
+	initialize: function(mapID, panelID)
 	{
 		if (GBrowserIsCompatible())
 		{
 			this.show(document.getElementById(mapID));
-			CzfPanel.initialize(panelID, infoID);
+			CzfPanel.initialize(panelID);
 		}
 	},
 	

@@ -9,17 +9,58 @@ var CzfPanel =
 	results: null,
 	nameSelect: null,
 	
-	initialize: function(filtersID, infoID)
+	initialize: function(panelID)
 	{
-		this.filters = document.getElementById(filtersID);
-		this.geocoder = new GClientGeocoder();
-		CzfNodeInfo.initialize(infoID);
+		var html = this.createSearch() + this.createFilters() + this.createNodeInfo();
+		document.getElementById(panelID).innerHTML = html;
+		this.filters = document.getElementById("filters");
+		CzfNodeInfo.initialize(document.getElementById("nodeinfo"));
 		
 		this.anchor = new CzfAnchor(this.methodCall(this.anchorChanged), CzfConst.clone("defaults"));
 		this.anchor.update(this.state);
 		
-		this.toggle("search");
-		this.toggle("nodeinfo");
+		CzfHtml.toggle("search");
+		CzfHtml.toggle("nodeinfo");
+		
+		this.geocoder = new GClientGeocoder();
+	},
+	
+	createSearch: function()
+	{
+		var addressInput = CzfHtml.edit("address", "Search address", "");
+		var addressForm = CzfHtml.form(addressInput, "address", "return CzfPanel.addressSearch('address')");
+		
+		var nameInput = CzfHtml.edit("nodename", "Search node name", "");
+		var nameForm = CzfHtml.form(nameInput, "nodename", "return CzfPanel.addressSearch('nodename')");
+		
+		return CzfHtml.expandableBlock(addressForm + nameForm, "search", "Search");
+	},
+	
+	createFilters: function()
+	{
+		var filters = "";
+		filters += CzfHtml.checkbox("hideall", "Hide everything", "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("hidelabels", "Hide labels", "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("hidelinks", "Hide lines", "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("autofilter", "Automatic filter", "CzfPanel.changed(this)");
+		
+		filters += "Node filter:<br />";
+		filters += CzfHtml.checkbox("actnode", "Only active", "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("aponly", "Only AP", "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("obsolete", "Show obsolete", "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("alien", "Show non-czfree", "CzfPanel.changed(this)");
+		
+		filters += "Link filter:<br />";
+		filters += CzfHtml.checkbox("actlink", "Only active", "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("bbonly", "Only backbone", "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("vpn", "Show VPN links", "CzfPanel.changed(this)");
+		
+		return CzfHtml.expandableBlock(filters, "filters", "Filters");
+	},
+	
+	createNodeInfo: function()
+	{
+		return CzfHtml.expandableBlock("", "nodeinfo", "Node info");
 	},
 	
 	getState: function()
@@ -107,23 +148,6 @@ var CzfPanel =
 		
 		this.anchor.update(this.state);
 		CzfMap.moved();
-	},
-	
-	toggle: function(id)
-	{
-		node = document.getElementById(id + ".block");
-		img = document.getElementById(id + ".img");
-		
-		if(node.style.display != "block")
-		{
-			node.style.display = "block";
-			img.src = "images/minus.png";
-		}
-		else
-		{
-			node.style.display = "none";
-			img.src = "images/plus.png";
-		}
 	},
 	
 	addressSearch: function(id)

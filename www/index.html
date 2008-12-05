@@ -17,61 +17,12 @@
     <script type="text/javascript" src="js/linkinfo.js"></script>
   </head>
   
-  <body onload="CzfMap.initialize('map','filters.block','nodeinfo')" onunload="CzfMap.unload()">
+  <body onload="CzfMap.initialize('map','panelbody')" onunload="CzfMap.unload()">
     <div id="map"></div>
     <div id="panel">
       <h1>CZFree Node Monitor</h1>
       <a href="#" onclick="return CzfNodeInfo.addNode()">New node</a>
-      <div onclick="CzfPanel.toggle('search')">
-        <img src="images/plus.png" alt="+" id="search.img" /><b>Search</b>
-      </div>
-      <div class="panelpart" id="search.block">
-        <form action="#" method="get" onsubmit="return CzfPanel.addressSearch('address')">
-        <div><label for="address">Search address:</label><br />
-        <input type="text" name="address" id="address" size="18" maxlength="50" />
-        </div></form>
-        <form action="#" method="get" onsubmit="return CzfPanel.nodeSearch('nodename')">
-        <div><label for="nodename">Search node name:</label><br />
-        <input type="text" name="nodename" id="nodename" size="18" maxlength="50" />
-        </div></form>
-      </div>
-    
-      <div onclick="CzfPanel.toggle('filters')">
-        <img src="images/plus.png" alt="+" id="filters.img" /><b>Filters</b>
-      </div>
-      <div class="panelpart" id="filters.block">
-        <input type="checkbox" name="hideall" id="hideall" onchange="CzfPanel.changed(this)"/>
-        <label for="hideall">Hide everything</label><br />
-        <input type="checkbox" name="hidelabels" id="hidelabels" onchange="CzfPanel.changed(this)"/>
-        <label for="hidelabels">Hide labels</label><br />
-        <input type="checkbox" name="hidelinks" id="hidelinks" onchange="CzfPanel.changed(this)"/>
-        <label for="hidelinks">Hide lines</label><br />
-        <input type="checkbox" name="autofilter" id="autofilter" onchange="CzfPanel.changed(this)"/>
-        <label for="autofilter">Automatic filter</label><br />
-        Node filter:<br />
-        <input type="checkbox" name="actnode" id="actnode" onchange="CzfPanel.changed(this)"/>
-        <label for="actnode">Only active</label><br />
-        <input type="checkbox" name="aponly" id="aponly" onchange="CzfPanel.changed(this)"/>
-        <label for="aponly">Only AP</label><br />
-        <input type="checkbox" name="obsolete" id="obsolete" onchange="CzfPanel.changed(this)"/>
-        <label for="aponly">Show obsolete</label><br />
-        <input type="checkbox" name="alien" id="alien" onchange="CzfPanel.changed(this)"/>
-        <label for="alien">Show non-czfree</label><br />
-        Link filter:<br />
-        <input type="checkbox" name="actlink" id="actlink" onchange="CzfPanel.changed(this)"/>
-        <label for="actlink">Only active</label><br />
-        <input type="checkbox" name="bbonly" id="bbonly" onchange="CzfPanel.changed(this)"/>
-        <label for="bbonly">Only backbone</label><br />
-        <input type="checkbox" name="vpn" id="vpn" onchange="CzfPanel.changed(this)"/>
-        <label for="vpn">Show VPN links</label><br />
-      </div>
-    
-      <div onclick="CzfPanel.toggle('nodeinfo')">
-        <img src="images/plus.png" alt="+" id="nodeinfo.img" /><b>Node info</b>
-      </div>
-      <div class="panelpart" id="nodeinfo.block">
-        <div id="nodeinfo"></div>
-      </div>
+      <div id="panelbody"></div>
     </div>
   </body>
 </html>

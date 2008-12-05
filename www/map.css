@@ -52,7 +52,7 @@ h1 {
 	padding-top: 1ex;
 }
 
-#nodeinfo div {
+#nodeinfo .text {
 	margin: 0;
 	margin-left: 0.4em;
 	font-style: italic;
@@ -70,13 +70,13 @@ h1 {
 
 #nodeinfo .peerinfo {
 	float: left;
-	font-style: normal;
+	font-size: 90%;
 	margin-left: 0;
 }
 
 #nodeinfo .linkinfo {
 	float: right;
-	font-style: normal;
+	font-size: 90%;
 	margin-left: 0.5em;
 	white-space: nowrap;
 }

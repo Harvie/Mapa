@@ -4,9 +4,9 @@ var CzfNodeInfo =
 	element: null,
 	editData: new Object(),
 	
-	initialize: function(infoID)
+	initialize: function(element)
 	{
-		this.element = document.getElementById(infoID);
+		this.element = element;
 	},
 	
 	setNode: function(nodeid)
@@ -180,7 +180,7 @@ var CzfNodeInfo =
 	
 	createEdit: function(info)
 	{
-		var html = '<form name="nodeform" onsubmit="return false;" method="get" action="#">';
+		var html = '';
 		
 		html += '<p>';
 		html += CzfHtml.edit("name", "Name", info.name);
@@ -209,7 +209,7 @@ var CzfNodeInfo =
 		if (info.links && info.links.length > 0)
 			html += CzfLinkInfo.createInfo(info);
 		
-		return html + '</form>';
+		return CzfHtml.form(html, "nodeform", "return false;");
 	},
 	
 	roundAngle: function(angle)

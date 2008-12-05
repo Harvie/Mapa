@@ -7,7 +7,7 @@ var CzfHtml =
 	,
 	longInfo: function(title, text)
 	{
-		var html = '<p>' + title + ': <div>' + text + '</div></p>';
+		var html = '<p>' + title + ': <div class="text">' + text + '</div></p>';
 		return html.replace(/\n/g, "<br/>");
 	}
 	,
@@ -71,5 +71,46 @@ var CzfHtml =
 		html += '</select><br/>';
 		
 		return html;
+	}
+	,
+	checkbox: function(id, label, onchange)
+	{
+		var html = '<input type="checkbox" name="' + id + '" id="' + id + '" onchange="' + onchange + '"/>';
+		html += '<label for="' + id + '">' + label + '</label><br />';
+		return html;
+	}
+	,
+	form: function(contents, id, onsubmit)
+	{
+		var html = '<form action="#" method="get" name="' + id + '" onsubmit="' + onsubmit + '">';
+        html += '<div>' + contents + '</div></form>';
+        return html;
+	}
+	,
+	expandableBlock: function(contents, id, label)
+	{
+		var html = '<div onclick="CzfHtml.toggle(\'' + id + '\')">';
+		html += '<img src="images/plus.png" alt="expand" id="' + id + '.img" />';
+		html += '<b>' + label + '</b></div>';
+		html += '<div class="panelpart" id="' + id + '">';
+		html += contents + '</div>';
+		return html;
+	}
+	,
+	toggle: function(id)
+	{
+		node = document.getElementById(id);
+		img = document.getElementById(id + ".img");
+		
+		if(node.style.display != "block")
+		{
+			node.style.display = "block";
+			img.src = "images/minus.png";
+		}
+		else
+		{
+			node.style.display = "none";
+			img.src = "images/plus.png";
+		}
 	}
 }
