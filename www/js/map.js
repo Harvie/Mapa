@@ -19,6 +19,7 @@ var CzfMap =
 		this.loadIcons();
 		
 		GEvent.addListener(this.map, "moveend", this.methodCall(this.moved));
+		GEvent.addListener(this.map, "resize", this.methodCall(this.moved));
 		GEvent.addListener(this.map, "zoomend", this.methodCall(this.zoomed));
 		GEvent.addListener(this.map, "click", this.methodCall(this.clicked));
 		GEvent.addListener(this.map, "maptypechanged", this.methodCall(this.typechanged));
