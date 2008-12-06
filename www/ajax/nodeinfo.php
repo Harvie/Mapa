@@ -3,20 +3,10 @@
 header('Content-Type: text/plain');
 
 $id = intval(@$_GET['id']);
-
-$info_query = Query::select('SELECT * FROM nodes WHERE id = ?');
-$info_query->execute(array($id));
-
-$info = $info_query->fetch();
+$info = Nodes::fetchInfo($id);
 if (!$info) return;
 
-$links_query = Query::select(
-	'SELECT * FROM links JOIN nodes ON node2 = nodes.id WHERE node1 = ?'.
-	' UNION ALL '.
-	'SELECT * FROM links JOIN nodes ON node1 = nodes.id WHERE node2 = ?'
-);
-
-$links_query->execute(array($id, $id));
+$links_query = Links::selectFromNode($id);
 
 ?>
 {

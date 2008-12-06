@@ -4,6 +4,8 @@ require_once('classes/config.php');
 require_once('classes/user.php');
 require_once('classes/query.php');
 require_once('classes/controller.php');
+require_once('classes/nodes.php');
+require_once('classes/links.php');
 
 try {
 	try {

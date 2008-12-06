@@ -85,13 +85,7 @@ class Query
 		if ($this->type != 'insert')
 			$this->stmt->bindParam(':id', $values['id']);
 		
-		$result = $this->stmt->execute($row);
-		if ($this->type == 'insert')
-			return self::lastInsertId();
-		else
-			return $result;
-		
-		return ($this->type == 'insert') ? self::$db->lastInsertId("nodes_id_seq") : $result;
+		return $result = $this->stmt->execute($row);
 	}
 	
 	private static $db = null;
