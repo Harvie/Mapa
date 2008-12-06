@@ -2,7 +2,7 @@ var CzfLinkInfo =
 {
 	createInfo: function(info)
 	{
-		var html = '<p>Links to other nodes:</p>';
+		var html = "<p>" + tr("Links to other nodes") + ":</p>";
 		
 		for (i in info.links)
 		{

@@ -8,6 +8,7 @@ var CzfMap =
 	{
 		if (GBrowserIsCompatible())
 		{
+			CzfLang.setLang("cs_CZ");
 			this.show(document.getElementById(mapID));
 			CzfPanel.initialize(panelID);
 		}

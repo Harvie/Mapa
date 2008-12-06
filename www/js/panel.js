@@ -27,40 +27,40 @@ var CzfPanel =
 	
 	createSearch: function()
 	{
-		var addressInput = CzfHtml.edit("address", "Search address", "");
+		var addressInput = CzfHtml.edit("address", tr("Search address"), "");
 		var addressForm = CzfHtml.form(addressInput, "address", "return CzfPanel.addressSearch('address')");
 		
-		var nameInput = CzfHtml.edit("nodename", "Search node name", "");
+		var nameInput = CzfHtml.edit("nodename", tr("Search node name"), "");
 		var nameForm = CzfHtml.form(nameInput, "nodename", "return CzfPanel.addressSearch('nodename')");
 		
-		return CzfHtml.expandableBlock(addressForm + nameForm, "search", "Search");
+		return CzfHtml.expandableBlock(addressForm + nameForm, "search", tr("Search"));
 	},
 	
 	createFilters: function()
 	{
 		var filters = "";
-		filters += CzfHtml.checkbox("hideall", "Hide everything", "CzfPanel.changed(this)");
-		filters += CzfHtml.checkbox("hidelabels", "Hide labels", "CzfPanel.changed(this)");
-		filters += CzfHtml.checkbox("hidelinks", "Hide lines", "CzfPanel.changed(this)");
-		filters += CzfHtml.checkbox("autofilter", "Automatic filter", "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("hideall", tr("Hide everything"), "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("hidelabels", tr("Hide labels"), "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("hidelinks", tr("Hide lines"), "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("autofilter", tr("Automatic filter"), "CzfPanel.changed(this)");
 		
-		filters += "Node filter:<br />";
-		filters += CzfHtml.checkbox("actnode", "Only active", "CzfPanel.changed(this)");
-		filters += CzfHtml.checkbox("aponly", "Only AP", "CzfPanel.changed(this)");
-		filters += CzfHtml.checkbox("obsolete", "Show obsolete", "CzfPanel.changed(this)");
-		filters += CzfHtml.checkbox("alien", "Show non-czfree", "CzfPanel.changed(this)");
+		filters += tr("Node filter") + ":<br/>";
+		filters += CzfHtml.checkbox("actnode", tr("Only active"), "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("aponly", tr("Only AP"), "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("obsolete", tr("Show obsolete"), "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("alien", tr("Show non-czfree"), "CzfPanel.changed(this)");
 		
-		filters += "Link filter:<br />";
-		filters += CzfHtml.checkbox("actlink", "Only active", "CzfPanel.changed(this)");
-		filters += CzfHtml.checkbox("bbonly", "Only backbone", "CzfPanel.changed(this)");
-		filters += CzfHtml.checkbox("vpn", "Show VPN links", "CzfPanel.changed(this)");
+		filters += tr("Link filter") + ":<br/>";
+		filters += CzfHtml.checkbox("actlink", tr("Only active"), "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("bbonly", tr("Only backbone"), "CzfPanel.changed(this)");
+		filters += CzfHtml.checkbox("vpn", tr("Show VPN links"), "CzfPanel.changed(this)");
 		
-		return CzfHtml.expandableBlock(filters, "filters", "Filters");
+		return CzfHtml.expandableBlock(filters, "filters", tr("Filters"));
 	},
 	
 	createNodeInfo: function()
 	{
-		return CzfHtml.expandableBlock("", "nodeinfo", "Node info");
+		return CzfHtml.expandableBlock("", "nodeinfo", tr("Node info"));
 	},
 	
 	getState: function()
@@ -199,10 +199,10 @@ var CzfPanel =
 		
 		select = document.createElement("SELECT");
 		select.onchange = this.methodCall(this.nodeChange);
-		select.options.add(new Option("(new search)", -2))
+		select.options.add(new Option(tr("(new search)"), -2))
 		
 		if (this.results.length > 1)
-			select.options.add(new Option("(choose result)", -1))
+			select.options.add(new Option(tr("(choose result)"), -1))
 		
 		for (i in this.results)
 			select.options.add(new Option(this.results[i].name, i));

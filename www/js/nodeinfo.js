@@ -146,31 +146,31 @@ var CzfNodeInfo =
 	
 	createInfo: function(info)
 	{
-		var html = CzfHtml.button("Edit node", "CzfNodeInfo.editNode()");
+		var html = CzfHtml.button(tr("Edit node"), "CzfNodeInfo.editNode()");
 		
 		html += '<p>';
-		html += CzfHtml.info("Node ID", info.id);
-		html += CzfHtml.info("Name", info.name);
-		html += CzfHtml.info("Type", CzfConst.nodeTypes[info.type]);
-		html += CzfHtml.info("Status", CzfConst.nodeStates[info.status]);
+		html += CzfHtml.info(tr("Node ID"), info.id);
+		html += CzfHtml.info(tr("Name"), info.name);
+		html += CzfHtml.info(tr("Type"), CzfConst.nodeTypes[info.type]);
+		html += CzfHtml.info(tr("Status"), CzfConst.nodeStates[info.status]);
 		html += '</p>';
 		
 		html += '<p>';
 		if (info.url_thread)
-			html += CzfHtml.link("Thread", info.url_thread) + " ";
+			html += CzfHtml.link(tr("Thread"), info.url_thread) + " ";
 		if (info.url_photos)
-			html += CzfHtml.link("Photos", info.url_photos) + " ";
+			html += CzfHtml.link(tr("Photos"), info.url_photos) + " ";
 		if (info.url_homepage)
-			html += CzfHtml.link("Homepage", info.url_homepage) + " ";
+			html += CzfHtml.link(tr("Homepage"), info.url_homepage) + " ";
 		html += '</p>';
 		
-		html += CzfHtml.longInfo("Coordinates",
+		html += CzfHtml.longInfo(tr("Coordinates"),
 				this.roundAngle(info.lat) + "&nbsp;&nbsp;" + this.roundAngle(info.lng));
 		
 		if (info.address)
-			html += CzfHtml.longInfo("Address", info.address);
+			html += CzfHtml.longInfo(tr("Address"), info.address);
 		if (info.visibility)
-			html += CzfHtml.longInfo("Visibility description", info.visibility);
+			html += CzfHtml.longInfo(tr("Visibility description"), info.visibility);
 		
 		if (info.links && info.links.length > 0)
 			html += CzfLinkInfo.createInfo(info);
@@ -183,27 +183,27 @@ var CzfNodeInfo =
 		var html = '';
 		
 		html += '<p>';
-		html += CzfHtml.edit("name", "Name", info.name);
-		html += CzfHtml.select("type", "Type", info.type, CzfConst.nodeTypes);
-		html += CzfHtml.select("status", "Status", info.status, CzfConst.nodeStates);
+		html += CzfHtml.edit("name", tr("Name"), info.name);
+		html += CzfHtml.select("type", tr("Type"), info.type, CzfConst.nodeTypes);
+		html += CzfHtml.select("status", tr("Status"), info.status, CzfConst.nodeStates);
 		html += '</p>';
 		
 		html += '<p>';
-		html += CzfHtml.edit("url_thread", "Thread", info.url_thread);
-		html += CzfHtml.edit("url_photos", "Photos", info.url_photos);
-		html += CzfHtml.edit("url_homepage", "Homepage", info.url_homepage);
+		html += CzfHtml.edit("url_thread", tr("Thread"), info.url_thread);
+		html += CzfHtml.edit("url_photos", tr("Photos"), info.url_photos);
+		html += CzfHtml.edit("url_homepage", tr("Homepage"), info.url_homepage);
 		html += '</p>';
 		
-		html += CzfHtml.longEdit("address", "Address", info.address);
-		html += CzfHtml.longEdit("visibility", "Visibility description", info.visibility);
+		html += CzfHtml.longEdit("address", tr("Address"), info.address);
+		html += CzfHtml.longEdit("visibility", tr("Visibility description"), info.visibility);
 		
-		html += CzfHtml.longInfo("Coordinates",
+		html += CzfHtml.longInfo(tr("Coordinates"),
 				this.roundAngle(info.lat) + "&nbsp;&nbsp;" + this.roundAngle(info.lng));
 		
 		html += '<p>';
-		html += CzfHtml.button("Save", "CzfNodeInfo.save()");
+		html += CzfHtml.button(tr("Save"), "CzfNodeInfo.save()");
 		html += "&nbsp;&nbsp;";
-		html += CzfHtml.button("Cancel", "CzfNodeInfo.cancelEdit()");
+		html += CzfHtml.button(tr("Cancel"), "CzfNodeInfo.cancelEdit()");
 		html += '</p>';
 		
 		if (info.links && info.links.length > 0)
