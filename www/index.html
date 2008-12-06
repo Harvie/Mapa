@@ -10,15 +10,16 @@
     <script type="text/javascript" src="js/lang.js"></script>
     <script type="text/javascript" src="js/marker.js"></script>
     <script type="text/javascript" src="js/ajax.js"></script>
-    <script type="text/javascript" src="js/gmap.js"></script>
     <script type="text/javascript" src="js/anchor.js"></script>
     <script type="text/javascript" src="js/html.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/map.js"></script>
     <script type="text/javascript" src="js/panel.js"></script>
     <script type="text/javascript" src="js/nodeinfo.js"></script>
     <script type="text/javascript" src="js/linkinfo.js"></script>
   </head>
   
-  <body onload="CzfMap.initialize('map','panelbody')" onunload="CzfMap.unload()">
+  <body onload="CzfMain.start('map','panelbody')" onunload="CzfMain.stop()">
     <div id="map"></div>
     <div id="panel">
       <h1>CZFree Node Monitor</h1>

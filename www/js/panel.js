@@ -9,10 +9,11 @@ var CzfPanel =
 	results: null,
 	nameSelect: null,
 	
-	initialize: function(panelID)
+	initialize: function(element)
 	{
 		var html = this.createSearch() + this.createFilters() + this.createNodeInfo();
-		document.getElementById(panelID).innerHTML = html;
+		element.innerHTML = html;
+		
 		this.filters = document.getElementById("filters");
 		CzfNodeInfo.initialize(document.getElementById("nodeinfo"));
 		

@@ -4,22 +4,7 @@ var CzfMap =
 	map: null,
 	marker: null,
 	
-	initialize: function(mapID, panelID)
-	{
-		if (GBrowserIsCompatible())
-		{
-			CzfLang.setLang("cs_CZ");
-			this.show(document.getElementById(mapID));
-			CzfPanel.initialize(panelID);
-		}
-	},
-	
-	unload: function()
-	{
-		GUnload();
-	},
-	
-	show: function(element)
+	initialize: function(element)
 	{
 		this.map = new GMap2(element);
 		
