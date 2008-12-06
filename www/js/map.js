@@ -43,11 +43,11 @@ var CzfMap =
 	
 	moved: function()
 	{
-		var state = CzfPanel.getState();
+		var state = CzfMain.getState();
 		state.lat = this.map.getCenter().lat();
 		state.lng = this.map.getCenter().lng();
 		state.zoom = this.map.getZoom();
-		CzfPanel.setState(state);
+		CzfMain.setState(state);
 		
 		if (state.hideall)
 			this.map.clearOverlays();
@@ -57,20 +57,20 @@ var CzfMap =
 	
 	zoomed: function(oldZoom, newZoom)
 	{
-		CzfPanel.updateAutoFilter(newZoom);
+		CzfFilters.updateAutoFilter(newZoom);
 	},
 	
 	typechanged: function()
 	{
-		var state = CzfPanel.getState();
+		var state = CzfMain.getState();
 		state.type = this.map.getCurrentMapType().getUrlArg();
-		CzfPanel.setState(state);
+		CzfMain.setState(state);
 	},
 	
 	clicked: function(overlay, point)
 	{
 		if (overlay && overlay.nodeid)
-			CzfPanel.setNode(overlay.nodeid);
+			CzfMain.setNode(overlay.nodeid);
 	},
 	
 	loadIcons: function()
@@ -105,7 +105,7 @@ var CzfMap =
 	
 	readData: function(jsonData)
 	{
-		var state = CzfPanel.getState();
+		var state = CzfMain.getState();
 		this.map.clearOverlays();
 		
 		for (i in jsonData.points)

@@ -60,8 +60,8 @@ var CzfNodeInfo =
 	showPeer: function(linknum)
 	{
 		link = this.info.links[linknum];
-		CzfPanel.setNode(link.peerid);
-		CzfPanel.setPos(link.lat, link.lng);
+		CzfMain.setNode(link.peerid);
+		CzfMain.setPos(link.lat, link.lng);
 		return false;
 	},
 	
