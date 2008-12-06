@@ -7,8 +7,8 @@ var CzfNodeInfo =
 	initialize: function(element)
 	{
 		this.element = element;
-	},
-	
+	}
+	,
 	setNode: function(nodeid)
 	{
 		if (this.editData[nodeid])
@@ -18,8 +18,8 @@ var CzfNodeInfo =
 		}
 		
 		CzfAjax.get("nodeinfo", { id: nodeid }, this.methodCall(this.setInfo));
-	},
-	
+	}
+	,
 	setInfo: function(newInfo)
 	{
 		if (this.info && this.info.editing)
@@ -28,8 +28,8 @@ var CzfNodeInfo =
 		this.info = newInfo;
 		this.updateMarker();
 		this.updateInfo();
-	},
-	
+	}
+	,
 	updateInfo: function()
 	{
 		var html;
@@ -43,8 +43,8 @@ var CzfNodeInfo =
 			html = "";
 		
 		this.element.innerHTML = html;
-	},
-	
+	}
+	,
 	updateMarker: function()
 	{
 		CzfMap.removeMarker();
@@ -55,16 +55,16 @@ var CzfNodeInfo =
 			var callback = this.methodCall(this.markerMoved);
 			CzfMap.addMarker(pos, callback);
 		}
-	},
-	
+	}
+	,
 	showPeer: function(linknum)
 	{
 		link = this.info.links[linknum];
 		CzfMain.setNode(link.peerid);
 		CzfMain.setPos(link.lat, link.lng);
 		return false;
-	},
-	
+	}
+	,
 	editNode: function()
 	{
 		this.info.editing = true;
@@ -72,8 +72,8 @@ var CzfNodeInfo =
 		
 		this.updateMarker();
 		this.updateInfo();
-	},
-	
+	}
+	,
 	addNode: function()
 	{
 		if (this.editData["new"])
@@ -92,8 +92,8 @@ var CzfNodeInfo =
 		this.editData["new"] = info;
 		this.setInfo(info);
 		return false;
-	},
-	
+	}
+	,
 	markerMoved: function(pos)
 	{
 		this.info.lat = pos.lat();
@@ -102,8 +102,8 @@ var CzfNodeInfo =
 		
 		this.copyFormData();
 		this.updateInfo();
-	},
-	
+	}
+	,
 	copyFormData: function()
 	{
 		if (!document.nodeform)
@@ -114,14 +114,14 @@ var CzfNodeInfo =
 		
 		for (i in fields)
 			this.info[fields[i]] = document.nodeform[fields[i]].value;
-	},
-	
+	}
+	,
 	save: function()
 	{
 		this.copyFormData();
 		CzfAjax.post("submit", this.info, this.methodCall(this.saveDone));
-	},
-	
+	}
+	,
 	saveDone: function(result)
 	{
 		if (result.error === undefined)
@@ -132,8 +132,8 @@ var CzfNodeInfo =
 		}
 		else
 			alert(result.error);
-	},
-	
+	}
+	,
 	cancelEdit: function()
 	{
 		delete this.editData[this.info.id];
@@ -142,8 +142,8 @@ var CzfNodeInfo =
 			this.setInfo(null)
 		else
 			this.setNode(this.info.id);
-	},
-	
+	}
+	,
 	createInfo: function(info)
 	{
 		var html = CzfHtml.button(tr("Edit node"), "CzfNodeInfo.editNode()");
@@ -176,8 +176,8 @@ var CzfNodeInfo =
 			html += CzfLinkInfo.createInfo(info);
 		
 		return html;
-	},
-	
+	}
+	,
 	createEdit: function(info)
 	{
 		var html = '';
@@ -210,13 +210,13 @@ var CzfNodeInfo =
 			html += CzfLinkInfo.createInfo(info);
 		
 		return CzfHtml.form(html, "nodeform", "return false;");
-	},
-	
+	}
+	,
 	roundAngle: function(angle)
 	{
 		return Math.round(angle * 100000) / 100000;
-	},
-	
+	}
+	,
 	methodCall: function(fn)
 	{
 		var _this = this;

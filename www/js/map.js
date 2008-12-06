@@ -22,8 +22,8 @@ var CzfMap =
 		GEvent.addListener(this.map, "zoomend", this.methodCall(this.zoomed));
 		GEvent.addListener(this.map, "click", this.methodCall(this.clicked));
 		GEvent.addListener(this.map, "maptypechanged", this.methodCall(this.typechanged));
-	},
-	
+	}
+	,
 	setPosition: function(state)
 	{
 		var lat = state.lat ? parseFloat(state.lat) : CzfConst.defaults.lat;
@@ -39,8 +39,8 @@ var CzfMap =
 		}
 		
 		this.map.setCenter(new GLatLng(lat, lng), zoom);
-	},
-	
+	}
+	,
 	moved: function()
 	{
 		var state = CzfMain.getState();
@@ -53,26 +53,26 @@ var CzfMap =
 			this.map.clearOverlays();
 		else
 			this.loadData(state);
-	},
-	
+	}
+	,
 	zoomed: function(oldZoom, newZoom)
 	{
 		CzfFilters.updateAutoFilter(newZoom);
-	},
-	
+	}
+	,
 	typechanged: function()
 	{
 		var state = CzfMain.getState();
 		state.type = this.map.getCurrentMapType().getUrlArg();
 		CzfMain.setState(state);
-	},
-	
+	}
+	,
 	clicked: function(overlay, point)
 	{
 		if (overlay && overlay.nodeid)
 			CzfMain.setNode(overlay.nodeid);
-	},
-	
+	}
+	,
 	loadIcons: function()
 	{
 		for (t in CzfConst.nodeTypes)
@@ -84,8 +84,8 @@ var CzfMap =
 				this.icons[iconindex].iconSize = new GSize(15,15);
 				this.icons[iconindex].iconAnchor = new GPoint(7,7);
 			}
-	},
-	
+	}
+	,
 	loadData: function(state)
 	{
 		urlParams = new Object();
@@ -101,8 +101,8 @@ var CzfMap =
 				urlParams[i] = state[i];
 		
 		CzfAjax.get("data", urlParams, this.methodCall(this.readData));
-	},
-	
+	}
+	,
 	readData: function(jsonData)
 	{
 		var state = CzfMain.getState();
@@ -140,15 +140,15 @@ var CzfMap =
 		
 		if (this.marker)
 			this.map.addOverlay(this.marker);
-	},
-	
+	}
+	,
 	addMarker: function(pos, fn)
 	{
 		this.marker = new GMarker(pos, {draggable: true});
 		this.map.addOverlay(this.marker);
 		GEvent.addListener(this.marker, "dragend", fn);
-	},
-	
+	}
+	,
 	removeMarker: function()
 	{
 		if (this.marker)
@@ -156,13 +156,13 @@ var CzfMap =
 			this.marker.hide();
 			this.marker = null;
 		}
-	},
-	
+	}
+	,
 	getCenter: function()
 	{
 		return this.map.getCenter();
-	},
-	
+	}
+	,
 	methodCall: function(fn)
 	{
 		var _this = this;
