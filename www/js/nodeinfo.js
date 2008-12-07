@@ -118,6 +118,9 @@ var CzfNodeInfo =
 	,
 	save: function()
 	{
+		document.nodeform.save.disabled = true;
+		document.nodeform.cancel.disabled = true;
+		
 		this.copyFormData();
 		CzfAjax.post("submit", this.info, this.methodCall(this.saveDone));
 	}
@@ -131,7 +134,11 @@ var CzfNodeInfo =
 			CzfMap.moved();
 		}
 		else
+		{
 			alert(result.error);
+			document.nodeform.save.disabled = false;
+			document.nodeform.cancel.disabled = false;
+		}
 	}
 	,
 	cancelEdit: function()
@@ -146,7 +153,7 @@ var CzfNodeInfo =
 	,
 	createInfo: function(info)
 	{
-		var html = CzfHtml.button(tr("Edit node"), "CzfNodeInfo.editNode()");
+		var html = CzfHtml.button("edit", tr("Edit node"), "CzfNodeInfo.editNode()");
 		
 		html += '<p>';
 		html += CzfHtml.info(tr("Node ID"), info.id);
@@ -201,15 +208,15 @@ var CzfNodeInfo =
 				this.roundAngle(info.lat) + "&nbsp;&nbsp;" + this.roundAngle(info.lng));
 		
 		html += '<p>';
-		html += CzfHtml.button(tr("Save"), "CzfNodeInfo.save()");
+		html += CzfHtml.button("save", tr("Save"), "CzfNodeInfo.save()");
 		html += "&nbsp;&nbsp;";
-		html += CzfHtml.button(tr("Cancel"), "CzfNodeInfo.cancelEdit()");
+		html += CzfHtml.button("cancel", tr("Cancel"), "CzfNodeInfo.cancelEdit()");
 		html += '</p>';
 		
 		if (info.links && info.links.length > 0)
 			html += CzfLinkInfo.createInfo(info);
 		
-		return CzfHtml.form(html, "nodeform", "return false;");
+		return CzfHtml.form(html, "nodeform", "return CzfNodeInfo.save();");
 	}
 	,
 	roundAngle: function(angle)

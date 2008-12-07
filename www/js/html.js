@@ -21,11 +21,6 @@ var CzfHtml =
 		return '<span onclick="' + action + '">' + title + '</span>';
 	}
 	,
-	button: function(title, action)
-	{
-		return '<button onclick="' + action + '" type="button">' + title + '</button>';
-	}
-	,
 	img: function(title, src)
 	{
 		return '<img src="' + src + '" alt="' + title + '" title="' + title + '" />';
@@ -39,6 +34,13 @@ var CzfHtml =
 	clear: function(spacer)
 	{
 		return '<div class="clear">' + (spacer ? '&nbsp;' : '') + '</div>';
+	}
+	,
+	button: function(id, label, action)
+	{
+		var html = '<button name="' + id + '" onclick="' + action + '" type="button">';
+		html += label + '</button>';
+		return html;
 	}
 	,
 	edit: function(id, label, value)
