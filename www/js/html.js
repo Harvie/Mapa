@@ -21,6 +21,11 @@ var CzfHtml =
 		return '<span onclick="' + action + '">' + title + '</span>';
 	}
 	,
+	span: function(title, class)
+	{
+		return '<span class="' + class + '">' + title + '</span>';
+	}
+	,
 	img: function(title, src)
 	{
 		return '<img src="' + src + '" alt="' + title + '" title="' + title + '" />';

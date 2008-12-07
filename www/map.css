@@ -64,7 +64,6 @@ h1 {
 }
 
 #nodeinfo span[onclick] {
-	text-decoration: underline;
 	cursor: pointer;
 }
 
@@ -83,6 +82,10 @@ h1 {
 
 #nodeinfo .clear {
 	clear: both;
+}
+
+#nodeinfo .peername {
+	text-decoration: underline;
 }
 
 #nodeinfo .backbone {
