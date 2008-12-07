@@ -43,6 +43,7 @@ var CzfNodeInfo =
 			html = "";
 		
 		this.element.innerHTML = html;
+		CzfLinkInfo.setInfo(this.info);
 	}
 	,
 	updateMarker: function()
@@ -171,9 +172,6 @@ var CzfNodeInfo =
 		if (info.visibility)
 			html += CzfHtml.longInfo(tr("Visibility description"), info.visibility);
 		
-		if (info.links && info.links.length > 0)
-			html += CzfLinkInfo.createInfo(info);
-		
 		return html;
 	}
 	,
@@ -204,9 +202,6 @@ var CzfNodeInfo =
 		html += "&nbsp;&nbsp;";
 		html += CzfHtml.button("cancel", tr("Cancel"), "CzfNodeInfo.cancelEdit()");
 		html += '</p>';
-		
-		if (info.links && info.links.length > 0)
-			html += CzfLinkInfo.createInfo(info);
 		
 		return CzfHtml.form(html, "nodeform", "return CzfNodeInfo.save();");
 	}

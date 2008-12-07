@@ -63,37 +63,43 @@ h1 {
 	font-size: 90%;
 }
 
-#nodeinfo span[onclick] {
+#linkinfo span[onclick] {
 	cursor: pointer;
 }
 
-#nodeinfo .peerinfo {
+#linkinfo .peerinfo {
 	float: left;
 	font-size: 90%;
 	margin-left: 0;
 }
 
-#nodeinfo .linkinfo {
+#linkinfo .linkinfo {
 	float: right;
 	font-size: 90%;
 	margin-left: 0.5em;
 	white-space: nowrap;
 }
 
-#nodeinfo .clear {
+#linkinfo .clear {
 	clear: both;
 }
 
-#nodeinfo .peername {
+#linkinfo .peername {
 	text-decoration: underline;
 }
 
-#nodeinfo .backbone {
+#linkinfo .backbone {
 	font-weight: bold;
 }
 
-#nodeinfo .planned {
+#linkinfo .planned {
 	color: gray;
+}
+
+#linkinfo .linkedit {
+	margin-left: 7px;
+	padding-left: 10px;
+	border-left: 1px dotted black;
 }
 
 .label {

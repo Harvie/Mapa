@@ -1,11 +1,30 @@
 var CzfLinkInfo =
 {
 	info: null,
+	element: null,
+	opened: -1,
 	
-	createInfo: function(info)
+	initialize: function(element)
+	{
+		this.element = element;
+	}
+	,
+	setInfo: function(info)
 	{
 		this.info = info;
-		
+		this.updateInfo();
+	}
+	,
+	updateInfo: function()
+	{
+		if (this.info && this.info.links)
+			this.element.innerHTML = this.createInfo(this.info);
+		else
+			this.element.innerHTML = "";
+	}
+	,
+	createInfo: function(info)
+	{
 		var html = "<p>" + tr("Links to other nodes") + ":</p>";
 		
 		for (i in info.links)
@@ -19,26 +38,47 @@ var CzfLinkInfo =
 		info.links.sort(function(a,b) { return a.dist - b.dist; });
 		
 		for (i in info.links)
-			html += this.createLinkInfo(info.links[i]);
+		{
+			var action = info.editing ? "return CzfLinkInfo.editToggle(" + i + ")"
+			                          : "return CzfLinkInfo.showPeer(" + i + ")";
+			if (i == this.opened)
+				html += this.createLinkEdit(info.links[i], action);
+			else
+				html += this.createLinkInfo(info.links[i], action);
+		}
 		
 		html += CzfHtml.clear(true);
 		return html;
 	}
 	,
-	createLinkInfo: function(l)
+	createLinkInfo: function(l, action)
 	{
-		var classes = "" + (l.backbone ? " backbone" : "") + (l.active ? "" : " planned");
 		var html = "";
 		
 		html += '<div class="peerinfo">';
-		html += this.createPeerInfo(l, "return CzfLinkInfo.showPeer(" + i + ")");
+		html += this.createPeerInfo(l, action);
 		html += '</div>';
 		
 		html += '<div class="linkinfo">';
-		html += CzfHtml.expl(CzfConst.linkMedia[l.media][1], CzfConst.linkMedia[l.media][0]);
+		html += CzfHtml.expl(CzfConst.mediaInfo[l.media], CzfConst.linkMedia[l.media]);
 		html += ' - ' + this.formatDist(l.dist);
 		html += '</div>';
 		html += CzfHtml.clear();
+		
+		return html;
+	}
+	,
+	createLinkEdit: function(l, action)
+	{
+		var html = "";
+		
+		html += this.createPeerInfo(l, action) + "<br/>";
+		
+		html += '<div class="linkedit">';
+		html += CzfHtml.select("media", tr("Type"), l.media, CzfConst.linkMedia, true);
+		html += CzfHtml.checkbox("backbone", tr("Backbone link"), "", l.backbone);
+		html += CzfHtml.checkbox("planned", tr("Planned link"), "", l.planned);
+		html += '</div>';
 		
 		return html;
 	}
@@ -78,6 +118,16 @@ var CzfLinkInfo =
 		CzfMain.setNode(link.peerid);
 		CzfMain.setPos(link.lat, link.lng);
 		return false;
+	}
+	,
+	editToggle: function(linknum)
+	{
+		if (this.opened == linknum)
+			this.opened = -1;
+		else
+			this.opened = linknum;
+		
+		this.updateInfo();
 	}
 	,
 	methodCall: function(fn)

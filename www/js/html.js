@@ -21,9 +21,9 @@ var CzfHtml =
 		return '<span onclick="' + action + '">' + title + '</span>';
 	}
 	,
-	span: function(title, class)
+	span: function(contents, class)
 	{
-		return '<span class="' + class + '">' + title + '</span>';
+		return '<span class="' + class + '">' + contents + '</span>';
 	}
 	,
 	img: function(title, src)
@@ -64,9 +64,10 @@ var CzfHtml =
 		return html;
 	}
 	,
-	select: function(id, label, value, options)
+	select: function(id, label, value, options, nowrap)
 	{
-		var html = '<label for="' + id + '">' + label + ':</label><br />';
+		var html = '<label for="' + id + '">' + label + ':</label>';
+		html += nowrap ? ' ' : '<br/>';
 		
 		html += '<select name="' + id + '">';
 		for (i in options)
@@ -80,9 +81,10 @@ var CzfHtml =
 		return html;
 	}
 	,
-	checkbox: function(id, label, onchange)
+	checkbox: function(id, label, onchange, checked)
 	{
-		var html = '<input type="checkbox" name="' + id + '" id="' + id + '" onchange="' + onchange + '"/>';
+		var html = '<input type="checkbox" ' + (checked ? ' checked="checked"' : '');
+		html += 'name="' + id + '" id="' + id + '" onchange="' + onchange + '"/>';
 		html += '<label for="' + id + '">' + label + '</label><br />';
 		return html;
 	}
@@ -102,6 +104,11 @@ var CzfHtml =
 		html += '<div class="panelpart" id="' + id + '">';
 		html += contents + '</div>';
 		return html;
+	}
+	,
+	div: function(contents, id)
+	{
+		return '<div id="' + id + '">' + contents + '</div>';
 	}
 	,
 	toggle: function(id)

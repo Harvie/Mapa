@@ -30,15 +30,18 @@ var CzfMain =
 		html += CzfHtml.button("addnode", tr("New node"), "CzfNodeInfo.addNode()");
 		html += CzfHtml.expandableBlock("", "search", tr("Search"));
 		html += CzfHtml.expandableBlock("", "filters", tr("Filters"));
-		html += CzfHtml.expandableBlock("", "nodeinfo", tr("Node info"));
+		
+		var info = CzfHtml.div("", "nodeinfo") + CzfHtml.div("", "linkinfo");
+		html += CzfHtml.expandableBlock(info, "info", tr("Node info"));
 		element.innerHTML = html;
 		
 		CzfSearch.initialize(document.getElementById("search"));
 		CzfFilters.initialize(document.getElementById("filters"));
 		CzfNodeInfo.initialize(document.getElementById("nodeinfo"));
+		CzfLinkInfo.initialize(document.getElementById("linkinfo"));
 		
 		CzfHtml.toggle("search");
-		CzfHtml.toggle("nodeinfo");
+		CzfHtml.toggle("info");
 	}
 	,
 	getState: function()
