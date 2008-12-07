@@ -1,7 +1,11 @@
 var CzfLinkInfo =
 {
+	info: null,
+	
 	createInfo: function(info)
 	{
+		this.info = info;
+		
 		var html = "<p>" + tr("Links to other nodes") + ":</p>";
 		
 		for (i in info.links)
@@ -23,7 +27,7 @@ var CzfLinkInfo =
 			html += '<div class="peerinfo' + classes + '">';
 			html += CzfHtml.img(CzfConst.nodeStates[l.status] + " " + CzfConst.nodeTypes[l.type],
 					"images/node/" + l.type + "-" + l.status + ".png");
-			html += CzfHtml.click(l.peername, "return CzfNodeInfo.showPeer(" + i + ")");
+			html += CzfHtml.click(l.peername, "return CzfLinkInfo.showPeer(" + i + ")");
 			html += '</div>';
 			
 			html += '<div class="linkinfo">';
@@ -53,6 +57,14 @@ var CzfLinkInfo =
 		}
 		
 		return str + "m";
+	}
+	,
+	showPeer: function(linknum)
+	{
+		link = this.info.links[linknum];
+		CzfMain.setNode({id: link.peerid});
+		CzfMain.setPos(link.lat, link.lng);
+		return false;
 	}
 	,
 	methodCall: function(fn)

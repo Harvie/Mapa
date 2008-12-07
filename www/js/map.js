@@ -70,8 +70,8 @@ var CzfMap =
 	,
 	clicked: function(overlay, point)
 	{
-		if (overlay && overlay.nodeid)
-			CzfMain.setNode(overlay.nodeid);
+		if (overlay && overlay.czfNode)
+			CzfMain.setNode(overlay.czfNode.id);
 	}
 	,
 	loadIcons: function()
@@ -109,15 +109,15 @@ var CzfMap =
 		var state = CzfMain.getState();
 		this.map.clearOverlays();
 		
-		for (i in jsonData.points)
+		for (i in jsonData.nodes)
 		{
-			var point = jsonData.points[i];
-			var latlng = new GLatLng(point.lat, point.lng); 
-			var iconindex = point.type * 100 + point.status;
-			var options = { icon: this.icons[iconindex], title: point.label };
+			var node = jsonData.nodes[i];
+			var latlng = new GLatLng(node.lat, node.lng); 
+			var iconindex = node.type * 100 + node.status;
+			var options = { icon: this.icons[iconindex], title: node.label };
 			var marker = state.hidelabels ? new GMarker(latlng, options)
 			                              : new CzfMarker(latlng, options);
-			marker.nodeid = point.id;
+			marker.czfNode = node;
 			this.map.addOverlay(marker);
 		}
 		

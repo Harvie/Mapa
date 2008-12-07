@@ -57,14 +57,6 @@ var CzfNodeInfo =
 		}
 	}
 	,
-	showPeer: function(linknum)
-	{
-		link = this.info.links[linknum];
-		CzfMain.setNode(link.peerid);
-		CzfMain.setPos(link.lat, link.lng);
-		return false;
-	}
-	,
 	editNode: function()
 	{
 		this.info.editing = true;
