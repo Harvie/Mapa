@@ -24,7 +24,10 @@ var CzfMain =
 	,
 	initPanel: function(element)
 	{
-		var html = "";
+		document.title = tr("CZFree Node Monitor");
+		
+		var html = "<h1>" + document.title + "</h1>";
+		html += CzfHtml.button("addnode", tr("New node"), "CzfNodeInfo.addNode()");
 		html += CzfHtml.expandableBlock("", "search", tr("Search"));
 		html += CzfHtml.expandableBlock("", "filters", tr("Filters"));
 		html += CzfHtml.expandableBlock("", "nodeinfo", tr("Node info"));

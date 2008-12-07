@@ -37,7 +37,8 @@ var CzfLang =
 			"Status" : "Stav",
 			"Thread" : "Diskuse",
 			"Type" : "Typ",
-			"Visibility description" : "Viditelnost z bodu"
+			"Visibility description" : "Viditelnost z bodu",
+			"CZFree Node Monitor" : "Mapa sítě CZFree" //There is no comma!
 		}
 	},
 	
