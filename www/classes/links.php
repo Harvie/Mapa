@@ -2,6 +2,8 @@
 
 class Links
 {
+	private static $filters = array('media', 'active', 'backbone');
+	
 	public static function selectFromNode($id)
 	{
 		$query = Query::select(
@@ -53,5 +55,23 @@ class Links
 			
 			$insert->execute($row);
 		}
+	}
+	
+	static function selectInArea($bounds, $nodefilters, $linkfilters)
+	{
+		$sql = "SELECT lat1,lng1,lat2,lng2,media,active,backbone FROM links ".
+		       "JOIN nodes AS n1 ON node1 = n1.id JOIN nodes AS n2 ON node2 = n2.id ".
+		       "WHERE ((lat1 < ? AND lng1 < ? AND lat2 > ? AND lng2 > ?) ".
+		           "OR (lat1 < ? AND lng2 < ? AND lat2 > ? AND lng1 > ?))";
+		
+		$sql .= Nodes::makeFilterSQL('n1', $nodefilters);
+		$sql .= Nodes::makeFilterSQL('n2', $nodefilters);
+		
+		foreach (self::$filters as $column)
+			$sql .= Query::filtersToSQL('links', $column, $linkfilters);
+
+		$select = Query::select($sql);
+		$select->execute(array_merge($bounds, $bounds));
+		return $select;
 	}
 }

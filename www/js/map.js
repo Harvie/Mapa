@@ -97,10 +97,17 @@ var CzfMap =
 		urlParams.south = bounds.getSouthWest().lat();
 		urlParams.west = bounds.getSouthWest().lng();
 		
-		for (i in state)
-			if (i in CzfConst.ajaxParams)
-				urlParams[i] = state[i];
+		urlParams.nodes = new Object();
+		if (state.aponly)    urlParams.nodes.type_include = [9,10,11];
+		if (state.actnode)   urlParams.nodes.status_include = [1];
+		if (!state.obsolete) urlParams.nodes.status_exclude = [90];
+		if (!state.alien)    urlParams.nodes.type_exclude = [99];
 		
+		urlParams.links = new Object();
+		if (state.bbonly)    urlParams.links.backbone_include = [1];
+		if (state.actlink)   urlParams.links.active_include = [1];
+		if (!state.vpn)      urlParams.links.media_exclude = [5];
+
 		CzfAjax.get("data", urlParams, this.methodCall(this.readData));
 	}
 	,

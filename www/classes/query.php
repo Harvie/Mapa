@@ -46,6 +46,35 @@ class Query
 		return new Query('update', $sql, $columns);
 	}
 	
+	public static function filtersToSQL($table, $column, $filters)
+	{
+		if (!is_array($filters))
+			return "";
+		
+		$include = self::makeInClause($filters["${column}_include"]);
+		$exclude = self::makeInClause($filters["${column}_exclude"]);
+		
+		$sql = "";
+		
+		if ($include !== false)
+			$sql .= " AND $table.$column $include";
+		
+		if ($exclude !== false)
+			$sql .= " AND $table.$column NOT $exclude";
+		
+		return $sql;
+	}
+	
+	private static function makeInClause($list)
+	{
+		if (!is_array($list))
+			return false;
+		
+		$sanitized = array_map(intval, $list);
+		$joined = implode(",", $sanitized);
+		return "IN($joined)";
+	}
+	
 	public static function beginTransaction()
 	{
 		self::$transaction = true;
