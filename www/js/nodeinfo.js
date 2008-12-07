@@ -115,6 +115,7 @@ var CzfNodeInfo =
 		document.nodeform.cancel.disabled = true;
 		
 		this.copyFormData();
+		CzfLinkInfo.copyFormData();
 		CzfAjax.post("submit", this.info, this.methodCall(this.saveDone));
 	}
 	,

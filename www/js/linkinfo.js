@@ -2,7 +2,7 @@ var CzfLinkInfo =
 {
 	info: null,
 	element: null,
-	opened: -1,
+	opened: null,
 	
 	initialize: function(element)
 	{
@@ -11,7 +11,9 @@ var CzfLinkInfo =
 	,
 	setInfo: function(info)
 	{
+		this.copyFormData();
 		this.info = info;
+		this.opened = null;
 		this.updateInfo();
 	}
 	,
@@ -41,7 +43,7 @@ var CzfLinkInfo =
 		{
 			var action = info.editing ? "return CzfLinkInfo.editToggle(" + i + ")"
 			                          : "return CzfLinkInfo.showPeer(" + i + ")";
-			if (i == this.opened)
+			if (info.links[i] == this.opened)
 				html += this.createLinkEdit(info.links[i], action);
 			else
 				html += this.createLinkInfo(info.links[i], action);
@@ -74,10 +76,13 @@ var CzfLinkInfo =
 		
 		html += this.createPeerInfo(l, action) + "<br/>";
 		
+		var controls = "";
+		controls += CzfHtml.select("media", tr("Type"), l.media, CzfConst.linkMedia, true);
+		controls += CzfHtml.checkbox("backbone", tr("Backbone link"), "", l.backbone);
+		controls += CzfHtml.checkbox("planned", tr("Planned link"), "", !l.active);
+		
 		html += '<div class="linkedit">';
-		html += CzfHtml.select("media", tr("Type"), l.media, CzfConst.linkMedia, true);
-		html += CzfHtml.checkbox("backbone", tr("Backbone link"), "", l.backbone);
-		html += CzfHtml.checkbox("planned", tr("Planned link"), "", l.planned);
+		html += CzfHtml.form(controls, "linkform", "return false;");
 		html += '</div>';
 		
 		return html;
@@ -122,12 +127,27 @@ var CzfLinkInfo =
 	,
 	editToggle: function(linknum)
 	{
-		if (this.opened == linknum)
-			this.opened = -1;
+		this.copyFormData();
+		
+		var link = this.info.links[linknum];
+		
+		if (this.opened == link)
+			this.opened = null;
 		else
-			this.opened = linknum;
+			this.opened = link;
 		
 		this.updateInfo();
+	}
+	,
+	copyFormData: function()
+	{
+		if (!this.info || !document.linkform || !this.opened)
+			return;
+		
+		var l = this.opened;
+		l.media = document.linkform.media.value;
+		l.backbone = document.linkform.backbone.checked ? 1 : 0;
+		l.active = document.linkform.planned.checked ? 0 : 1;
 	}
 	,
 	methodCall: function(fn)
