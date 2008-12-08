@@ -14,5 +14,10 @@ else
 	Nodes::update($_POST, isset($_POST['moved']));
 }
 
+if (is_array($_POST['links']))
+	foreach ($_POST['links'] as $link)
+		if (is_array($link) && isset($link['changed']))
+			Links::update($link, $_POST);
+
 Query::commit();
 echo "{ id: $id }";

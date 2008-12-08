@@ -130,6 +130,7 @@ var CzfLinkInfo =
 		this.copyFormData();
 		
 		var link = this.info.links[linknum];
+		link.changed = true;
 		
 		if (this.opened == link)
 			this.opened = null;

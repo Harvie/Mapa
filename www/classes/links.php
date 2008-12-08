@@ -2,6 +2,8 @@
 
 class Links
 {
+	private static $keys = array('node1', 'node2');
+	private static $columns = array('media', 'active', 'backbone');
 	private static $filters = array('media', 'active', 'backbone');
 	
 	public static function selectFromNode($id)
@@ -15,7 +17,24 @@ class Links
 		$query->execute(array($id, $id));
 		return $query;
 	}
-
+	
+	public static function update($link, $node)
+	{
+		if (floatval($node['lat']) < floatval($link['lat']))
+		{
+			$link['node1'] = $node['id'];
+			$link['node2'] = $link['peerid'];
+		}
+		else
+		{
+			$link['node1'] = $link['peerid'];
+			$link['node2'] = $node['id'];
+		}
+		
+		$update = Query::update('links', self::$columns, self::$keys);
+		$update->execute($link);
+	}
+	
 	// Coordinates of link endpoints are duplicated in table links so they
 	// can be indexed for fast retrieval of links that cross viewport. Also
 	// links are always stored that lat1 <= lat2. So if the node was moved,

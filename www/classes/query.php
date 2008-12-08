@@ -41,7 +41,7 @@ class Query
 		$sql = "UPDATE $table SET ";
 		$fn = create_function('$col', 'return "$col = :$col";');
 		$sql .= implode(',', array_map($fn, $columns));
-		$sql .= " WHERE ".implode('AND', array_map($fn, $keys));
+		$sql .= ' WHERE '.implode(' AND ', array_map($fn, $keys));
 		return new Query($sql, array_merge($columns, $keys));
 	}
 	
