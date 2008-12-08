@@ -9,12 +9,11 @@ class Query
 	}
 	
 	//Only factory methods are public
-	private function __construct($type, $sql, $columns)
+	private function __construct($sql, $columns)
 	{
 		if (!self::$transaction)
 			throw new Exception('INSERT or UPDATE outside transaction is not allowed.');
 		
-		$this->type = $type;
 		$this->columns = $columns;
 		$this->stmt = self::$db->prepare($sql);
 	}
@@ -34,16 +33,16 @@ class Query
 		$sql = "INSERT INTO $table ";
 		$sql .= "(" . implode(',', $columns) . ") ";
 		$sql .= "VALUES(:" . implode(',:', $columns) . ")";
-		return new Query('insert', $sql, $columns);
+		return new Query($sql, $columns);
 	}
 	
-	public static function update($table, $columns)
+	public static function update($table, $columns, $keys = array('id'))
 	{
 		$sql = "UPDATE $table SET ";
 		$fn = create_function('$col', 'return "$col = :$col";');
 		$sql .= implode(',', array_map($fn, $columns));
-		$sql .= " WHERE id = :id";
-		return new Query('update', $sql, $columns);
+		$sql .= " WHERE ".implode('AND', array_map($fn, $keys));
+		return new Query($sql, array_merge($columns, $keys));
 	}
 	
 	public static function filtersToSQL($table, $column, $filters)
@@ -110,9 +109,6 @@ class Query
 				$this->stmt->bindParam(":$col", $null = null);
 			else
 				$this->stmt->bindParam(":$col", $values[$col]);
-		
-		if ($this->type != 'insert')
-			$this->stmt->bindParam(':id', $values['id']);
 		
 		return $result = $this->stmt->execute($row);
 	}
