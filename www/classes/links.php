@@ -5,6 +5,7 @@ class Links
 	private static $keys = array('node1', 'node2');
 	private static $columns = array('media', 'active', 'backbone');
 	private static $filters = array('media', 'active', 'backbone');
+	private static $all_cols = array('node1', 'node2', 'lat1', 'lng1', 'lat2', 'lng2', 'media', 'active', 'backbone');
 	
 	public static function selectFromNode($id)
 	{
@@ -16,6 +17,27 @@ class Links
 		
 		$query->execute(array($id, $id));
 		return $query;
+	}
+	
+	public function insert($data, $node1, $node2)
+	{
+		$pos1 = Nodes::fetchPos(intval($node1));
+		$pos2 = Nodes::fetchPos(intval($node2));
+		
+		if (!$pos1 || !$pos2)
+			return false;
+		
+		$end1 = array($node1, $pos1['lat'], $pos1['lng']);
+		$end2 = array($node2, $pos2['lat'], $pos2['lng']);
+		
+		if (floatval($pos1['lat']) > floatval($pos2['lat']))
+			list($end1, $end2) = array($end2, $end1); //swap
+		
+		list($data['node1'], $data['lat1'], $data['lng1']) = $end1;
+		list($data['node2'], $data['lat2'], $data['lng2']) = $end2;
+		
+		$insert = Query::insert('links', self::$all_cols);
+		$insert->execute($data);
 	}
 	
 	public static function update($link, $node)

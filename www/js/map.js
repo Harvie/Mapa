@@ -23,6 +23,7 @@ var CzfMap =
 		GEvent.addListener(this.map, "zoomend", this.methodCall(this.zoomed));
 		GEvent.addListener(this.map, "click", this.methodCall(this.clicked));
 		GEvent.addListener(this.map, "maptypechanged", this.methodCall(this.typechanged));
+		GEvent.addListener(this.map, "singlerightclick", this.methodCall(this.rightclick));
 	}
 	,
 	setPosition: function(state)
@@ -74,6 +75,12 @@ var CzfMap =
 			CzfMain.setNode(overlay.czfNode.id);
 	}
 	,
+	rightclick: function(point, src, overlay)
+	{
+		if (overlay && overlay.czfNode)
+			CzfLinkInfo.addLink(overlay.czfNode);
+	}
+	,
 	loadIcons: function()
 	{
 		for (t in CzfConst.nodeTypes)
@@ -121,7 +128,7 @@ var CzfMap =
 			var node = jsonData.nodes[i];
 			var latlng = new GLatLng(node.lat, node.lng); 
 			var iconindex = node.type * 100 + node.status;
-			var options = { icon: this.icons[iconindex], title: node.label };
+			var options = { icon: this.icons[iconindex], title: node.name };
 			var marker = state.hidelabels ? new GMarker(latlng, options)
 			                              : new CzfMarker(latlng, options);
 			marker.czfNode = node;

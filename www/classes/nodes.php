@@ -36,6 +36,13 @@ class Nodes
 		return $query->fetch();
 	}
 	
+	public static function fetchPos($id)
+	{
+		$query = Query::select('SELECT lat,lng FROM nodes WHERE id = ?');
+		$query->execute(array($id));
+		return $query->fetch();
+	}
+	
 	public static function findByName($name)
 	{
 		//'%' means any string, '_' means any character in SQL pattern matching

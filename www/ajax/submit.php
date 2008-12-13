@@ -16,8 +16,16 @@ else
 
 if (is_array($_POST['links']))
 	foreach ($_POST['links'] as $link)
-		if (is_array($link) && isset($link['changed']))
+	{
+		if (!is_array($link))
+			continue;
+		
+		if(isset($link['changed']))
 			Links::update($link, $_POST);
+		
+		if(isset($link['added']))
+			Links::insert($link, $_POST['id'], $link['peerid']);
+	}
 
 Query::commit();
 echo "{ id: $id }";

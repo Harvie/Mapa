@@ -40,6 +40,11 @@ h1 {
 	margin-right: 3px;
 }
 
+#panel p {
+	margin: 0;
+	padding-top: 1ex;
+}
+
 #panel .panelpart {
 	margin-left: 5px;
 	padding-left: 7px;
@@ -47,19 +52,10 @@ h1 {
 	border-left: 1px dotted black;
 }
 
-#nodeinfo p {
-	margin: 0;
-	padding-top: 1ex;
-}
-
 #nodeinfo .text {
 	margin: 0;
 	margin-left: 0.4em;
 	font-style: italic;
-	font-size: 90%;
-}
-
-#nodeinfo td {
 	font-size: 90%;
 }
 
@@ -100,6 +96,11 @@ h1 {
 	margin-left: 7px;
 	padding-left: 10px;
 	border-left: 1px dotted black;
+}
+
+#linkinfo .help {
+	font-style: italic;
+	font-size: 90%;
 }
 
 .label {

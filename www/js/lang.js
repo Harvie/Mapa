@@ -38,6 +38,7 @@ var CzfLang =
 			"Thread" : "Diskuse",
 			"Type" : "Typ",
 			"Visibility description" : "Viditelnost z bodu",
+			"You can add a new link by right clicking on target node on the map." : "Nový spoj přidáte kliknutím pravým tlačítkem na cílový bod na mapě.",
 			"CZFree Node Monitor" : "Mapa sítě CZFree" //There is no comma!
 		}
 	},

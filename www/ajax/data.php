@@ -13,7 +13,7 @@ $links = Links::selectInArea($bounds, @$_GET['nodes'], @$_GET['links']);
 	"nodes":
 	[
 	<? foreach ($nodes as $row): ?>
-	{ id: <?=$row['id']?>, label: "<?=self::escape($row['name'])?>", lat: <?=$row['lat']?>, lng: <?=$row['lng']?>, type: <?=$row['type']?>, status: <?=$row['status']?> },
+	{ id: <?=$row['id']?>, name: "<?=self::escape($row['name'])?>", lat: <?=$row['lat']?>, lng: <?=$row['lng']?>, type: <?=$row['type']?>, status: <?=$row['status']?> },
 	<? endforeach ?>],
 	
 	"links":

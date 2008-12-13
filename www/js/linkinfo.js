@@ -49,6 +49,13 @@ var CzfLinkInfo =
 				html += this.createLinkInfo(info.links[i], action);
 		}
 		
+		if (info.editing)
+		{
+			html += '<p class="help">';
+			html += tr("You can add a new link by right clicking on target node on the map.");
+			html += '</p>';
+		}
+		
 		html += CzfHtml.clear(true);
 		return html;
 	}
@@ -149,6 +156,24 @@ var CzfLinkInfo =
 		l.media = document.linkform.media.value;
 		l.backbone = document.linkform.backbone.checked ? 1 : 0;
 		l.active = document.linkform.planned.checked ? 0 : 1;
+	}
+	,
+	addLink: function(node)
+	{
+		var l = CzfConst.clone("newLink");
+		l.added = 1;
+		
+		l.peerid = node.id;
+		l.peername = node.name;
+		l.status = node.status;
+		l.type = node.type;
+		l.lat = node.lat;
+		l.lng = node.lng;
+		
+		this.copyFormData();
+		this.info.links.push(l);
+		this.opened = l;
+		this.updateInfo();
 	}
 	,
 	methodCall: function(fn)
