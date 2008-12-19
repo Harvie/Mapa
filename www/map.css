@@ -52,6 +52,19 @@ h1 {
 	border-left: 1px dotted black;
 }
 
+#panel .tab_label {
+	text-decoration: underline;
+	color: blue;
+}
+
+#panel .active_tab_label {
+	font-weight: bold;
+}
+
+#panel .tab_block {
+	display: none;
+}
+
 #nodeinfo .text {
 	margin: 0;
 	margin-left: 0.4em;

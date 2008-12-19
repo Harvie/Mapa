@@ -106,11 +106,6 @@ var CzfHtml =
 		return html;
 	}
 	,
-	div: function(contents, id)
-	{
-		return '<div id="' + id + '">' + contents + '</div>';
-	}
-	,
 	toggle: function(id)
 	{
 		node = document.getElementById(id);
