@@ -3,17 +3,108 @@ var CzfInfo =
 	actTab: null,
 	tabs: null,
 	headers: null,
+	info: null,
+	editData: new Object(),
 	
 	initialize: function(element)
 	{
 		this.tabs = [ { id: "nodeinfo", label: tr("Node"), contents: "" },
 			          { id: "linkinfo", label: tr("Links"), contents: "" } ];
 		
-		element.innerHTML = this.createTabs(this.tabs);
+		var html = CzfHtml.button("edit", tr("Edit node"), "CzfInfo.editNode()");
+		html += this.createTabs(this.tabs);
+		
+		var buttons = '';
+		buttons += CzfHtml.button("save", tr("Save"), "CzfInfo.save()");
+		buttons += "&nbsp;&nbsp;";
+		buttons += CzfHtml.button("cancel", tr("Cancel"), "CzfInfo.cancelEdit()");
+		html += CzfHtml.form(buttons, "infoform", "return false;");
+		
+		element.innerHTML = html;
 		this.headers = document.getElementById("info.headers");
 		
 		CzfNodeInfo.initialize(document.getElementById("nodeinfo"));
 		CzfLinkInfo.initialize(document.getElementById("linkinfo"));
+	}
+	,
+	setNode: function(nodeid)
+	{
+		if (this.editData[nodeid])
+		{
+			this.setInfo(this.editData[nodeid]);
+			return;
+		}
+		
+		CzfAjax.get("nodeinfo", { id: nodeid }, this.methodCall(this.setInfo));
+	}
+	,
+	setInfo: function(newInfo)
+	{
+		this.info = newInfo;
+		this.updateInfo();
+	}
+	,
+	updateInfo: function()
+	{
+		CzfNodeInfo.setInfo(this.info);
+		CzfLinkInfo.setInfo(this.info);
+	}
+	,
+	addNode: function()
+	{
+		if (this.editData["new"])
+		{
+			this.setInfo(this.editData["new"]);
+			return false;
+		}
+		
+		info = CzfNodeInfo.createNode();
+		this.editData["new"] = info;
+		this.setInfo(info);
+		return false;
+	}
+	,
+	editNode: function()
+	{
+		this.info.editing = true;
+		this.editData[this.info.id] = this.info;
+		this.updateInfo();
+	}
+	,
+	save: function()
+	{
+		document.infoform.save.disabled = true;
+		document.infoform.cancel.disabled = true;
+		
+		CzfNodeInfo.copyFormData();
+		CzfLinkInfo.copyFormData();
+		CzfAjax.post("submit", this.info, this.methodCall(this.saveDone));
+	}
+	,
+	saveDone: function(result)
+	{
+		if (result.error === undefined)
+		{
+			this.info.id = result.id;
+			this.cancelEdit();
+			CzfMap.moved();
+		}
+		else
+		{
+			alert(result.error);
+			document.infoform.save.disabled = false;
+			document.infoform.cancel.disabled = false;
+		}
+	}
+	,
+	cancelEdit: function()
+	{
+		delete this.editData[this.info.id];
+		
+		if (this.info.id == "new")
+			this.setInfo(null)
+		else
+			this.setNode(this.info.id);
 	}
 	,
 	createTabs: function(tabs)
@@ -76,5 +167,11 @@ var CzfInfo =
 		
 		for (i in this.tabs)
 			this.showTab(this.tabs[i].id);
+	}
+	,
+	methodCall: function(fn)
+	{
+		var _this = this;
+		return function() { fn.apply(_this, arguments); };
 	}
 }

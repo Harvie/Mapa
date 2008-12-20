@@ -2,22 +2,10 @@ var CzfNodeInfo =
 {
 	info: null,
 	element: null,
-	editData: new Object(),
 	
 	initialize: function(element)
 	{
 		this.element = element;
-	}
-	,
-	setNode: function(nodeid)
-	{
-		if (this.editData[nodeid])
-		{
-			this.setInfo(this.editData[nodeid]);
-			return;
-		}
-		
-		CzfAjax.get("nodeinfo", { id: nodeid }, this.methodCall(this.setInfo));
 	}
 	,
 	setInfo: function(newInfo)
@@ -42,8 +30,11 @@ var CzfNodeInfo =
 		else
 			html = "";
 		
+		// The form stays in DOM even after it's replaced
+		if (document.nodeform)
+			delete document.nodeform;
+		
 		this.element.innerHTML = html;
-		CzfLinkInfo.setInfo(this.info);
 	}
 	,
 	updateMarker: function()
@@ -58,35 +49,6 @@ var CzfNodeInfo =
 		}
 	}
 	,
-	editNode: function()
-	{
-		this.info.editing = true;
-		this.editData[this.info.id] = this.info;
-		
-		this.updateMarker();
-		this.updateInfo();
-	}
-	,
-	addNode: function()
-	{
-		if (this.editData["new"])
-		{
-			this.setInfo(this.editData["new"]);
-			return false;
-		}
-		
-		info = CzfConst.clone("newInfo");
-		info.editing = true;
-		
-		var latlng = CzfMap.getCenter();
-		info.lat = latlng.lat();
-		info.lng = latlng.lng();
-		
-		this.editData["new"] = info;
-		this.setInfo(info);
-		return false;
-	}
-	,
 	markerMoved: function(pos)
 	{
 		this.info.lat = pos.lat();
@@ -94,7 +56,7 @@ var CzfNodeInfo =
 		this.info.moved = true;
 		
 		this.copyFormData();
-		this.updateInfo();
+		CzfInfo.updateInfo();
 	}
 	,
 	copyFormData: function()
@@ -109,45 +71,21 @@ var CzfNodeInfo =
 			this.info[fields[i]] = document.nodeform[fields[i]].value;
 	}
 	,
-	save: function()
+	createNode: function()
 	{
-		document.nodeform.save.disabled = true;
-		document.nodeform.cancel.disabled = true;
+ 		var info = CzfConst.clone("newInfo");
+		info.editing = true;
 		
-		this.copyFormData();
-		CzfLinkInfo.copyFormData();
-		CzfAjax.post("submit", this.info, this.methodCall(this.saveDone));
-	}
-	,
-	saveDone: function(result)
-	{
-		if (result.error === undefined)
-		{
-			this.info.id = result.id;
-			this.cancelEdit();
-			CzfMap.moved();
-		}
-		else
-		{
-			alert(result.error);
-			document.nodeform.save.disabled = false;
-			document.nodeform.cancel.disabled = false;
-		}
-	}
-	,
-	cancelEdit: function()
-	{
-		delete this.editData[this.info.id];
+		var latlng = CzfMap.getCenter();
+		info.lat = latlng.lat();
+		info.lng = latlng.lng();
 		
-		if (this.info.id == "new")
-			this.setInfo(null)
-		else
-			this.setNode(this.info.id);
+		return info;
 	}
 	,
 	createInfo: function(info)
 	{
-		var html = CzfHtml.button("edit", tr("Edit node"), "CzfNodeInfo.editNode()");
+		var html = '';
 		
 		html += '<p>';
 		html += CzfHtml.info(tr("Node ID"), info.id);
@@ -165,13 +103,13 @@ var CzfNodeInfo =
 			html += CzfHtml.link(tr("Homepage"), info.url_homepage) + " ";
 		html += '</p>';
 		
-		html += CzfHtml.longInfo(tr("Coordinates"),
-				this.roundAngle(info.lat) + "&nbsp;&nbsp;" + this.roundAngle(info.lng));
-		
 		if (info.address)
 			html += CzfHtml.longInfo(tr("Address"), info.address);
 		if (info.visibility)
 			html += CzfHtml.longInfo(tr("Visibility description"), info.visibility);
+		
+		html += CzfHtml.longInfo(tr("Coordinates"),
+				this.roundAngle(info.lat) + "&nbsp;&nbsp;" + this.roundAngle(info.lng));
 		
 		return html;
 	}
@@ -198,13 +136,7 @@ var CzfNodeInfo =
 		html += CzfHtml.longInfo(tr("Coordinates"),
 				this.roundAngle(info.lat) + "&nbsp;&nbsp;" + this.roundAngle(info.lng));
 		
-		html += '<p>';
-		html += CzfHtml.button("save", tr("Save"), "CzfNodeInfo.save()");
-		html += "&nbsp;&nbsp;";
-		html += CzfHtml.button("cancel", tr("Cancel"), "CzfNodeInfo.cancelEdit()");
-		html += '</p>';
-		
-		return CzfHtml.form(html, "nodeform", "return CzfNodeInfo.save();");
+		return CzfHtml.form(html, "nodeform", "return false;");
 	}
 	,
 	roundAngle: function(angle)
