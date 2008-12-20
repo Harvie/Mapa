@@ -206,10 +206,4 @@ var CzfLinkInfo =
 		
 		return l;
 	}
-	,
-	methodCall: function(fn)
-	{
-		var _this = this;
-		return function() { fn.apply(_this, arguments); };
-	}
 }

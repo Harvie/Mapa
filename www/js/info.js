@@ -22,7 +22,7 @@ var CzfInfo =
 			return;
 		}
 		
-		CzfAjax.get("nodeinfo", { id: nodeid }, this.methodCall(this.setInfo));
+		CzfAjax.get("nodeinfo", { id: nodeid }, GEvent.callback(this, this.setInfo));
 	}
 	,
 	setInfo: function(newInfo)
@@ -71,7 +71,7 @@ var CzfInfo =
 		
 		CzfNodeInfo.copyFormData();
 		CzfLinkInfo.copyFormData();
-		CzfAjax.post("submit", this.info, this.methodCall(this.saveDone));
+		CzfAjax.post("submit", this.info, GEvent.callback(this, this.saveDone));
 	}
 	,
 	saveDone: function(result)
@@ -167,11 +167,5 @@ var CzfInfo =
 	{
 		document.getElementById(tabid).style.display = "none";
 		document.getElementById(tabid + ".header").className = "tab_label";
-	}
-	,
-	methodCall: function(fn)
-	{
-		var _this = this;
-		return function() { fn.apply(_this, arguments); };
 	}
 }

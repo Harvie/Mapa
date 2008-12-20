@@ -42,7 +42,7 @@ var CzfNodeInfo =
 		if (this.info && this.info.editing)
 		{
 			var pos = new GLatLng(this.info.lat, this.info.lng);
-			var callback = this.methodCall(this.markerMoved);
+			var callback = GEvent.callback(this, this.markerMoved);
 			CzfMap.addMarker(pos, callback);
 		}
 	}
@@ -140,11 +140,5 @@ var CzfNodeInfo =
 	roundAngle: function(angle)
 	{
 		return Math.round(angle * 100000) / 100000;
-	}
-	,
-	methodCall: function(fn)
-	{
-		var _this = this;
-		return function() { fn.apply(_this, arguments); };
 	}
 }

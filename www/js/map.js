@@ -18,12 +18,12 @@ var CzfMap =
 		
 		this.loadIcons();
 		
-		GEvent.addListener(this.map, "moveend", this.methodCall(this.moved));
-		GEvent.addListener(this.map, "resize", this.methodCall(this.moved));
-		GEvent.addListener(this.map, "zoomend", this.methodCall(this.zoomed));
-		GEvent.addListener(this.map, "click", this.methodCall(this.clicked));
-		GEvent.addListener(this.map, "maptypechanged", this.methodCall(this.typechanged));
-		GEvent.addListener(this.map, "singlerightclick", this.methodCall(this.rightclick));
+		GEvent.bind(this.map, "moveend", this, this.moved);
+		GEvent.bind(this.map, "resize", this, this.moved);
+		GEvent.bind(this.map, "zoomend", this, this.zoomed);
+		GEvent.bind(this.map, "click", this, this.clicked);
+		GEvent.bind(this.map, "maptypechanged", this, this.typechanged);
+		GEvent.bind(this.map, "singlerightclick", this, this.rightclick);
 	}
 	,
 	setPosition: function(state)
@@ -115,7 +115,7 @@ var CzfMap =
 		if (state.actlink)   urlParams.links.active_include = [1];
 		if (!state.vpn)      urlParams.links.media_exclude = [5];
 
-		CzfAjax.get("data", urlParams, this.methodCall(this.readData));
+		CzfAjax.get("data", urlParams, GEvent.callback(this, this.readData));
 	}
 	,
 	readData: function(jsonData)
@@ -176,11 +176,5 @@ var CzfMap =
 	getCenter: function()
 	{
 		return this.map.getCenter();
-	}
-	,
-	methodCall: function(fn)
-	{
-		var _this = this;
-		return function() { fn.apply(_this, arguments); };
 	}
 }

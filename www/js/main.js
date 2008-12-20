@@ -13,7 +13,8 @@ var CzfMain =
 		CzfMap.initialize(document.getElementById(mapID));
 		this.initPanel(document.getElementById(panelID));
 		
-		this.anchor = new CzfAnchor(this.methodCall(this.anchorChanged), CzfConst.clone("defaults"));
+		var callback = GEvent.callback(this, this.anchorChanged);
+		this.anchor = new CzfAnchor(callback, CzfConst.clone("defaults"));
 		this.anchor.update(this.state);
 	}
 	,
@@ -81,11 +82,5 @@ var CzfMain =
 			this.anchor.update(this.state);
 		
 		CzfInfo.setNode(nodeid);
-	}
-	,
-	methodCall: function(fn)
-	{
-		var _this = this;
-		return function() { fn.apply(_this, arguments); };
 	}
 }

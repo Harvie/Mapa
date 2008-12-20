@@ -26,7 +26,7 @@ var CzfSearch =
 		this.addressField.disabled = true;
 		
 		var address = this.addressField.value;
-		this.geocoder.getLatLng(address, this.methodCall(this.addressDone));
+		this.geocoder.getLatLng(address, GEvent.callback(this, this.addressDone));
 		return false;
 	}
 	,
@@ -45,7 +45,7 @@ var CzfSearch =
 		this.nameField.disabled = true;
 		
 		var params = { query: this.nameField.value };
-		CzfAjax.get("search", params, this.methodCall(this.nodeDone));
+		CzfAjax.get("search", params, GEvent.callback(this, this.nodeDone));
 		return false;
 	}
 	,
@@ -63,7 +63,7 @@ var CzfSearch =
 		this.nameField.className = "normal";
 		
 		select = document.createElement("SELECT");
-		select.onchange = this.methodCall(this.nodeChange);
+		select.onchange = GEvent.callback(this, this.nodeChange);
 		select.options.add(new Option(tr("(new search)"), -2))
 		
 		if (this.results.length > 1)
@@ -98,11 +98,5 @@ var CzfSearch =
 		var node = this.results[i];
 		CzfMain.setPos(node.lat, node.lng);
 		CzfMain.setNode(node.id);
-	}
-	,
-	methodCall: function(fn)
-	{
-		var _this = this;
-		return function() { fn.apply(_this, arguments); };
 	}
 }

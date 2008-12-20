@@ -43,12 +43,6 @@ function CzfAnchor(callback, defaults)
 		this.callback(paramObj);
 	}
 	
-	this.methodCall = function(fn)
-	{
-		var _this = this;
-		return function() { fn.apply(_this, arguments); };
-	}
-	
 	this.check();
-	window.setInterval(this.methodCall(this.check), 500);
+	window.setInterval(GEvent.callback(this, this.check), 500);
 }
