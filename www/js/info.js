@@ -110,7 +110,6 @@ var CzfInfo =
 			
 			var buttons = '<p>';
 			buttons += CzfHtml.button("save", tr("Save"), "CzfInfo.save()");
-			buttons += "&nbsp;&nbsp;";
 			buttons += CzfHtml.button("cancel", tr("Cancel"), "CzfInfo.cancelEdit()");
 			buttons += '</p>';
 			

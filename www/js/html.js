@@ -21,9 +21,10 @@ var CzfHtml =
 		return '<span onclick="' + action + '">' + title + '</span>';
 	}
 	,
-	span: function(contents, class)
+	span: function(contents, classList)
 	{
-		return '<span class="' + class + '">' + contents + '</span>';
+		var classes = classList.join(" ");
+		return '<span class="' + classes + '">' + contents + '</span>';
 	}
 	,
 	img: function(title, src)

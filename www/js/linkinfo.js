@@ -90,6 +90,12 @@ var CzfLinkInfo =
 		controls += CzfHtml.select("media", tr("Type"), l.media, CzfConst.linkMedia, true);
 		controls += CzfHtml.checkbox("backbone", tr("Backbone link"), "", l.backbone);
 		controls += CzfHtml.checkbox("planned", tr("Planned link"), "", !l.active);
+		controls += CzfHtml.button("close", tr("Close"), "CzfLinkInfo.closeEdit()");
+		
+		if (l.deleted)
+			controls += CzfHtml.button("restore", tr("Restore"), "CzfLinkInfo.deleteLink()");
+		else
+			controls += CzfHtml.button("delete", tr("Delete"), "CzfLinkInfo.deleteLink()");
 		
 		html += '<div class="linkedit">';
 		html += CzfHtml.form(controls, "linkform", "return false;");
@@ -104,7 +110,12 @@ var CzfLinkInfo =
 		var imgSrc = "images/node/" + l.type + "-" + l.status + ".png";
 		var imgHtml = CzfHtml.img(imgTitle, imgSrc);
 		
-		var classes = "peername" + (l.backbone ? " backbone" : "") + (l.active ? "" : " planned");
+		var classes = [ "peername" ];
+		if (l.backbone) classes.push("backbone");
+		if (!l.active)  classes.push("planned");
+		if (l.added)    classes.push("added");
+		if (l.deleted)  classes.push("deleted");
+		
 		var peerName = CzfHtml.span(l.peername, classes);
 		return CzfHtml.click(imgHtml + peerName, action);
 	}
@@ -210,5 +221,27 @@ var CzfLinkInfo =
 		l.lng = node.lng;
 		
 		return l;
+	}
+	,
+	deleteLink: function()
+	{
+		this.opened.deleted = !this.opened.deleted;
+		
+		// Unsaved links are deleted immediately
+		if (this.opened.added && this.opened.deleted)
+			for (i in this.info.links)
+			{
+				var l = this.info.links[i];
+				if (l.added && l.deleted)
+					delete this.info.links[i];
+			}
+		
+		this.closeEdit();
+	}
+	,
+	closeEdit: function()
+	{
+		this.opened = null;
+		this.updateInfo();
 	}
 }

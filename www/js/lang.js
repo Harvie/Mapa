@@ -4,11 +4,14 @@ var CzfLang =
 	
 	translations: {
 		cs_CZ: {
+			"Cancel" : "Zrušit",
+			"Save" : "Uložit",
+			"Close" : "Zavřít",
+			"Delete" : "Smazat",
 			"(choose result)" : "(vyberte výsledek)",
 			"(new search)" : "(nové hledání)",
 			"Address" : "Adresa",
 			"Automatic filter" : "Automatický filtr",
-			"Cancel" : "Zrušit",
 			"Coordinates" : "Souřadnice",
 			"Edit node" : "Editace bodu",
 			"Filters" : "Filtry",
@@ -29,7 +32,6 @@ var CzfLang =
 			"Only active" : "Jenom aktivní",
 			"Only backbone" : "Jenom páteřní",
 			"Photos" : "Fotky",
-			"Save" : "Uložit",
 			"Search address" : "Hledání adresy",
 			"Search node name" : "Hledání jména bodu",
 			"Search" : "Vyhledávání",
