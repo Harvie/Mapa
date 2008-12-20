@@ -163,6 +163,37 @@ var CzfLinkInfo =
 	,
 	addLink: function(node)
 	{
+		if (!this.checkLinkEnd(node))
+			return;
+		
+		var l = this.createLink(node);
+		this.copyFormData();
+		this.info.links.push(l);
+		this.opened = l;
+		this.updateInfo();
+	}
+	,
+	checkLinkEnd: function(node)
+	{
+		if (node.id == this.info.id)
+		{
+			alert(tr("Node cannot be connected to itself."));
+			return false;
+		}
+		
+		var links = this.info.links;
+		for (i in links)
+			if (links[i].peerid == node.id)
+			{
+				alert(tr("Link to node '%s' already exists.").replace(/%s/, node.name));
+				return false;
+			}
+		
+		return true;
+	}
+	,
+	createLink: function(node)
+	{
 		var l = CzfConst.clone("newLink");
 		l.added = 1;
 		
@@ -173,10 +204,7 @@ var CzfLinkInfo =
 		l.lat = node.lat;
 		l.lng = node.lng;
 		
-		this.copyFormData();
-		this.info.links.push(l);
-		this.opened = l;
-		this.updateInfo();
+		return l;
 	}
 	,
 	methodCall: function(fn)

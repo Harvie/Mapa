@@ -41,6 +41,8 @@ var CzfLang =
 			"Type" : "Typ",
 			"Visibility description" : "Viditelnost z bodu",
 			"You can add a new link by right clicking on target node on the map." : "Nový spoj přidáte kliknutím pravým tlačítkem na cílový bod na mapě.",
+			"Node cannot be connected to itself." : "Bod nemůže být spojen sám se sebou.",
+			"Link to node '%s' already exists." : "Spoj do bodu '%s' už existuje.",
 			"CZFree Node Monitor" : "Mapa sítě CZFree" //There is no comma!
 		}
 	},
