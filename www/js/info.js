@@ -3,9 +3,8 @@ var CzfInfo =
 	info: null,
 	editData: new Object(),
 	element: null,
-	actTab: null,
-	tabs: [ { id: "nodeinfo", label: tr("Node") },
-	        { id: "linkinfo", label: tr("Links") } ],
+	tabs: [ { id: "nodeinfo", label: "Info" },
+	        { id: "linkinfo", label: "Links" } ],
 	
 	initialize: function(element)
 	{
@@ -35,6 +34,10 @@ var CzfInfo =
 	updateInfo: function()
 	{
 		this.element.innerHTML = this.createHTML();
+		
+		if (this.info.editing)
+			this.showTab(this.info.actTab);
+		
 		CzfNodeInfo.setInfo(this.info);
 		CzfLinkInfo.setInfo(this.info);
 	}
@@ -56,6 +59,7 @@ var CzfInfo =
 	editNode: function()
 	{
 		this.info.editing = true;
+		this.info.actTab = "nodeinfo";
 		this.editData[this.info.id] = this.info;
 		this.updateInfo();
 	}
@@ -104,10 +108,12 @@ var CzfInfo =
 		{
 			html += this.createTabs(this.tabs);
 			
-			var buttons = '';
+			var buttons = '<p>';
 			buttons += CzfHtml.button("save", tr("Save"), "CzfInfo.save()");
 			buttons += "&nbsp;&nbsp;";
 			buttons += CzfHtml.button("cancel", tr("Cancel"), "CzfInfo.cancelEdit()");
+			buttons += '</p>';
+			
 			html += CzfHtml.form(buttons, "infoform", "return false;");
 		}
 		else
@@ -127,7 +133,7 @@ var CzfInfo =
 		{
 			headers += '<span class="tab_label" id="' + tabs[i].id + '.header"';
 			headers += 'onclick="CzfInfo.openTab(\'' + tabs[i].id + '\')">';
-			headers += tabs[i].label + '</span> ';
+			headers += tr(tabs[i].label) + '</span> ';
 		}
 		headers += '</div>';
 			
@@ -141,14 +147,14 @@ var CzfInfo =
 	,
 	openTab: function(tabid)
 	{
-		if (this.actTab == tabid)
+		if (this.info.actTab == tabid)
 			return;
 		
-		if (this.actTab)
-			this.hideTab(this.actTab);
+		if (this.info.actTab)
+			this.hideTab(this.info.actTab);
 		
 		this.showTab(tabid);
-		this.actTab = tabid;
+		this.info.actTab = tabid;
 	}
 	,
 	showTab: function(tabid)

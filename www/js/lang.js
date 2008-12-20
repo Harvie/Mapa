@@ -17,6 +17,8 @@ var CzfLang =
 			"Hide lines" : "Skrýt spoje",
 			"Homepage" : "Stránky",
 			"Link filter" : "Filtr spojů",
+			"Info" : "Údaje",
+			"Links" : "Spoje",
 			"Links to other nodes" : "Spojení s ostatními body",
 			"Name" : "Jméno",
 			"New node": "Nový bod",

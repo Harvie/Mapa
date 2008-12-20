@@ -57,8 +57,9 @@ var CzfLinkInfo =
 			html += tr("You can add a new link by right clicking on target node on the map.");
 			html += '</p>';
 		}
+		else
+			html += CzfHtml.clear(true);
 		
-		html += CzfHtml.clear(true);
 		return html;
 	}
 	,
