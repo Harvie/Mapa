@@ -1,30 +1,18 @@
 var CzfInfo =
 {
-	actTab: null,
-	tabs: null,
-	headers: null,
 	info: null,
 	editData: new Object(),
+	element: null,
+	actTab: null,
+	tabs: [ { id: "nodeinfo", label: tr("Node") },
+	        { id: "linkinfo", label: tr("Links") } ],
 	
 	initialize: function(element)
 	{
-		this.tabs = [ { id: "nodeinfo", label: tr("Node"), contents: "" },
-			          { id: "linkinfo", label: tr("Links"), contents: "" } ];
+		this.element = element;
 		
-		var html = CzfHtml.button("edit", tr("Edit node"), "CzfInfo.editNode()");
-		html += this.createTabs(this.tabs);
-		
-		var buttons = '';
-		buttons += CzfHtml.button("save", tr("Save"), "CzfInfo.save()");
-		buttons += "&nbsp;&nbsp;";
-		buttons += CzfHtml.button("cancel", tr("Cancel"), "CzfInfo.cancelEdit()");
-		html += CzfHtml.form(buttons, "infoform", "return false;");
-		
-		element.innerHTML = html;
-		this.headers = document.getElementById("info.headers");
-		
-		CzfNodeInfo.initialize(document.getElementById("nodeinfo"));
-		CzfLinkInfo.initialize(document.getElementById("linkinfo"));
+		CzfNodeInfo.initialize("nodeinfo");
+		CzfLinkInfo.initialize("linkinfo");
 	}
 	,
 	setNode: function(nodeid)
@@ -46,6 +34,7 @@ var CzfInfo =
 	,
 	updateInfo: function()
 	{
+		this.element.innerHTML = this.createHTML();
 		CzfNodeInfo.setInfo(this.info);
 		CzfLinkInfo.setInfo(this.info);
 	}
@@ -107,6 +96,30 @@ var CzfInfo =
 			this.setNode(this.info.id);
 	}
 	,
+	createHTML: function()
+	{
+		var html = '';
+		
+		if (this.info.editing)
+		{
+			html += this.createTabs(this.tabs);
+			
+			var buttons = '';
+			buttons += CzfHtml.button("save", tr("Save"), "CzfInfo.save()");
+			buttons += "&nbsp;&nbsp;";
+			buttons += CzfHtml.button("cancel", tr("Cancel"), "CzfInfo.cancelEdit()");
+			html += CzfHtml.form(buttons, "infoform", "return false;");
+		}
+		else
+		{
+			 html += CzfHtml.button("edit", tr("Edit node"), "CzfInfo.editNode()");
+			 html += '<div id="nodeinfo"></div>';
+			 html += '<div id="linkinfo"></div>';
+		}
+		
+		return html;
+	}
+	,
 	createTabs: function(tabs)
 	{
 		var headers = '<div id="info.headers">';
@@ -120,10 +133,7 @@ var CzfInfo =
 			
 		var blocks = '<div id="info.tabs">';
 		for (i in tabs)
-		{
-			blocks += '<div class="tab_block" id="' + tabs[i].id + '">';
-			blocks += tabs[i].contents + '</div>';
-		}
+			blocks += '<div class="tab_block" id="' + tabs[i].id + '"></div>';
 		blocks += '</div>';
 		
 		return headers + blocks;
@@ -151,22 +161,6 @@ var CzfInfo =
 	{
 		document.getElementById(tabid).style.display = "none";
 		document.getElementById(tabid + ".header").className = "tab_label";
-	}
-	,
-	enableTabs: function()
-	{
-		this.headers.style.display = "block";
-		
-		for (i in this.tabs)
-			this.hideTab(this.tabs[i].id);
-	}
-	,
-	disableTabs: function()
-	{
-		this.headers.style.display = "none";
-		
-		for (i in this.tabs)
-			this.showTab(this.tabs[i].id);
 	}
 	,
 	methodCall: function(fn)

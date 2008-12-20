@@ -1,12 +1,12 @@
 var CzfLinkInfo =
 {
 	info: null,
-	element: null,
+	elementID: null,
 	opened: null,
 	
-	initialize: function(element)
+	initialize: function(elementID)
 	{
-		this.element = element;
+		this.elementID = elementID;
 	}
 	,
 	setInfo: function(info)
@@ -19,10 +19,12 @@ var CzfLinkInfo =
 	,
 	updateInfo: function()
 	{
+		var element = document.getElementById(this.elementID);
+		
 		if (this.info && this.info.links)
-			this.element.innerHTML = this.createInfo(this.info);
+			element.innerHTML = this.createInfo(this.info);
 		else
-			this.element.innerHTML = "";
+			element.innerHTML = "";
 	}
 	,
 	createInfo: function(info)

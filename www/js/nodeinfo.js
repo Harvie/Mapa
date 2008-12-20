@@ -1,11 +1,11 @@
 var CzfNodeInfo =
 {
 	info: null,
-	element: null,
+	elementID: null,
 	
-	initialize: function(element)
+	initialize: function(elementID)
 	{
-		this.element = element;
+		this.elementID = elementID;
 	}
 	,
 	setInfo: function(newInfo)
@@ -20,21 +20,19 @@ var CzfNodeInfo =
 	,
 	updateInfo: function()
 	{
-		var html;
-		
-		if (this.info)
-			if (this.info.editing)
-				html = this.createEdit(this.info);
-			else
-				html = this.createInfo(this.info);
-		else
-			html = "";
+		var element = document.getElementById(this.elementID);
 		
 		// The form stays in DOM even after it's replaced
 		if (document.nodeform)
 			delete document.nodeform;
 		
-		this.element.innerHTML = html;
+		if (this.info)
+			if (this.info.editing)
+				element.innerHTML = this.createEdit(this.info);
+			else
+				element.innerHTML= this.createInfo(this.info);
+		else
+			element.innerHTML = "";
 	}
 	,
 	updateMarker: function()
