@@ -163,14 +163,19 @@ var CzfLinkInfo =
 	,
 	addLink: function(node)
 	{
+		if (!this.info.editing)
+			return;
+		
 		if (!this.checkLinkEnd(node))
 			return;
 		
 		var l = this.createLink(node);
-		this.copyFormData();
 		this.info.links.push(l);
+		this.copyFormData();
 		this.opened = l;
+		
 		this.updateInfo();
+		CzfInfo.openTab(this.elementID);
 	}
 	,
 	checkLinkEnd: function(node)
