@@ -25,6 +25,9 @@ if (is_array($_POST['links']))
 		
 		if(isset($link['added']))
 			Links::insert($link, $_POST['id'], $link['peerid']);
+		
+		if(isset($link['deleted']))
+			Links::delete($link, $_POST);
 	}
 
 Query::commit();

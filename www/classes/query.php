@@ -18,12 +18,7 @@ class Query
 		$this->stmt = self::$db->prepare($sql);
 	}
 	
-	public static function select($sql)
-	{
-		return self::$db->prepare($sql);
-	}
-	
-	public static function delete($sql)
+	public static function prepare($sql)
 	{
 		return self::$db->prepare($sql);
 	}
@@ -43,6 +38,14 @@ class Query
 		$sql .= implode(',', array_map($fn, $columns));
 		$sql .= ' WHERE '.implode(' AND ', array_map($fn, $keys));
 		return new Query($sql, array_merge($columns, $keys));
+	}
+	
+	public static function delete($table, $keys = array("id"))
+	{
+		$sql = "DELETE FROM $table ";
+		$fn = create_function('$col', 'return "$col = :$col";');
+		$sql .= ' WHERE '.implode(' AND ', array_map($fn, $keys));
+		return new Query($sql, $keys);
 	}
 	
 	public static function filtersToSQL($table, $column, $filters)

@@ -9,7 +9,7 @@ class Links
 	
 	public static function selectFromNode($id)
 	{
-		$query = Query::select(
+		$query = Query::prepare(
 			'SELECT * FROM links JOIN nodes ON node2 = nodes.id WHERE node1 = ?'.
 			' UNION ALL '.
 			'SELECT * FROM links JOIN nodes ON node1 = nodes.id WHERE node2 = ?'
@@ -19,7 +19,7 @@ class Links
 		return $query;
 	}
 	
-	public function insert($data, $node1, $node2)
+	public static function insert($data, $node1, $node2)
 	{
 		$pos1 = Nodes::fetchPos(intval($node1));
 		$pos2 = Nodes::fetchPos(intval($node2));
@@ -42,19 +42,30 @@ class Links
 	
 	public static function update($link, $node)
 	{
+		self::setEndpoints($link, $node);
+		$update = Query::update('links', self::$columns, self::$keys);
+		$update->execute($link);
+	}
+		
+	public static function delete($link, $node)
+	{
+		self::setEndpoints($link, $node);
+		$delete = Query::delete('links', self::$keys);
+		$delete->execute($link);
+	}
+	
+	private static function setEndpoints(&$link, $node)
+	{
 		if (floatval($node['lat']) < floatval($link['lat']))
 		{
-			$link['node1'] = $node['id'];
-			$link['node2'] = $link['peerid'];
+			$link['node1'] = intval($node['id']);
+			$link['node2'] = intval($link['peerid']);
 		}
 		else
 		{
-			$link['node1'] = $link['peerid'];
-			$link['node2'] = $node['id'];
+			$link['node1'] = intval($link['peerid']);
+			$link['node2'] = intval($node['id']);
 		}
-		
-		$update = Query::update('links', self::$columns, self::$keys);
-		$update->execute($link);
 	}
 	
 	// Coordinates of link endpoints are duplicated in table links so they
@@ -62,9 +73,9 @@ class Links
 	// links are always stored that lat1 <= lat2. So if the node was moved,
 	// the coordinates must be updated and also sometimes the line endpoints
 	// have to be swapped.
-	static function fixLinkEndpoints($id, $lat, $lng)
+	public static function fixLinkEndpoints($id, $lat, $lng)
 	{
-		$select = Query::select('SELECT * FROM links WHERE node1 = ? OR node2 = ? FOR UPDATE');
+		$select = Query::prepare('SELECT * FROM links WHERE node1 = ? OR node2 = ? FOR UPDATE');
 		$select->execute(array($id, $id));
 		$links = $select->fetchAll(PDO::FETCH_ASSOC);
 		
@@ -98,7 +109,7 @@ class Links
 		}
 	}
 	
-	static function selectInArea($bounds, $nodefilters, $linkfilters)
+	public static function selectInArea($bounds, $nodefilters, $linkfilters)
 	{
 		$sql = "SELECT lat1,lng1,lat2,lng2,media,active,backbone FROM links ".
 		       "JOIN nodes AS n1 ON node1 = n1.id JOIN nodes AS n2 ON node2 = n2.id ".
@@ -111,7 +122,7 @@ class Links
 		foreach (self::$filters as $column)
 			$sql .= Query::filtersToSQL('links', $column, $linkfilters);
 
-		$select = Query::select($sql);
+		$select = Query::prepare($sql);
 		$select->execute(array_merge($bounds, $bounds));
 		return $select;
 	}

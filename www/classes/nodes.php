@@ -31,14 +31,14 @@ class Nodes
 	
 	public static function fetchInfo($id)
 	{
-		$query = Query::select('SELECT * FROM nodes WHERE id = ?');
+		$query = Query::prepare('SELECT * FROM nodes WHERE id = ?');
 		$query->execute(array($id));
 		return $query->fetch();
 	}
 	
 	public static function fetchPos($id)
 	{
-		$query = Query::select('SELECT lat,lng FROM nodes WHERE id = ?');
+		$query = Query::prepare('SELECT lat,lng FROM nodes WHERE id = ?');
 		$query->execute(array($id));
 		return $query->fetch();
 	}
@@ -48,7 +48,7 @@ class Nodes
 		//'%' means any string, '_' means any character in SQL pattern matching
 		$name = str_replace(array('%','_'), array('\%','\_'), $name);
 		
-		$select = Query::select('SELECT id, name, lat, lng FROM nodes WHERE name ILIKE ? ORDER BY name LIMIT 20');
+		$select = Query::prepare('SELECT id, name, lat, lng FROM nodes WHERE name ILIKE ? ORDER BY name LIMIT 20');
 		$select->execute(array("%$name%"));
 		return $select;
 	}
@@ -59,7 +59,7 @@ class Nodes
 		       "WHERE lat < ? AND lng < ? AND lat > ? AND lng > ?";
 		
 		$sql .= self::makeFilterSQL('nodes', $filters);
-		$select = Query::select($sql);
+		$select = Query::prepare($sql);
 		$select->execute($bounds);
 		return $select;
 	}
