@@ -22,6 +22,12 @@ var CzfInfo =
 			return;
 		}
 		
+		if (nodeid == 0)
+		{
+			this.setInfo(null);
+			return;
+		}
+		
 		CzfAjax.get("nodeinfo", { id: nodeid }, GEvent.callback(this, this.setInfo));
 	}
 	,
@@ -35,7 +41,7 @@ var CzfInfo =
 	{
 		this.element.innerHTML = this.createHTML();
 		
-		if (this.info.editing)
+		if (this.info && this.info.editing)
 			this.showTab(this.info.actTab);
 		
 		CzfNodeInfo.setInfo(this.info);
@@ -44,14 +50,15 @@ var CzfInfo =
 	,
 	addNode: function()
 	{
-		if (this.editData["new"])
+		if (this.editData[0])
 		{
-			this.setInfo(this.editData["new"]);
+			this.setInfo(this.editData[0]);
 			return false;
 		}
 		
 		info = CzfNodeInfo.createNode();
-		this.editData["new"] = info;
+		info.actTab = "nodeinfo";
+		this.editData[0] = info;
 		this.setInfo(info);
 		return false;
 	}
@@ -64,6 +71,16 @@ var CzfInfo =
 		this.updateInfo();
 	}
 	,
+	deleteNode: function()
+	{
+		var msg = tr("Do you really want to delete node '%s'? This action cannot be undone.");
+		if (confirm(msg.replace(/%s/, this.info.name)))
+		{
+			this.info.deleteNode = true;
+			this.submit();
+		}
+	}
+	,
 	save: function()
 	{
 		document.infoform.save.disabled = true;
@@ -71,6 +88,11 @@ var CzfInfo =
 		
 		CzfNodeInfo.copyFormData();
 		CzfLinkInfo.copyFormData();
+		this.submit();
+	}
+	,
+	submit: function()
+	{
 		CzfAjax.post("submit", this.info, GEvent.callback(this, this.saveDone));
 	}
 	,
@@ -78,8 +100,8 @@ var CzfInfo =
 	{
 		if (result.error === undefined)
 		{
-			this.info.id = result.id;
-			this.cancelEdit();
+			delete this.editData[this.info.id];
+			this.setNode(result.id);
 			CzfMap.moved();
 		}
 		else
@@ -93,18 +115,14 @@ var CzfInfo =
 	cancelEdit: function()
 	{
 		delete this.editData[this.info.id];
-		
-		if (this.info.id == "new")
-			this.setInfo(null)
-		else
-			this.setNode(this.info.id);
+		this.setNode(this.info.id);
 	}
 	,
 	createHTML: function()
 	{
-		var html = '';
+		var html = "";
 		
-		if (this.info.editing)
+		if (this.info && this.info.editing)
 		{
 			html += this.createTabs(this.tabs);
 			
@@ -117,7 +135,12 @@ var CzfInfo =
 		}
 		else
 		{
-			 html += CzfHtml.button("edit", tr("Edit node"), "CzfInfo.editNode()");
+			 if (this.info)
+			 {
+			 	html += CzfHtml.button("edit", tr("Edit"), "CzfInfo.editNode()");
+			 	html += CzfHtml.button("edit", tr("Delete"), "CzfInfo.deleteNode()");
+			 }
+			 
 			 html += '<div id="nodeinfo"></div>';
 			 html += '<div id="linkinfo"></div>';
 		}

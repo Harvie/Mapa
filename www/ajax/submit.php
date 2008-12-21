@@ -3,18 +3,25 @@
 if (!isset($_POST['id']))
 	return;
 
+$id = intval($_POST['id']);
+$_POST['id'] = $id;
+
 Query::beginTransaction();
 
-if ($_POST['id'] === "new")
+if ($id == 0)
 	$id = Nodes::insert($_POST);
 else
 {
-	$id = intval($_POST['id']);
-	$_POST['id'] = $id;
-	Nodes::update($_POST, isset($_POST['moved']));
+	if ($_POST['deleteNode'])
+	{
+		Nodes::delete($_POST);
+		$id = 0;
+	}
+	else
+		Nodes::update($_POST, isset($_POST['moved']));
 }
 
-if (is_array($_POST['links']))
+if ($id != 0 && is_array($_POST['links']))
 	foreach ($_POST['links'] as $link)
 	{
 		if (!is_array($link))
@@ -24,7 +31,7 @@ if (is_array($_POST['links']))
 			Links::update($link, $_POST);
 		
 		if(isset($link['added']))
-			Links::insert($link, $_POST['id'], $link['peerid']);
+			Links::insert($link, $id, $link['peerid']);
 		
 		if(isset($link['deleted']))
 			Links::delete($link, $_POST);

@@ -34,8 +34,8 @@ CREATE TABLE nodes (
 --
 
 CREATE TABLE links (
-    node1 integer NOT NULL REFERENCES nodes(id),
-    node2 integer NOT NULL REFERENCES nodes(id),
+    node1 integer NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
+    node2 integer NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
     media integer,
     active integer DEFAULT 1 NOT NULL,
     backbone integer DEFAULT 0 NOT NULL,

@@ -40,7 +40,7 @@ class Query
 		return new Query($sql, array_merge($columns, $keys));
 	}
 	
-	public static function delete($table, $keys = array("id"))
+	public static function delete($table, $keys = array('id'))
 	{
 		$sql = "DELETE FROM $table ";
 		$fn = create_function('$col', 'return "$col = :$col";');

@@ -29,6 +29,12 @@ class Nodes
 		$update->execute($data);
 	}
 	
+	public static function delete($data)
+	{
+		$delete = Query::delete('nodes');
+		$delete->execute($data);
+	}
+	
 	public static function fetchInfo($id)
 	{
 		$query = Query::prepare('SELECT * FROM nodes WHERE id = ?');

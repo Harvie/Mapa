@@ -4,6 +4,7 @@ var CzfLang =
 	
 	translations: {
 		cs_CZ: {
+			"Edit" : "Upravit",
 			"Cancel" : "Zrušit",
 			"Save" : "Uložit",
 			"Close" : "Zavřít",
@@ -13,7 +14,6 @@ var CzfLang =
 			"Address" : "Adresa",
 			"Automatic filter" : "Automatický filtr",
 			"Coordinates" : "Souřadnice",
-			"Edit node" : "Editace bodu",
 			"Filters" : "Filtry",
 			"Hide everything" : "Skrýt vše",
 			"Hide labels" : "Skrýt popisky",
@@ -45,6 +45,7 @@ var CzfLang =
 			"You can add a new link by right clicking on target node on the map." : "Nový spoj přidáte kliknutím pravým tlačítkem na cílový bod na mapě.",
 			"Node cannot be connected to itself." : "Bod nemůže být spojen sám se sebou.",
 			"Link to node '%s' already exists." : "Spoj do bodu '%s' už existuje.",
+			"Do you really want to delete node '%s'? This action cannot be undone." : "Opravdu chcete smazat bod '%s'? Tuto akci nebude možné vrátit zpět.",
 			"CZFree Node Monitor" : "Mapa sítě CZFree" //There is no comma!
 		}
 	},
