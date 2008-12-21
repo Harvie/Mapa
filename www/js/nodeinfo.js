@@ -72,6 +72,7 @@ var CzfNodeInfo =
 	createNode: function()
 	{
  		var info = CzfConst.clone("newInfo");
+		info.links = new Array();
 		info.editing = true;
 		
 		var latlng = CzfMap.getCenter();

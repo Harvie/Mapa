@@ -6,8 +6,7 @@ var CzfConst =
 	nodeTypes:   { 0: "Unknown", 1: "Client", 9: "Full AP", 10: "Steet access AP", 11: "Router", 98: "InfoPoint", 99: "Non-CZF" },
 	nodeStates:  { 1: "Active", 10: "Down", 40: "In testing", 79: "Under construction", 80: "In planning", 90: "Obsolete" },
 	linkMedia:   { 0: "N/A", 1: "2.4G", 2: "FSO", 3: "UTP", 4: "Fiber", 5: "VPN", 6: "FSO + WiFi", 7: "5G", 8: "10G", 9: "Licensed", 99: "Other" },
-	newInfo:     { id: 0, name: "", type: 1, status: 80, url_thread: "", url_photos: "",
-	               url_homepage: "", address: "", visibility: "", links: new Array() },
+	newInfo:     { id: 0, name: "", type: 1, status: 80, url_thread: "", url_photos: "", url_homepage: "", address: "", visibility: "" },
 	newLink:     { media: 0, active: 1, backbone: 0 },
 	
 	mediaInfo: {

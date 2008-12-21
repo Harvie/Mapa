@@ -29,7 +29,10 @@ var CzfLinkInfo =
 	,
 	createInfo: function(info)
 	{
-		var html = "<p>" + tr("Links to other nodes") + ":</p>";
+		var html = ""
+		
+		if (info.links.length > 0)
+			html += "<p>" + tr("Links to other nodes") + ":</p>";
 		
 		for (i in info.links)
 		{
@@ -241,6 +244,7 @@ var CzfLinkInfo =
 	,
 	closeEdit: function()
 	{
+		this.copyFormData();
 		this.opened = null;
 		this.updateInfo();
 	}
