@@ -58,6 +58,7 @@ var CzfLinkInfo =
 		{
 			html += '<p class="help">';
 			html += tr("You can add a new link by right clicking on target node on the map.");
+			html += " " + tr("If it doesn't work, try shift + left click.");
 			html += '</p>';
 		}
 		else

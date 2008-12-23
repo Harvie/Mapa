@@ -43,6 +43,7 @@ var CzfLang =
 			"Type" : "Typ",
 			"Visibility description" : "Viditelnost z bodu",
 			"You can add a new link by right clicking on target node on the map." : "Nový spoj přidáte kliknutím pravým tlačítkem na cílový bod na mapě.",
+			"If it doesn't work, try shift + left click." : "Nefunguje-li to, zkuste shift a levé tlačítko.",
 			"Node cannot be connected to itself." : "Bod nemůže být spojen sám se sebou.",
 			"Link to node '%s' already exists." : "Spoj do bodu '%s' už existuje.",
 			"Do you really want to delete node '%s'? This action cannot be undone." : "Opravdu chcete smazat bod '%s'? Tuto akci nebude možné vrátit zpět.",

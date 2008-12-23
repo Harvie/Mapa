@@ -71,6 +71,10 @@ var CzfMap =
 	,
 	clicked: function(overlay, point)
 	{
+		// Hack for Opera (no right click support)
+		if (window.event && window.event.shiftKey)
+			return this.rightclick(point, null, overlay);
+		
 		if (overlay && overlay.czfNode)
 			CzfMain.setNode(overlay.czfNode.id);
 	}
