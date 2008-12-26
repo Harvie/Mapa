@@ -1,10 +1,19 @@
-function CzfAnchor(callback, defaults)
+var CzfAnchor =
 {
-	this.callback = callback;
-	this.defaults = defaults;
-	this.lastHash = null;
+	callback: null,
+	defaults: null,
+	lastHash: null,
 	
-	this.update = function(state)
+	initialize: function(callback, defaults)
+	{
+		this.callback = callback;
+		this.defaults = defaults;
+		
+		this.check();
+		window.setInterval(GEvent.callback(this, this.check), 500);
+	}
+	,
+	update: function(state)
 	{
 		var hash = "";
 		for (param in state)
@@ -13,8 +22,8 @@ function CzfAnchor(callback, defaults)
 		document.location.hash = hash;
 		this.lastHash = "#" + hash;
 	}
-	
-	this.check = function()
+	,
+	check: function()
 	{
 		if (this.lastHash != document.location.hash)
 		{
@@ -22,8 +31,8 @@ function CzfAnchor(callback, defaults)
 			this.decode(this.lastHash);
 		}
 	}
-	
-	this.decode = function(hash)
+	,
+	decode: function(hash)
 	{
 		var paramList = hash.substring(1).split("&");
 		var paramObj = new Object();
@@ -43,6 +52,4 @@ function CzfAnchor(callback, defaults)
 		this.callback(paramObj);
 	}
 	
-	this.check();
-	window.setInterval(GEvent.callback(this, this.check), 500);
 }

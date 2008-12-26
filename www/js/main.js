@@ -1,5 +1,6 @@
 var CzfMain =
 {
+	state: null,
 	defaults: { lat: 50.006915, lng: 14.422809, zoom: 15, autofilter: 1, type: "k" },
 	
 	start: function(mapID, panelID)
@@ -16,8 +17,7 @@ var CzfMain =
 		this.initPanel(document.getElementById(panelID));
 		
 		var callback = GEvent.callback(this, this.anchorChanged);
-		this.anchor = new CzfAnchor(callback, this.clone(this.defaults));
-		this.anchor.update(this.state);
+		CzfAnchor.initialize(callback, this.clone(this.defaults));
 	}
 	,
 	stop: function()
@@ -52,9 +52,7 @@ var CzfMain =
 	setState: function(newState)
 	{
 		this.state = newState;
-		
-		if (this.anchor)
-			this.anchor.update(this.state);
+		CzfAnchor.update(this.state);
 	}
 	,
 	anchorChanged: function(newState)
@@ -79,10 +77,7 @@ var CzfMain =
 	setNode: function(nodeid)
 	{
 		this.state.node = nodeid;
-		
-		if (this.anchor)
-			this.anchor.update(this.state);
-		
+		CzfAnchor.update(this.state);
 		CzfInfo.setNode(nodeid);
 	}
 	,
