@@ -82,7 +82,7 @@ class Links
 		if (count($links) == 0)
 			return;
 		
-		$delete = Query::delete('DELETE FROM links WHERE node1 = ? OR node2 = ?');
+		$delete = Query::prepare('DELETE FROM links WHERE node1 = ? OR node2 = ?');
 		$delete->execute(array($id, $id));
 		
 		$insert = Query::insert('links', array_keys($links[0]));
