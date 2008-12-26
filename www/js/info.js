@@ -73,8 +73,8 @@ var CzfInfo =
 	,
 	deleteNode: function()
 	{
-		var msg = tr("Do you really want to delete node '%s'? This action cannot be undone.");
-		if (confirm(msg.replace(/%s/, this.info.name)))
+		var msg = "Do you really want to delete node '%s'? This action cannot be undone.";
+		if (confirm(CzfLang.format(msg, this.info.name)))
 		{
 			this.info.deleteNode = true;
 			this.submit();

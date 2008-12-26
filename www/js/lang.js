@@ -64,6 +64,11 @@ var CzfLang =
 		else
 			return string;
 	}
+	,
+	format: function(msg, arg)
+	{
+		return this.translate(msg).replace(/%s/, arg);
+	}
 }
 
 //Shortcut, it's used in many places

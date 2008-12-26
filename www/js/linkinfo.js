@@ -206,7 +206,7 @@ var CzfLinkInfo =
 		for (i in links)
 			if (links[i].peerid == node.id)
 			{
-				alert(tr("Link to node '%s' already exists.").replace(/%s/, node.name));
+				alert(CzfLang.format("Link to node '%s' already exists.", node.name));
 				return false;
 			}
 		
