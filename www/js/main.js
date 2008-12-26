@@ -17,7 +17,7 @@ var CzfMain =
 		this.initPanel(document.getElementById(panelID));
 		
 		var callback = GEvent.callback(this, this.anchorChanged);
-		CzfAnchor.initialize(callback, this.clone(this.defaults));
+		CzfAnchor.initialize(callback, this.defaults);
 	}
 	,
 	stop: function()

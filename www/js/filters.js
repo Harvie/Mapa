@@ -67,9 +67,9 @@ var CzfFilters =
 			child = this.filters.childNodes[i];
 			if (child.nodeName == "INPUT")
 			{
-				child.checked = !!state[child.name];
+				child.checked = (state[child.name] == 1);
 				if (this.autoFilter[child.name])
-					child.disabled = !!state.autofilter;
+					child.disabled = (state.autofilter == 1);
 			}
 		}
 	}
@@ -88,7 +88,10 @@ var CzfFilters =
 			if (box.checked)
 				this.updateAutoFilter(state.zoom);
 			else
+			{
+				state["autofilter"] = 0; //It must exist
 				this.updateControls(state);
+			}
 		}
 		
 		CzfMain.setState(state);

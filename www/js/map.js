@@ -29,17 +29,16 @@ var CzfMap =
 	,
 	setPosition: function(state)
 	{
-		var lat = state.lat ? parseFloat(state.lat) : CzfMain.defaults.lat;
-		var lng = state.lng ? parseFloat(state.lng) : CzfMain.defaults.lng;
-		var zoom = state.zoom ? parseInt(state.zoom) : CzfMain.defaults.zoom;
-		var type = state.type ? state.type : CzfMain.defaults.type;
-		
-		switch (type)
+		switch (state.type)
 		{	//The API has conversion to string, but not the other way around
 			case "m": this.map.setMapType(G_NORMAL_MAP); break;
 			case "h": this.map.setMapType(G_HYBRID_MAP); break;
 			default: this.map.setMapType(G_SATELLITE_MAP); break;
 		}
+		
+		var lat = parseFloat(state.lat);
+		var lng = parseFloat(state.lng);
+		var zoom = parseInt(state.zoom);
 		
 		this.map.setCenter(new GLatLng(lat, lng), zoom);
 	}
