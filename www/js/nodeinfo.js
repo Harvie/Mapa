@@ -1,5 +1,6 @@
 var CzfNodeInfo =
 {
+	newInfo: { id: 0, name: "", type: 1, status: 80, url_thread: "", url_photos: "", url_homepage: "", address: "", visibility: "" },
 	info: null,
 	elementID: null,
 	
@@ -71,7 +72,7 @@ var CzfNodeInfo =
 	,
 	createNode: function()
 	{
- 		var info = CzfConst.clone("newInfo");
+ 		var info = CzfMain.clone(this.newInfo);
 		info.links = new Array();
 		info.editing = true;
 		

@@ -1,5 +1,6 @@
 var CzfLinkInfo =
 {
+	newLink: { media: 0, active: 1, backbone: 0 },
 	info: null,
 	elementID: null,
 	opened: null,
@@ -214,7 +215,7 @@ var CzfLinkInfo =
 	,
 	createLink: function(node)
 	{
-		var l = CzfConst.clone("newLink");
+		var l = CzfMain.clone(this.newLink);
 		l.added = 1;
 		
 		l.peerid = node.id;

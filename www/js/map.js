@@ -1,5 +1,6 @@
 var CzfMap =
 {
+	mediaColors: [ "#000000", "#00CC00", "#AA2222", "#88DDFF", "#AA22AA", "#00FFFF", "#FF0000", "#CCCCCC", "#FFFFFF", "#FF8800" ],
 	icons: new Object(),
 	map: null,
 	marker: null,
@@ -28,10 +29,10 @@ var CzfMap =
 	,
 	setPosition: function(state)
 	{
-		var lat = state.lat ? parseFloat(state.lat) : CzfConst.defaults.lat;
-		var lng = state.lng ? parseFloat(state.lng) : CzfConst.defaults.lng;
-		var zoom = state.zoom ? parseInt(state.zoom) : CzfConst.defaults.zoom;
-		var type = state.type ? state.type : CzfConst.defaults.type;
+		var lat = state.lat ? parseFloat(state.lat) : CzfMain.defaults.lat;
+		var lng = state.lng ? parseFloat(state.lng) : CzfMain.defaults.lng;
+		var zoom = state.zoom ? parseInt(state.zoom) : CzfMain.defaults.zoom;
+		var type = state.type ? state.type : CzfMain.defaults.type;
 		
 		switch (type)
 		{	//The API has conversion to string, but not the other way around
@@ -149,7 +150,7 @@ var CzfMap =
 			var latlng2 = new GLatLng(link.lat2, link.lng2);
 			
 			var linePoints = [ latlng1, latlng2 ];
-			var color = CzfConst.mediaColors[link.media];
+			var color = this.mediaColors[link.media];
 			var width = link.backbone ? 3 : 1;
 			var opacity = link.active ? 1 : 0.4;
 			

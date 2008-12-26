@@ -1,5 +1,7 @@
 var CzfMain =
 {
+	defaults: { lat: 50.006915, lng: 14.422809, zoom: 15, autofilter: 1, type: "k" },
+	
 	start: function(mapID, panelID)
 	{
 		if (!GBrowserIsCompatible())
@@ -14,7 +16,7 @@ var CzfMain =
 		this.initPanel(document.getElementById(panelID));
 		
 		var callback = GEvent.callback(this, this.anchorChanged);
-		this.anchor = new CzfAnchor(callback, CzfConst.clone("defaults"));
+		this.anchor = new CzfAnchor(callback, this.clone(this.defaults));
 		this.anchor.update(this.state);
 	}
 	,
@@ -82,5 +84,15 @@ var CzfMain =
 			this.anchor.update(this.state);
 		
 		CzfInfo.setNode(nodeid);
+	}
+	,
+	clone: function(obj)
+	{
+		copy = new Object();
+		
+		for (i in obj)
+			copy[i] = obj[i];
+		
+		return copy;
 	}
 }

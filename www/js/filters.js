@@ -1,5 +1,6 @@
 var CzfFilters =
 {
+	autoFilter:  { actnode: 1, aponly: 1, actlink: 1, bbonly: 1 },
 	state: new Object(),
 	filters: null,
 	
@@ -67,7 +68,7 @@ var CzfFilters =
 			if (child.nodeName == "INPUT")
 			{
 				child.checked = !!state[child.name];
-				if (CzfConst.autoFilter[child.name])
+				if (this.autoFilter[child.name])
 					child.disabled = !!state.autofilter;
 			}
 		}
