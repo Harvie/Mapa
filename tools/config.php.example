@@ -2,10 +2,16 @@
 
 class Config
 {
+	public static $gmapKey = "YOUR_GOOGLE_MAPS_KEY";
+	
 	public static $usersDB = array(
 		'dsn'	=> 'mysql:dbname=users',
 		'user'	=> 'map',
 		'pass'	=> 'password',
 		'init' => 'SET NAMES utf8',
+	);
+	
+	public static $mapDB = array(
+		'dsn'	=> 'pgsql:dbname=map',
 	);
 }
