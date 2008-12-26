@@ -6,18 +6,9 @@
     <link rel="stylesheet" type="text/css" href="map.css" />
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAuLM8y0Dds7coOFGVF0nqtxQaDGRBdHCxKyYKLoyuPujpiM7ZexRELZc4fv7XPdRV7-aCrXnEd_-f2A"
       type="text/javascript"></script>
-    <script type="text/javascript" src="js/lang.js"></script>
-    <script type="text/javascript" src="js/marker.js"></script>
-    <script type="text/javascript" src="js/ajax.js"></script>
-    <script type="text/javascript" src="js/anchor.js"></script>
-    <script type="text/javascript" src="js/html.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
-    <script type="text/javascript" src="js/map.js"></script>
-    <script type="text/javascript" src="js/search.js"></script>
-    <script type="text/javascript" src="js/filters.js"></script>
-    <script type="text/javascript" src="js/info.js"></script>
-    <script type="text/javascript" src="js/nodeinfo.js"></script>
-    <script type="text/javascript" src="js/linkinfo.js"></script>
+    <? foreach (glob("scripts/*.js") as $file): ?>
+    <script type="text/javascript" src="<?=$file?>"></script>
+    <? endforeach ?>
   </head>
   
   <body onload="CzfMain.start('map','panel')" onunload="CzfMain.stop()">
