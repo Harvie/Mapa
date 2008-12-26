@@ -2,6 +2,7 @@
 header("Content-type: text/html; charset=utf-8");
 $jsFiles = glob("scripts/*.js");
 $gmapKey = Config::$gmapKey;
+$languages = self::getLanguages();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -13,6 +14,12 @@ $gmapKey = Config::$gmapKey;
 <? foreach ($jsFiles as $file): ?>
     <script type="text/javascript" src="<?=$file?>"></script>
 <? endforeach ?>
+    <script type="text/javascript">
+    	var CzfConfig =
+    	{
+    		languages: [ "<?=implode('","', $languages) ?>" ]
+    	}
+    </script>
   </head>
   
   <body onload="CzfMain.start('map','panel')" onunload="CzfMain.stop()">

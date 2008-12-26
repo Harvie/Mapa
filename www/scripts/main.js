@@ -11,8 +11,7 @@ var CzfMain =
 			return;
 		}
 		
-		CzfLang.setLang("cs_CZ");
-		
+		CzfLang.initialize();
 		CzfMap.initialize(document.getElementById(mapID));
 		this.initPanel(document.getElementById(panelID));
 		

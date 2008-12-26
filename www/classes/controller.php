@@ -26,4 +26,17 @@ class Controller
 		$string = htmlspecialchars($string);
 		return str_replace(array("\\", "\"", "\n", "\r"), array("\\\\", "\\\"", "\\n", ""), $string);
 	}
+	
+	protected static function getLanguages()
+	{
+		//Borrowed from Jakub Vrána, http://php.vrana.cz/phpminadmin-preklady.php
+		$accept = strtolower($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
+		preg_match_all('/([-a-z]+)(;q=([0-9.]+))?/', $accept, $matches, PREG_SET_ORDER);
+		
+		foreach ($matches as $match)
+			$langs[$match[1]] = (isset($match[3]) ? $match[3] : 1);
+		
+		arsort($langs);
+		return array_keys($langs);
+	}
 }

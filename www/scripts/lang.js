@@ -3,7 +3,7 @@ var CzfLang =
 	curLang: null, //Selected language
 	
 	translations: {
-		en_US: {
+		en: {
 			nodeTypes:   { 0: "Unknown", 1: "Client", 9: "Full AP", 10: "Street access AP", 11: "Router", 98: "InfoPoint", 99: "Non-CZF" },
 			nodeStates:  { 1: "Active", 10: "Down", 40: "In testing", 79: "Under construction", 80: "In planning", 90: "Obsolete" },
 			linkMedia:   { 0: "Unknown", 1: "2.4G", 2: "FSO", 3: "UTP", 4: "Fiber", 5: "VPN", 6: "FSO + WiFi", 7: "5G", 8: "10G", 9: "Licensed", 99: "Other" },
@@ -23,7 +23,7 @@ var CzfLang =
 			}
 		}
 		,
-		cs_CZ: {
+		cs: {
 			"Edit" : "Upravit",
 			"Cancel" : "Zrušit",
 			"Save" : "Uložit",
@@ -89,10 +89,18 @@ var CzfLang =
 		}
 	}
 	,
-	setLang: function(lang)
+	initialize: function()
 	{
-		if (this.translations[lang])
-			this.curLang = this.translations[lang];
+		langs = CzfConfig.languages;
+		
+		for (i in langs)
+			if (this.translations[langs[i]])
+			{
+				this.curLang = this.translations[langs[i]];
+				return;
+			}
+		
+		this.curLang = this.translations["en"];
 	}
 	,
 	translate: function(string)
