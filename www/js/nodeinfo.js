@@ -90,8 +90,8 @@ var CzfNodeInfo =
 		html += '<p>';
 		html += CzfHtml.info(tr("Node ID"), info.id);
 		html += CzfHtml.info(tr("Name"), info.name);
-		html += CzfHtml.info(tr("Type"), CzfConst.nodeTypes[info.type]);
-		html += CzfHtml.info(tr("Status"), CzfConst.nodeStates[info.status]);
+		html += CzfHtml.info(tr("Type"), tr("nodeTypes")[info.type]);
+		html += CzfHtml.info(tr("Status"), tr("nodeStates")[info.status]);
 		html += '</p>';
 		
 		html += '<p>';
@@ -120,8 +120,8 @@ var CzfNodeInfo =
 		
 		html += '<p>';
 		html += CzfHtml.edit("name", tr("Name"), info.name);
-		html += CzfHtml.select("type", tr("Type"), info.type, CzfConst.nodeTypes);
-		html += CzfHtml.select("status", tr("Status"), info.status, CzfConst.nodeStates);
+		html += CzfHtml.select("type", tr("Type"), info.type, tr("nodeTypes"));
+		html += CzfHtml.select("status", tr("Status"), info.status, tr("nodeStates"));
 		html += '</p>';
 		
 		html += '<p>';

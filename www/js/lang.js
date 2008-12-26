@@ -3,6 +3,26 @@ var CzfLang =
 	curLang: null, //Selected language
 	
 	translations: {
+		en_US: {
+			nodeTypes:   { 0: "Unknown", 1: "Client", 9: "Full AP", 10: "Street access AP", 11: "Router", 98: "InfoPoint", 99: "Non-CZF" },
+			nodeStates:  { 1: "Active", 10: "Down", 40: "In testing", 79: "Under construction", 80: "In planning", 90: "Obsolete" },
+			linkMedia:   { 0: "Unknown", 1: "2.4G", 2: "FSO", 3: "UTP", 4: "Fiber", 5: "VPN", 6: "FSO + WiFi", 7: "5G", 8: "10G", 9: "Licensed", 99: "Other" },
+			
+			mediaInfo: {
+				0: "Unknown type of link",
+				1: "Wireless link in 2.4GHz band (802.11b/g)",
+				2: "Free Space Optical link (Ronja, Crusader)",
+				3: "Ethernet over metallic cable",
+				4: "Ethernet over optical fiber",
+				5: "VPN over Internet",
+				6: "Free Space Optical link backed by Wi-Fi",
+				7: "Wireless link in 5.4 - 5.8 GHz band (802.11a)",
+				8: "Wireless link in 10 GHz band",
+				9: "Wireless link in licensed band",
+				99: "Other type of link"
+			}
+		}
+		,
 		cs_CZ: {
 			"Edit" : "Upravit",
 			"Cancel" : "Zrušit",
@@ -47,10 +67,28 @@ var CzfLang =
 			"Node cannot be connected to itself." : "Bod nemůže být spojen sám se sebou.",
 			"Link to node '%s' already exists." : "Spoj do bodu '%s' už existuje.",
 			"Do you really want to delete node '%s'? This action cannot be undone." : "Opravdu chcete smazat bod '%s'? Tuto akci nebude možné vrátit zpět.",
-			"CZFree Node Monitor" : "Mapa sítě CZFree" //There is no comma!
+			"CZFree Node Monitor" : "Mapa sítě CZFree",
+			
+			nodeTypes:   { 0: "Neznámý", 1: "Klient", 9: "Přístupový bod", 10: "Otevřený př. bod", 11: "Router", 98: "InfoPoint", 99: "Non-CZF" },
+			nodeStates:  { 1: "Aktivní", 10: "Nefunkční", 40: "Zkušební", 79: "Ve stavbě", 80: "Plánovaný", 90: "Zastaralý" },
+			linkMedia:   { 0: "Neznámý", 1: "2.4G", 2: "FSO", 3: "UTP", 4: "Vlákno", 5: "VPN", 6: "FSO + WiFi", 7: "5G", 8: "10G", 9: "Licencovaný", 99: "Jiný" },
+			
+			mediaInfo: {
+				0: "Neznámý typ spoje",
+				1: "Bezdrátový spoj v pásmu 2.4GHz (802.11b/g)",
+				2: "Bezdrátový optický spoj (Ronja, Crusader)",
+				3: "Ethernet po kovovém vedení",
+				4: "Ethernet po optickém vlákně",
+				5: "VPN přes Internet",
+				6: "Bezdrátový optický spoj zálohovaný Wi-Fi",
+				7: "Bezdrátový spoj v pásmu 5.4 - 5.8 GHz (802.11a)",
+				8: "Bezdrátový spoj v pásmu 10 GHz",
+				9: "Bezdrátový spoj v licenčním pásmu",
+				99: "Jiný typ spoje"
+			}
 		}
-	},
-	
+	}
+	,
 	setLang: function(lang)
 	{
 		if (this.translations[lang])

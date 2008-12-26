@@ -87,8 +87,8 @@ var CzfMap =
 	,
 	loadIcons: function()
 	{
-		for (t in CzfConst.nodeTypes)
-			for (s in CzfConst.nodeStates)
+		for (t in tr("nodeTypes"))
+			for (s in tr("nodeStates"))
 			{
 				iconindex = parseInt(t) * 100 + parseInt(s);
 				this.icons[iconindex] = new GIcon();

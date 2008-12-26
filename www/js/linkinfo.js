@@ -77,7 +77,7 @@ var CzfLinkInfo =
 		html += '</div>';
 		
 		html += '<div class="linkinfo">';
-		html += CzfHtml.expl(CzfConst.mediaInfo[l.media], CzfConst.linkMedia[l.media]);
+		html += CzfHtml.expl(tr("mediaInfo")[l.media], tr("linkMedia")[l.media]);
 		html += ' - ' + this.formatDist(l.dist);
 		html += '</div>';
 		html += CzfHtml.clear();
@@ -92,7 +92,7 @@ var CzfLinkInfo =
 		html += this.createPeerInfo(l, action) + "<br/>";
 		
 		var controls = "";
-		controls += CzfHtml.select("media", tr("Type"), l.media, CzfConst.linkMedia, true);
+		controls += CzfHtml.select("media", tr("Type"), l.media, tr("linkMedia"), true);
 		controls += CzfHtml.checkbox("backbone", tr("Backbone link"), "", l.backbone);
 		controls += CzfHtml.checkbox("planned", tr("Planned link"), "", !l.active);
 		controls += CzfHtml.button("close", tr("Close"), "CzfLinkInfo.closeEdit()");
@@ -111,7 +111,7 @@ var CzfLinkInfo =
 	,
 	createPeerInfo: function(l, action)
 	{
-		var imgTitle = CzfConst.nodeStates[l.status] + " " + CzfConst.nodeTypes[l.type];
+		var imgTitle = tr("nodeTypes")[l.type] + ", " + tr("nodeStates")[l.status];
 		var imgSrc = "images/node/" + l.type + "-" + l.status + ".png";
 		var imgHtml = CzfHtml.img(imgTitle, imgSrc);
 		
