@@ -16,7 +16,7 @@ var CzfAjax =
 	,
 	makeQuery: function(reqName)
 	{
-		return "ajax.php?request=" + reqName;
+		return "index.php?request=" + reqName;
 	}
 	,
 	makeCallback: function(fn)

@@ -4,14 +4,11 @@ class Controller
 {
 	public static function run()
 	{
-		if (isset($_GET['request']))
-		{
-			$req = $_GET['request'];
-			$file = "ajax/$req.php";
-			
-			if (ctype_lower($req) && is_file($file))
-				self::render($file);
-		}
+		$req = isset($_GET['request']) ? $_GET['request'] : 'index';
+		$file = "pages/$req.php";
+		
+		if (ctype_lower($req) && is_file($file))
+			self::render($file);
 	}
 	
 	public static function fail($message)
