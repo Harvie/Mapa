@@ -20,6 +20,7 @@ h1 {
 	text-align: center;
 	margin: 0;
 	margin-bottom: 0.5ex;
+	clear: both;
 }
 
 #map { 
@@ -68,6 +69,12 @@ h1 {
 #panel button {
 	margin-left: 0.2em;
 	margin-right: 0.2em;
+}
+
+#userinfo {
+	float: right;
+	font-size: 90%;
+	font-style: italic;
 }
 
 #nodeinfo .text {

@@ -2,6 +2,8 @@
 
 class User
 {
+	const RIGHTS_NONE = 0;
+	
 	public static function initialize()
 	{
 		session_name('CzfMap');
@@ -11,7 +13,7 @@ class User
 		{
 			$_SESSION['userID'] = 0;
 			$_SESSION['userName'] = '';
-			$_SESSION['userRights'] = RIGHTS_NONE;
+			$_SESSION['userRights'] = self::RIGHTS_NONE;
 			
 			$row = self::loadUserInfo();
 			if ($row && $_COOKIE['bbpassword'] == $row['password'])

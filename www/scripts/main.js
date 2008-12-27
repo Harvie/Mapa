@@ -28,7 +28,8 @@ var CzfMain =
 	{
 		document.title = tr("CZFree Node Monitor");
 		
-		var html = "<h1>" + document.title + "</h1>";
+		var html = this.createUserInfo();
+		html += "<h1>" + document.title + "</h1>";
 		html += CzfHtml.button("addnode", tr("New node"), "CzfInfo.addNode()");
 		html += CzfHtml.expandableBlock("", "search", tr("Search"));
 		html += CzfHtml.expandableBlock("", "filters", tr("Filters"));
@@ -41,6 +42,19 @@ var CzfMain =
 		
 		CzfHtml.toggle("search");
 		CzfHtml.toggle("info");
+	}
+	,
+	createUserInfo: function()
+	{
+		var html = '<div id="userinfo">';
+		html += tr("User") + ": ";
+		
+		if (CzfConfig.user.id == 0)
+			html += tr("not logged in");
+		else
+			html += CzfConfig.user.name;
+		
+		return html + '</div>';
 	}
 	,
 	getState: function()

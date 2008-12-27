@@ -17,7 +17,12 @@ $languages = self::getLanguages();
     <script type="text/javascript">
     	var CzfConfig =
     	{
-    		languages: [ "<?=implode('","', $languages) ?>" ]
+    		languages: [ "<?=implode('","', $languages) ?>" ],
+    		user: {
+    			id: <?= User::getID() ?>,
+    			name: "<?= self::escape(User::getName()) ?>",
+    			rights: <?= User::getRights() ?> 
+    		}
     	}
     </script>
   </head>

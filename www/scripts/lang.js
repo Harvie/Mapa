@@ -68,6 +68,8 @@ var CzfLang =
 			"Link to node '%s' already exists." : "Spoj do bodu '%s' už existuje.",
 			"Do you really want to delete node '%s'? This action cannot be undone." : "Opravdu chcete smazat bod '%s'? Tuto akci nebude možné vrátit zpět.",
 			"CZFree Node Monitor" : "Mapa sítě CZFree",
+			"User" : "Uživatel",
+			"not logged in": "nepřihlášen",
 			
 			nodeTypes:   { 0: "Neznámý", 1: "Klient", 9: "Přístupový bod", 10: "Otevřený př. bod", 11: "Router", 98: "InfoPoint", 99: "Non-CZF" },
 			nodeStates:  { 1: "Aktivní", 10: "Nefunkční", 40: "Zkušební", 79: "Ve stavbě", 80: "Plánovaný", 90: "Zastaralý" },
