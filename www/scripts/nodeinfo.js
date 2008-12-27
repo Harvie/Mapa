@@ -92,6 +92,7 @@ var CzfNodeInfo =
 		html += CzfHtml.info(tr("Name"), info.name);
 		html += CzfHtml.info(tr("Type"), tr("nodeTypes")[info.type]);
 		html += CzfHtml.info(tr("Status"), tr("nodeStates")[info.status]);
+		html += CzfHtml.info(tr("Owner"), CzfHtml.link(info.owner.name, info.owner.profile));
 		html += '</p>';
 		
 		html += '<p>';

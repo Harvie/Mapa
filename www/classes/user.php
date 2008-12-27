@@ -19,7 +19,10 @@ class User
 			$_SESSION['userName'] = '';
 			$_SESSION['userRights'] = self::RIGHTS_NONE;
 			
-			$row = self::loadUserInfo();
+			if (!isset($_COOKIE['bbuserid']))
+				return;
+			
+			$row = self::loadUserInfo(intval($_COOKIE['bbuserid']));
 			if ($row && $_COOKIE['bbpassword'] == $row['password'])
 			{
 				$_SESSION['userID'] = $row['userid'];
@@ -29,16 +32,13 @@ class User
 		}
 	}
 	
-	private static function loadUserInfo()
+	private static function loadUserInfo($id)
 	{
-		if (!isset($_COOKIE['bbuserid']))
-			return false;
-		
 		$db = new PDO(Config::$usersDB['dsn'], Config::$usersDB['user'], Config::$usersDB['pass']);
 		$db->query(Config::$usersDB['init']);
 		
 		$select = $db->prepare('SELECT userid, username, password, mapperms FROM user WHERE userid = ?');
-		$select->execute(array($_COOKIE['bbuserid']));
+		$select->execute(array($id));
 		return $select->fetch();
 	}
 	
@@ -55,5 +55,11 @@ class User
 	public static function getRights()
 	{
 		return $_SESSION['userRights'];
+	}
+	
+	public static function getNameByID($id)
+	{
+		$row = self::loadUserInfo($id);
+		return $row ? $row['username'] : false;
 	}
 }

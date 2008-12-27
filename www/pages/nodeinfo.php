@@ -6,6 +6,8 @@ $id = intval(@$_GET['id']);
 $info = Nodes::fetchInfo($id);
 if (!$info) return;
 
+$ownerName = User::getNameByID($info['owner']);
+$ownerProfile = Config::$profilePrefix . $info['owner'];
 $links_query = Links::selectFromNode($id);
 
 ?>
@@ -21,6 +23,11 @@ $links_query = Links::selectFromNode($id);
 	url_homepage: "<?=self::escape($info['url_homepage'])?>",
 	url_thread: "<?=self::escape($info['url_thread'])?>",
 	visibility: "<?=self::escape($info['visibility'])?>",
+	owner: {
+		id: <?=$info['owner']?>,
+		name: "<?=self::escape($ownerName)?>",
+		profile: "<?=self::escape($ownerProfile)?>",
+	},
 	links:
 	[<? foreach ($links_query as $row): ?>	
 		{

@@ -13,7 +13,7 @@ var CzfHtml =
 	,
 	link: function(title, target)
 	{
-		return '<a href="' + target + '">' + title + '</a>';
+		return '<a href="' + target + '" target="_blank">' + title + '</a>';
 	}
 	,
 	click: function(title, action)
