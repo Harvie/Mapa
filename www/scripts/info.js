@@ -135,7 +135,7 @@ var CzfInfo =
 		}
 		else
 		{
-			 if (this.info)
+			 if (this.info && CzfConfig.user.rights >= CzfConfig.RIGHTS.MAPPER)
 			 {
 			 	html += CzfHtml.button("edit", tr("Edit"), "CzfInfo.editNode()");
 			 	html += CzfHtml.button("edit", tr("Delete"), "CzfInfo.deleteNode()");

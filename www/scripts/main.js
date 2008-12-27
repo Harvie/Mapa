@@ -30,7 +30,10 @@ var CzfMain =
 		
 		var html = this.createUserInfo();
 		html += "<h1>" + document.title + "</h1>";
-		html += CzfHtml.button("addnode", tr("New node"), "CzfInfo.addNode()");
+		
+		if (CzfConfig.user.rights >= CzfConfig.RIGHTS.USER)
+			html += CzfHtml.button("addnode", tr("New node"), "CzfInfo.addNode()");
+		
 		html += CzfHtml.expandableBlock("", "search", tr("Search"));
 		html += CzfHtml.expandableBlock("", "filters", tr("Filters"));
 		html += CzfHtml.expandableBlock("", "info", tr("Node info"));

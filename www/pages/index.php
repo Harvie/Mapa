@@ -22,6 +22,11 @@ $languages = self::getLanguages();
     			id: <?= User::getID() ?>,
     			name: "<?= self::escape(User::getName()) ?>",
     			rights: <?= User::getRights() ?> 
+    		},
+    		RIGHTS: {
+    			NONE: <?= User::RIGHTS_NONE ?>,
+    			USER: <?= User::RIGHTS_USER ?>,
+    			MAPPER: <?= User::RIGHTS_MAPPER ?> 
     		}
     	}
     </script>

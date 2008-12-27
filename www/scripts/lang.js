@@ -61,7 +61,7 @@ var CzfLang =
 			"Status" : "Stav",
 			"Thread" : "Diskuse",
 			"Type" : "Typ",
-			"Owner" : "Vlastník",
+			"Owner" : "Majitel",
 			"Visibility description" : "Viditelnost z bodu",
 			"You can add a new link by right clicking on target node on the map." : "Nový spoj přidáte kliknutím pravým tlačítkem na cílový bod na mapě.",
 			"If it doesn't work, try shift + left click." : "Nefunguje-li to, zkuste shift a levé tlačítko.",

@@ -2,7 +2,9 @@
 
 class User
 {
-	const RIGHTS_NONE = 0;
+	const RIGHTS_NONE = -100;
+	const RIGHTS_USER = 0;
+	const RIGHTS_MAPPER = 0; //Everyone is mapper now
 	
 	public static function initialize()
 	{

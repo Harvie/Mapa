@@ -1,10 +1,13 @@
 <?php
 
 if (!isset($_POST['id']))
-	return;
+	throw new Exception("Missing node ID!");
 
 $id = intval($_POST['id']);
 $_POST['id'] = $id;
+
+if (User::getRights() < User::RIGHTS_MAPPER)
+	throw new Exception("Permission denied.");
 
 Query::beginTransaction();
 
