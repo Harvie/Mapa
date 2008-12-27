@@ -9,6 +9,10 @@ class User
 		session_name('CzfMap');
 		session_start();
 		
+		//The user logged in or out of forum after session was started
+		if (($_SESSION['userID'] > 0) != isset($_COOKIE['bbpassword']))
+			unset($_SESSION['userID']);
+		
 		if (!isset($_SESSION['userID']))
 		{
 			$_SESSION['userID'] = 0;
