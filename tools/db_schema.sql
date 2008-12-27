@@ -25,7 +25,11 @@ CREATE TABLE nodes (
     url_photos text,
     url_homepage text,
     url_thread text,
-    visibility text
+    visibility text,
+    owner integer NOT NULL,
+    created_on timestamp,
+    changed_on timestamp,
+    changed_by integer
 );
 
 
@@ -42,7 +46,10 @@ CREATE TABLE links (
     lat1 double precision,
     lng1 double precision,
     lat2 double precision,
-    lng2 double precision
+    lng2 double precision,
+    created_on timestamp,
+    changed_on timestamp,
+    changed_by integer
 );
 
 ALTER TABLE links ADD CONSTRAINT links_node1_key UNIQUE (node1, node2);
