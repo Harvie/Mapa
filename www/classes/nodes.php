@@ -45,7 +45,7 @@ class Nodes
 	{
 		$query = Query::prepare('SELECT * FROM nodes WHERE id = ?');
 		$query->execute(array($id));
-		return $query->fetch();
+		return $query->fetch(PDO::FETCH_ASSOC);
 	}
 	
 	public static function fetchPos($id)
@@ -62,6 +62,7 @@ class Nodes
 		
 		$select = Query::prepare('SELECT id, name, lat, lng FROM nodes WHERE name ILIKE ? ORDER BY name LIMIT 20');
 		$select->execute(array("%$name%"));
+		$select->setFetchMode(PDO::FETCH_ASSOC);
 		return $select;
 	}
 	
@@ -73,6 +74,7 @@ class Nodes
 		$sql .= self::makeFilterSQL('nodes', $filters);
 		$select = Query::prepare($sql);
 		$select->execute($bounds);
+		$select->setFetchMode(PDO::FETCH_ASSOC);
 		return $select;
 	}
 	

@@ -9,13 +9,16 @@ class Links
 	
 	public static function selectFromNode($id)
 	{
+		$columns = "id,name,lat,lng,type,status,media,active,backbone";
+		
 		$query = Query::prepare(
-			'SELECT * FROM links JOIN nodes ON node2 = nodes.id WHERE node1 = ?'.
+			"SELECT $columns FROM links JOIN nodes ON node2 = nodes.id WHERE node1 = ?".
 			' UNION ALL '.
-			'SELECT * FROM links JOIN nodes ON node1 = nodes.id WHERE node2 = ?'
+			"SELECT $columns FROM links JOIN nodes ON node1 = nodes.id WHERE node2 = ?"
 		);
 		
 		$query->execute(array($id, $id));
+		$query->setFetchMode(PDO::FETCH_ASSOC);
 		return $query;
 	}
 	
@@ -124,6 +127,7 @@ class Links
 
 		$select = Query::prepare($sql);
 		$select->execute(array_merge($bounds, $bounds));
+		$select->setFetchMode(PDO::FETCH_ASSOC);
 		return $select;
 	}
 }

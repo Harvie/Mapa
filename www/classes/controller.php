@@ -44,4 +44,41 @@ class Controller
 		arsort($langs);
 		return array_keys($langs);
 	}
+	
+	protected static function recursiveJSON($data, $indent)
+	{
+		if (is_array($data) || $data instanceof Traversable)
+		{
+			//Distinguish associative and ordinary array
+			if ($data instanceof Traversable || isset($data[0]) || count($data) == 0)
+			{
+				$output = "[\n";
+				foreach ($data as $value)
+					$output .= "$indent\t" . self::recursiveJSON($value, "$indent\t") . ",\n";
+				$output .= $indent."]";
+			}
+			else
+			{
+				$output = "{\n";
+				foreach ($data as $var => $value)
+					if ($value !== null)
+						$output .= "$indent\t$var: " . self::recursiveJSON($value, "$indent\t") . ",\n";
+				$output[strlen($output) - 2] = ' '; //Remove last comma - hack for IE
+				$output .= $indent."}";
+			}
+			return $output;
+		}
+		
+		if (is_numeric($data))
+			return $data;
+		
+		if (is_string($data))
+			return '"' . self::escape($data) . '"';
+	}
+	
+	protected static function writeJSON($data)
+	{
+		header('Content-Type: text/plain');
+		echo self::recursiveJSON($data, "");
+	}
 }
