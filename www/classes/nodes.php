@@ -8,14 +8,20 @@ class Nodes
 	
 	public function insert($data)
 	{
-		$insert = Query::insert('nodes', self::$columns);
+		$columns = array_merge(self::$columns, array('created_on', 'owner'));
+		$data['owner'] = User::getID();
+		$data['created_on'] = 'now';
+		
+		$insert = Query::insert('nodes', $columns);
 		$insert->execute($data);
 		return Query::lastInsertId();
 	}
 	
 	public static function update($data, $allowMove)
 	{
-		$columns = self::$columns;
+		$columns = array_merge(self::$columns, array('changed_on', 'changed_by'));
+		$data['changed_by'] = User::getID();
+		$data['changed_on'] = 'now';
 		
 		if ($allowMove)
 			Links::fixLinkEndpoints($data['id'], $data['lat'], $data['lng']);
