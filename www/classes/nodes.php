@@ -8,8 +8,8 @@ class Nodes
 	
 	public function insert($data)
 	{
-		$columns = array_merge(self::$columns, array('created_on', 'owner'));
-		$data['owner'] = User::getID();
+		$columns = array_merge(self::$columns, array('owner', 'created_on', 'created_by'));
+		$data['owner'] = $data['created_by'] = User::getID();
 		$data['created_on'] = 'now';
 		
 		$insert = Query::insert('nodes', $columns);

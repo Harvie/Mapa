@@ -93,10 +93,13 @@ var CzfNodeInfo =
 		html += CzfHtml.info(tr("Status"), tr("nodeStates")[info.status]);
 		html += CzfHtml.info(tr("Owner"), CzfHtml.link(info.owner.name, info.owner.profile));
 		
-		var more = '';
-		more += CzfHtml.info(tr("Node ID"), info.id);
+		var more = CzfHtml.info(tr("Node ID"), info.id);
+		
 		if (info.created)
-			more += CzfHtml.info(tr("Created"), info.created);
+		{
+			more += CzfHtml.info(tr("Created on"), info.created.date);
+			more += CzfHtml.info(tr("Created by"), CzfHtml.link(info.created.user, info.created.profile));
+		}
 		
 		if (info.changed)
 		{

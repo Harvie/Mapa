@@ -10,7 +10,14 @@ $ownerName = User::getNameByID($info['owner']);
 $ownerProfile = Config::$profilePrefix . $info['owner'];
 $links_query = Links::selectFromNode($id);
 
-if ($info['changed_on'] !== null)
+if ($info['created_by'] !== null)
+	$creationInfo = array(
+		'time' => $info['created_on'],
+		'user' => User::getNameByID($info['created_by']),
+		'profile' => Config::$profilePrefix . $info['created_by'],
+	);
+
+if ($info['changed_by'] !== null)
 	$changeInfo = array(
 		'time' => $info['changed_on'],
 		'user' => User::getNameByID($info['changed_by']),
@@ -35,8 +42,12 @@ if ($info['changed_on'] !== null)
 		name: "<?=self::escape($ownerName)?>",
 		profile: "<?=self::escape($ownerProfile)?>",
 	},
-<? if ($info['created_on'] !== null): ?>
-	created: "<?= self::formatDate($info['created_on']) ?>",
+<? if ($creationInfo): ?>
+	created: {
+		date: "<?= self::formatDate($creationInfo['time']) ?>",
+		user: "<?= self::escape($creationInfo['user']) ?>",
+		profile: "<?= self::escape($creationInfo['profile']) ?>" 
+	},
 <? endif ?>
 <? if ($changeInfo): ?>
 	changed: {

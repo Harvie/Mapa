@@ -28,6 +28,7 @@ CREATE TABLE nodes (
     visibility text,
     owner integer NOT NULL,
     created_on timestamp,
+    created_by integer,
     changed_on timestamp,
     changed_by integer
 );
@@ -48,6 +49,7 @@ CREATE TABLE links (
     lat2 double precision,
     lng2 double precision,
     created_on timestamp,
+    created_by integer,
     changed_on timestamp,
     changed_by integer
 );
