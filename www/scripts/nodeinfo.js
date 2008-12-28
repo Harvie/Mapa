@@ -88,11 +88,23 @@ var CzfNodeInfo =
 		var html = '';
 		
 		html += '<p>';
-		html += CzfHtml.info(tr("Node ID"), info.id);
 		html += CzfHtml.info(tr("Name"), info.name);
 		html += CzfHtml.info(tr("Type"), tr("nodeTypes")[info.type]);
 		html += CzfHtml.info(tr("Status"), tr("nodeStates")[info.status]);
 		html += CzfHtml.info(tr("Owner"), CzfHtml.link(info.owner.name, info.owner.profile));
+		
+		var more = '';
+		more += CzfHtml.info(tr("Node ID"), info.id);
+		if (info.created)
+			more += CzfHtml.info(tr("Created"), info.created);
+		
+		if (info.changed)
+		{
+			more += CzfHtml.info(tr("Changed on"), info.changed.date);
+			more += CzfHtml.info(tr("Changed by"), CzfHtml.link(info.changed.user, info.changed.profile));
+		}
+		
+		html += CzfHtml.hiddenBlock(more, "moreinfo", tr("More info..."));
 		html += '</p>';
 		
 		html += '<p>';

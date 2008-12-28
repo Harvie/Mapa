@@ -34,17 +34,17 @@ var CzfMain =
 		if (CzfConfig.user.rights >= CzfConfig.RIGHTS.USER)
 			html += CzfHtml.button("addnode", tr("New node"), "CzfInfo.addNode()");
 		
-		html += CzfHtml.expandableBlock("", "search", tr("Search"));
-		html += CzfHtml.expandableBlock("", "filters", tr("Filters"));
-		html += CzfHtml.expandableBlock("", "info", tr("Node info"));
+		html += CzfHtml.panelPart("", "search", tr("Search"));
+		html += CzfHtml.panelPart("", "filters", tr("Filters"));
+		html += CzfHtml.panelPart("", "info", tr("Node info"));
 		element.innerHTML = html;
 		
 		CzfSearch.initialize(document.getElementById("search"));
 		CzfFilters.initialize(document.getElementById("filters"));
 		CzfInfo.initialize(document.getElementById("info"));
 		
-		CzfHtml.toggle("search");
-		CzfHtml.toggle("info");
+		CzfHtml.togglePanel("search");
+		CzfHtml.togglePanel("info");
 	}
 	,
 	createUserInfo: function()

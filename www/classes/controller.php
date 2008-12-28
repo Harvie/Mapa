@@ -27,6 +27,11 @@ class Controller
 		return str_replace(array("\\", "\"", "\n", "\r"), array("\\\\", "\\\"", "\\n", ""), $string);
 	}
 	
+	protected static function formatDate($date)
+	{
+		return substr($date, 0, strpos($date, ' '));
+	}
+	
 	protected static function getLanguages()
 	{
 		//Borrowed from Jakub Vrána, http://php.vrana.cz/phpminadmin-preklady.php

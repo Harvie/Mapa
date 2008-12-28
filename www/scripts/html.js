@@ -97,9 +97,9 @@ var CzfHtml =
         return html;
 	}
 	,
-	expandableBlock: function(contents, id, label)
+	panelPart: function(contents, id, label)
 	{
-		var html = '<div onclick="CzfHtml.toggle(\'' + id + '\')">';
+		var html = '<div onclick="CzfHtml.togglePanel(\'' + id + '\')">';
 		html += '<img src="images/plus.png" alt="expand" id="' + id + '.img" />';
 		html += '<b>' + label + '</b></div>';
 		html += '<div class="panelpart" id="' + id + '">';
@@ -107,10 +107,10 @@ var CzfHtml =
 		return html;
 	}
 	,
-	toggle: function(id)
+	togglePanel: function(id)
 	{
-		node = document.getElementById(id);
-		img = document.getElementById(id + ".img");
+		var node = document.getElementById(id);
+		var img = document.getElementById(id + ".img");
 		
 		if(node.style.display != "block")
 		{
@@ -122,5 +122,23 @@ var CzfHtml =
 			node.style.display = "none";
 			img.src = "images/plus.png";
 		}
+	}
+	,
+	hiddenBlock: function(contents, id, label)
+	{
+		var html = '';
+		html += '<div onclick="CzfHtml.showBlock(\'' + id + '\')" ';
+		html += 'class="click" id="' + id + '.label">' + label + '</div>';
+		html += '<div class="hidden" id="' + id + '">' + contents + '</div>';
+		return html;
+	}
+	,
+	showBlock: function(id)
+	{
+		var block = document.getElementById(id);
+		var label = document.getElementById(id + ".label");
+		
+		block.style.display = "block";
+		label.style.display = "none";
 	}
 }
