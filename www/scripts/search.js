@@ -12,10 +12,10 @@ var CzfSearch =
 		this.geocoder = new GClientGeocoder();
 		
 		var addressInput = CzfHtml.edit("address", tr("Search address"), "");
-		var addressForm = CzfHtml.form(addressInput, "address", "return CzfSearch.addressSearch('address')");
+		var addressForm = CzfHtml.form(addressInput, "addrform", "return CzfSearch.addressSearch('address')");
 		
 		var nameInput = CzfHtml.edit("nodename", tr("Search node name"), "");
-		var nameForm = CzfHtml.form(nameInput, "nodename", "return CzfSearch.nodeSearch('nodename')");
+		var nameForm = CzfHtml.form(nameInput, "nodeform", "return CzfSearch.nodeSearch('nodename')");
 		
 		element.innerHTML = addressForm + nameForm;
 	}
@@ -44,6 +44,7 @@ var CzfSearch =
 		this.nameField = document.getElementById(id);
 		this.nameField.disabled = true;
 		
+		alert(this.nameField.nodeName);
 		var params = { query: this.nameField.value };
 		CzfAjax.get("search", params, GEvent.callback(this, this.nodeDone));
 		return false;
