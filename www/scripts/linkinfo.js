@@ -121,7 +121,7 @@ var CzfLinkInfo =
 		if (l.added)    classes.push("added");
 		if (l.deleted)  classes.push("deleted");
 		
-		var peerName = CzfHtml.span(l.peername, classes);
+		var peerName = CzfHtml.span(l.name, classes);
 		return CzfHtml.click(imgHtml + peerName, action);
 	}
 	,
@@ -146,7 +146,7 @@ var CzfLinkInfo =
 	showPeer: function(linknum)
 	{
 		link = this.info.links[linknum];
-		CzfMain.setNode(link.peerid);
+		CzfMain.setNode(link.id);
 		CzfMain.setPos(link.lat, link.lng);
 		return false;
 	}
@@ -204,7 +204,7 @@ var CzfLinkInfo =
 		
 		var links = this.info.links;
 		for (i in links)
-			if (links[i].peerid == node.id)
+			if (links[i].id == node.id)
 			{
 				alert(CzfLang.format("Link to node '%s' already exists.", node.name));
 				return false;
@@ -218,8 +218,8 @@ var CzfLinkInfo =
 		var l = CzfMain.clone(this.newLink);
 		l.added = 1;
 		
-		l.peerid = node.id;
-		l.peername = node.name;
+		l.id = node.id;
+		l.name = node.name;
 		l.status = node.status;
 		l.type = node.type;
 		l.lat = node.lat;

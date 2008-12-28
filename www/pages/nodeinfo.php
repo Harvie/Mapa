@@ -40,7 +40,7 @@ if ($info['changed_by'] !== null)
 	owner: {
 		id: <?=$info['owner']?>,
 		name: "<?=self::escape($ownerName)?>",
-		profile: "<?=self::escape($ownerProfile)?>",
+		profile: "<?=self::escape($ownerProfile)?>" 
 	},
 <? if ($creationInfo): ?>
 	created: {
@@ -59,8 +59,8 @@ if ($info['changed_by'] !== null)
 	links:
 	[<? foreach ($links_query as $row): ?>	
 		{
-			peerid: <?=$row['id']?>,
-			peername: "<?=self::escape($row['name'])?>",
+			id: <?=$row['id']?>,
+			name: "<?=self::escape($row['name'])?>",
 			lat: <?=$row['lat']?>,
 			lng: <?=$row['lng']?>,
 			type: <?=$row['type']?>,
