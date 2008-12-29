@@ -91,20 +91,20 @@ var CzfNodeInfo =
 		html += CzfHtml.info(tr("Name"), info.name);
 		html += CzfHtml.info(tr("Type"), tr("nodeTypes")[info.type]);
 		html += CzfHtml.info(tr("Status"), tr("nodeStates")[info.status]);
-		html += CzfHtml.info(tr("Owner"), CzfHtml.link(info.owner.name, info.owner.profile));
+		html += CzfHtml.info(tr("Owner"), CzfInfo.userLink(info.owner));
 		
 		var more = CzfHtml.info(tr("Node ID"), info.id);
 		
 		if (info.created)
 		{
 			more += CzfHtml.info(tr("Created on"), tr("dateFormat")(info.created.date));
-			more += CzfHtml.info(tr("Created by"), CzfHtml.link(info.created.user, info.created.profile));
+			more += CzfHtml.info(tr("Created by"), CzfInfo.userLink(info.created));
 		}
 		
 		if (info.changed)
 		{
 			more += CzfHtml.info(tr("Changed on"), tr("dateFormat")(info.changed.date));
-			more += CzfHtml.info(tr("Changed by"), CzfHtml.link(info.changed.user, info.changed.profile));
+			more += CzfHtml.info(tr("Changed by"), CzfInfo.userLink(info.changed));
 		}
 		
 		html += CzfHtml.hiddenBlock(more, "moreinfo", tr("More info..."));

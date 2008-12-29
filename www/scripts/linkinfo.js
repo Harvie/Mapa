@@ -57,7 +57,7 @@ var CzfLinkInfo =
 		
 		if (info.editing)
 		{
-			html += '<p class="help">';
+			html += '<p class="note">';
 			html += tr("You can add a new link by right clicking on target node on the map.");
 			html += " " + tr("If it doesn't work, try shift + left click.");
 			html += '</p>';
@@ -104,6 +104,10 @@ var CzfLinkInfo =
 		
 		html += '<div class="linkedit">';
 		html += CzfHtml.form(controls, "linkform", "return false;");
+		if (l.changed)
+			html += this.createChangeInfo("Changed by %s on %s.", l.changed);
+		if (l.created)
+			html += this.createChangeInfo("Created by %s on %s.", l.created);
 		html += '</div>';
 		
 		return html;
@@ -123,6 +127,13 @@ var CzfLinkInfo =
 		
 		var peerName = CzfHtml.span(l.name, classes);
 		return CzfHtml.click(imgHtml + peerName, action);
+	}
+	,
+	createChangeInfo: function(text, info)
+	{
+		var html = '<div class="note">';
+		html += CzfLang.format(text, CzfInfo.userLink(info), tr("dateFormat")(info.date));
+		return html + '</div>';
 	}
 	,
 	formatDist: function(meters)

@@ -13,7 +13,7 @@ $info['owner'] = array(
 self::convertChangeInfo($info);
 
 $info['links'] = Links::selectFromNode($id);
-foreach ($info['links'] as $link)
-	self::convertChangeInfo($link);
+foreach ($info['links'] as $i => $link)
+	self::convertChangeInfo($info['links'][$i]);
 
 self::writeJSON($info);

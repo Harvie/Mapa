@@ -190,4 +190,9 @@ var CzfInfo =
 		document.getElementById(tabid).style.display = "none";
 		document.getElementById(tabid + ".header").className = "tab_label";
 	}
+	,
+	userLink: function(userInfo)
+	{
+		return CzfHtml.link(userInfo.name, userInfo.profile)
+	}
 }

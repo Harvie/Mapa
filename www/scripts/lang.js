@@ -31,6 +31,7 @@ var CzfLang =
 			"Save" : "Uložit",
 			"Close" : "Zavřít",
 			"Delete" : "Smazat",
+			"Restore" : "Obnovit",
 			"(choose result)" : "(vyberte výsledek)",
 			"(new search)" : "(nové hledání)",
 			"Address" : "Adresa",
@@ -70,6 +71,8 @@ var CzfLang =
 			"Changed on" : "Změněno",
 			"Changed by" : "Změnil",
 			"More info..." : "Další údaje...",
+			"Changed by %s on %s.": "Změnil %s %s.",
+			"Created by %s on %s.": "Přidal %s %s.",
 			"You can add a new link by right clicking on target node on the map." : "Nový spoj přidáte kliknutím pravým tlačítkem na cílový bod na mapě.",
 			"If it doesn't work, try shift + left click." : "Nefunguje-li to, zkuste shift a levé tlačítko.",
 			"Node cannot be connected to itself." : "Bod nemůže být spojen sám se sebou.",
@@ -123,9 +126,17 @@ var CzfLang =
 			return string;
 	}
 	,
-	format: function(msg, arg)
+	format: function()
 	{
-		return this.translate(msg).replace(/%s/, arg);
+		var msg;
+		
+		for (var i = 0; i < arguments.length; i++)
+			if (i == 0)
+				msg = this.translate(arguments[i]);
+			else
+				msg = msg.replace(/%s/, arguments[i]);
+		
+		return msg;
 	}
 }
 

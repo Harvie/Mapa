@@ -36,7 +36,7 @@ class Controller
 	{
 		return array(
 			'date' => self::formatDate($time),
-			'user' => User::getNameByID($userID),
+			'name' => User::getNameByID($userID),
 			'profile' => Config::$profilePrefix . $userID,
 		);
 	}
