@@ -10,30 +10,10 @@ $info['owner'] = array(
 	'profile' => Config::$profilePrefix . $info['owner'],
 );
 
-if ($info['created_by'] !== null)
-{
-	$info['created'] = array(
-		'date' => self::formatDate($info['created_on']),
-		'user' => User::getNameByID($info['created_by']),
-		'profile' => Config::$profilePrefix . $info['created_by'],
-	);
-	
-	unset($info['created_on']);
-	unset($info['created_by']);
-}
-
-if ($info['changed_by'] !== null)
-{
-	$info['changed'] = array(
-		'date' => self::formatDate($info['changed_on']),
-		'user' => User::getNameByID($info['changed_by']),
-		'profile' => Config::$profilePrefix . $info['changed_by'],
-	);
-	
-	unset($info['changed_on']);
-	unset($info['changed_by']);
-}
+self::convertChangeInfo($info);
 
 $info['links'] = Links::selectFromNode($id);
+foreach ($info['links'] as $link)
+	self::convertChangeInfo($link);
 
 self::writeJSON($info);

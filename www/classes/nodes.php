@@ -4,6 +4,7 @@ class Nodes
 {
 	private static $columns = array('name', 'type', 'status', 'address', 'lat', 'lng',
 	                                'url_photos', 'url_homepage', 'url_thread');
+	private static $cols_basic = array('id', 'name', 'type', 'status', 'lat', 'lng');
 	private static $filters = array('type', 'status');
 	
 	public function insert($data)
@@ -85,5 +86,10 @@ class Nodes
 		foreach (self::$filters as $column)
 			$sql .= Query::filtersToSQL($tableAlias, $column, $filters);
 		return $sql;
+	}
+	
+	public static function getBasicColumns()
+	{
+		return self::$cols_basic;
 	}
 }

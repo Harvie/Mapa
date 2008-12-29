@@ -3,27 +3,29 @@
 class Links
 {
 	private static $keys = array('node1', 'node2');
-	private static $columns = array('media', 'active', 'backbone');
+	private static $cols_edit = array('media', 'active', 'backbone');
+	private static $cols_log = array('links.changed_on', 'links.changed_by', 'links.created_on', 'links.created_by');
 	private static $filters = array('media', 'active', 'backbone');
-	private static $all_cols = array('node1', 'node2', 'lat1', 'lng1', 'lat2', 'lng2', 'media', 'active', 'backbone');
 	
 	public static function selectFromNode($id)
 	{
-		$columns = "id,name,lat,lng,type,status,media,active,backbone";
+		$columns = array_merge(Nodes::getBasicColumns(), self::$cols_edit, self::$cols_log);
+		$collist = implode(',', $columns);
 		
 		$query = Query::prepare(
-			"SELECT $columns FROM links JOIN nodes ON node2 = nodes.id WHERE node1 = ?".
+			"SELECT $collist FROM links JOIN nodes ON node2 = nodes.id WHERE node1 = ?".
 			' UNION ALL '.
-			"SELECT $columns FROM links JOIN nodes ON node1 = nodes.id WHERE node2 = ?"
+			"SELECT $collist FROM links JOIN nodes ON node1 = nodes.id WHERE node2 = ?"
 		);
 		
 		$query->execute(array($id, $id));
-		$query->setFetchMode(PDO::FETCH_ASSOC);
-		return $query;
+		return $query->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
 	public static function insert($data, $node1, $node2)
 	{
+		$columns = array_merge(self::$cols_edit, array('lat1', 'lng1', 'lat2', 'lng2'));
+		
 		$pos1 = Nodes::fetchPos(intval($node1));
 		$pos2 = Nodes::fetchPos(intval($node2));
 		
@@ -39,14 +41,14 @@ class Links
 		list($data['node1'], $data['lat1'], $data['lng1']) = $end1;
 		list($data['node2'], $data['lat2'], $data['lng2']) = $end2;
 		
-		$insert = Query::insert('links', self::$all_cols);
+		$insert = Query::insert('links', array_merge($columns, self::$keys));
 		$insert->execute($data);
 	}
 	
 	public static function update($link, $node)
 	{
 		self::setEndpoints($link, $node);
-		$update = Query::update('links', self::$columns, self::$keys);
+		$update = Query::update('links', self::$cols_edit, self::$keys);
 		$update->execute($link);
 	}
 		
