@@ -97,7 +97,7 @@ var CzfLinkInfo =
 		controls += CzfHtml.checkbox("planned", tr("Planned link"), "", !l.active);
 		controls += CzfHtml.button("close", tr("Close"), "CzfLinkInfo.closeEdit()");
 		
-		if (l.deleted)
+		if (l.delete)
 			controls += CzfHtml.button("restore", tr("Restore"), "CzfLinkInfo.deleteLink()");
 		else
 			controls += CzfHtml.button("delete", tr("Delete"), "CzfLinkInfo.deleteLink()");
@@ -118,8 +118,8 @@ var CzfLinkInfo =
 		var classes = [ "peername" ];
 		if (l.backbone) classes.push("backbone");
 		if (!l.active)  classes.push("planned");
-		if (l.added)    classes.push("added");
-		if (l.deleted)  classes.push("deleted");
+		if (l.insert)    classes.push("added");
+		if (l.delete)  classes.push("deleted");
 		
 		var peerName = CzfHtml.span(l.name, classes);
 		return CzfHtml.click(imgHtml + peerName, action);
@@ -156,7 +156,7 @@ var CzfLinkInfo =
 		this.copyFormData();
 		
 		var link = this.info.links[linknum];
-		link.changed = true;
+		link.update = true;
 		
 		if (this.opened == link)
 			this.opened = null;
@@ -216,7 +216,7 @@ var CzfLinkInfo =
 	createLink: function(node)
 	{
 		var l = CzfMain.clone(this.newLink);
-		l.added = 1;
+		l.insert = 1;
 		
 		l.id = node.id;
 		l.name = node.name;
@@ -230,14 +230,14 @@ var CzfLinkInfo =
 	,
 	deleteLink: function()
 	{
-		this.opened.deleted = !this.opened.deleted;
+		this.opened.delete = !this.opened.delete;
 		
 		// Unsaved links are deleted immediately
-		if (this.opened.added && this.opened.deleted)
+		if (this.opened.insert && this.opened.delete)
 			for (i in this.info.links)
 			{
 				var l = this.info.links[i];
-				if (l.added && l.deleted)
+				if (l.insert && l.delete)
 					delete this.info.links[i];
 			}
 		

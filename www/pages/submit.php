@@ -30,13 +30,13 @@ if ($id != 0 && is_array($_POST['links']))
 		if (!is_array($link))
 			continue;
 		
-		if(isset($link['changed']))
+		if(isset($link['update']))
 			Links::update($link, $_POST);
 		
-		if(isset($link['added']))
+		if(isset($link['insert']))
 			Links::insert($link, $id, $link['id']);
 		
-		if(isset($link['deleted']))
+		if(isset($link['delete']))
 			Links::delete($link, $_POST);
 	}
 
