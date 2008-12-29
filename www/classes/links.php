@@ -64,11 +64,11 @@ class Links
 		if (floatval($node['lat']) < floatval($link['lat']))
 		{
 			$link['node1'] = intval($node['id']);
-			$link['node2'] = intval($link['peerid']);
+			$link['node2'] = intval($link['id']);
 		}
 		else
 		{
-			$link['node1'] = intval($link['peerid']);
+			$link['node1'] = intval($link['id']);
 			$link['node2'] = intval($node['id']);
 		}
 	}
