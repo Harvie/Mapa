@@ -15,7 +15,7 @@ var CzfSearch =
 		var addressForm = CzfHtml.form(addressInput, "addrform", "return CzfSearch.addressSearch('address')");
 		
 		var nameInput = CzfHtml.edit("nodename", tr("Search node name"), "");
-		var nameForm = CzfHtml.form(nameInput, "nodeform", "return CzfSearch.nodeSearch('nodename')");
+		var nameForm = CzfHtml.form(nameInput, "nameform", "return CzfSearch.nodeSearch('nodename')");
 		
 		element.innerHTML = addressForm + nameForm;
 	}
