@@ -34,7 +34,7 @@ if ($id != 0 && is_array($_POST['links']))
 			Links::update($link, $_POST);
 		
 		if(isset($link['added']))
-			Links::insert($link, $id, $link['peerid']);
+			Links::insert($link, $id, $link['id']);
 		
 		if(isset($link['deleted']))
 			Links::delete($link, $_POST);
