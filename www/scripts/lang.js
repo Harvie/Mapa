@@ -20,7 +20,9 @@ var CzfLang =
 				8: "Wireless link in 10 GHz band",
 				9: "Wireless link in licensed band",
 				99: "Other type of link"
-			}
+			},
+			
+			dateFormat: function(date) { return date; }
 		}
 		,
 		cs: {
@@ -93,7 +95,9 @@ var CzfLang =
 				8: "Bezdrátový spoj v pásmu 10 GHz",
 				9: "Bezdrátový spoj v licenčním pásmu",
 				99: "Jiný typ spoje"
-			}
+			},
+			
+			dateFormat: function(date) { return date.replace(/(\d+)-0*(\d+)-0*(\d+)/, "$3.$2.$1"); }
 		}
 	}
 	,

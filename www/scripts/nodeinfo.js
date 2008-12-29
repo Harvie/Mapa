@@ -97,13 +97,13 @@ var CzfNodeInfo =
 		
 		if (info.created)
 		{
-			more += CzfHtml.info(tr("Created on"), info.created.date);
+			more += CzfHtml.info(tr("Created on"), tr("dateFormat")(info.created.date));
 			more += CzfHtml.info(tr("Created by"), CzfHtml.link(info.created.user, info.created.profile));
 		}
 		
 		if (info.changed)
 		{
-			more += CzfHtml.info(tr("Changed on"), info.changed.date);
+			more += CzfHtml.info(tr("Changed on"), tr("dateFormat")(info.changed.date));
 			more += CzfHtml.info(tr("Changed by"), CzfHtml.link(info.changed.user, info.changed.profile));
 		}
 		
