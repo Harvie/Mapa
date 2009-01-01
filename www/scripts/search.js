@@ -44,7 +44,6 @@ var CzfSearch =
 		this.nameField = document.getElementById(id);
 		this.nameField.disabled = true;
 		
-		alert(this.nameField.nodeName);
 		var params = { query: this.nameField.value };
 		CzfAjax.get("search", params, GEvent.callback(this, this.nodeDone));
 		return false;
