@@ -96,7 +96,7 @@ class Controller
 		if (is_numeric($data))
 			return $data;
 		
-		if (is_string($data) && is_null($data))
+		if (is_string($data) || is_null($data))
 			return '"' . self::escape($data) . '"';
 	}
 	
