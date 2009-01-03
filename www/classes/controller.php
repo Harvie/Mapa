@@ -27,35 +27,6 @@ class Controller
 		return str_replace(array("\\", "\"", "\n", "\r"), array("\\\\", "\\\"", "\\n", ""), $string);
 	}
 	
-	protected static function formatDate($date)
-	{
-		return substr($date, 0, strpos($date, ' '));
-	}
-	
-	protected static function makeChangeInfo($time, $userID)
-	{
-		return array(
-			'date' => self::formatDate($time),
-			'name' => User::getNameByID($userID),
-			'profile' => Config::$profilePrefix . $userID,
-		);
-	}
-	
-	protected static function convertChangeInfo(&$info)
-	{
-		if ($info['created_by'] !== null)
-			$info['created'] = self::makeChangeInfo($info['created_on'], $info['created_by']);
-		
-		unset($info['created_on']);
-		unset($info['created_by']);
-		
-		if ($info['changed_by'] !== null)
-			$info['changed'] = self::makeChangeInfo($info['changed_on'], $info['changed_by']);
-		
-		unset($info['changed_on']);
-		unset($info['changed_by']);
-	}
-	
 	protected static function getLanguages()
 	{
 		//Borrowed from Jakub Vrána, http://php.vrana.cz/phpminadmin-preklady.php

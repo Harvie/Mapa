@@ -10,10 +10,10 @@ $info['owner'] = array(
 	'profile' => Config::$profilePrefix . $info['owner'],
 );
 
-self::convertChangeInfo($info);
+History::convertChangeInfo($info);
 
 $info['links'] = Links::selectFromNode($id);
 foreach ($info['links'] as $i => $link)
-	self::convertChangeInfo($info['links'][$i]);
+	History::convertChangeInfo($info['links'][$i]);
 
 self::writeJSON($info);
