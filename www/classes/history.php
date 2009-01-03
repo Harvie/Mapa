@@ -2,6 +2,32 @@
 
 class History
 {
+	public static function insert($table, $data, $columns)
+	{
+		$columns = array_merge($columns, array('created_on', 'created_by'));
+		$data['created_by'] = User::getID();
+		$data['created_on'] = 'now';
+		
+		$insert = Query::insert($table, $columns);
+		$insert->execute($data);
+	}
+	
+	public static function update($table, $data, $columns, $keys = array('id'))
+	{
+		$columns = array_merge($columns, array('changed_on', 'changed_by'));
+		$data['changed_by'] = User::getID();
+		$data['changed_on'] = 'now';
+		
+		$update = Query::update($table, $columns, $keys);
+		$update->execute($data);
+	}
+	
+	public static function delete($table, $data, $keys = array('id'))
+	{
+		$delete = Query::delete($table, $keys);
+		$delete->execute($data);
+	}
+	
 	public static function makeChangeInfo($time, $userID)
 	{
 		return array(

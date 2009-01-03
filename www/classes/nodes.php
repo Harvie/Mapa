@@ -9,21 +9,15 @@ class Nodes
 	
 	public function insert($data)
 	{
-		$columns = array_merge(self::$columns, array('owner', 'created_on', 'created_by'));
-		$data['owner'] = $data['created_by'] = User::getID();
-		$data['created_on'] = 'now';
+		$columns = array_merge(self::$columns, array('owner'));
+		$data['owner'] = User::getID();
 		
-		$insert = Query::insert('nodes', $columns);
-		$insert->execute($data);
+		History::insert('nodes', $data, $columns);
 		return Query::lastInsertId();
 	}
 	
 	public static function update($data, $allowMove)
 	{
-		$columns = array_merge(self::$columns, array('changed_on', 'changed_by'));
-		$data['changed_by'] = User::getID();
-		$data['changed_on'] = 'now';
-		
 		if ($allowMove)
 			Links::fixLinkEndpoints($data['id'], $data['lat'], $data['lng']);
 		else
@@ -32,14 +26,12 @@ class Nodes
 			unset($columns['lng']);
 		}
 		
-		$update = Query::update('nodes', $columns);
-		$update->execute($data);
+		History::update('nodes', $data, self::$columns);
 	}
 	
 	public static function delete($data)
 	{
-		$delete = Query::delete('nodes');
-		$delete->execute($data);
+		History::delete('nodes', $data);
 	}
 	
 	public static function fetchInfo($id)

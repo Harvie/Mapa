@@ -104,10 +104,10 @@ var CzfLinkInfo =
 		
 		html += '<div class="linkedit">';
 		html += CzfHtml.form(controls, "linkform", "return false;");
-		if (l.changed)
-			html += this.createChangeInfo("Changed by %s on %s.", l.changed);
 		if (l.created)
 			html += this.createChangeInfo("Created by %s on %s.", l.created);
+		if (l.changed)
+			html += this.createChangeInfo("Changed by %s on %s.", l.changed);
 		html += '</div>';
 		
 		return html;

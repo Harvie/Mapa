@@ -24,8 +24,6 @@ class Links
 	
 	public static function insert($data, $node1, $node2)
 	{
-		$columns = array_merge(self::$cols_edit, array('lat1', 'lng1', 'lat2', 'lng2'));
-		
 		$pos1 = Nodes::fetchPos(intval($node1));
 		$pos2 = Nodes::fetchPos(intval($node2));
 		
@@ -41,22 +39,20 @@ class Links
 		list($data['node1'], $data['lat1'], $data['lng1']) = $end1;
 		list($data['node2'], $data['lat2'], $data['lng2']) = $end2;
 		
-		$insert = Query::insert('links', array_merge($columns, self::$keys));
-		$insert->execute($data);
+		$columns = array_merge(self::$cols_edit, array('lat1', 'lng1', 'lat2', 'lng2'));
+		History::insert('links', $data, array_merge($columns, self::$keys));
 	}
 	
 	public static function update($link, $node)
 	{
 		self::setEndpoints($link, $node);
-		$update = Query::update('links', self::$cols_edit, self::$keys);
-		$update->execute($link);
+		History::update('links', $link, self::$cols_edit, self::$keys);
 	}
 		
 	public static function delete($link, $node)
 	{
 		self::setEndpoints($link, $node);
-		$delete = Query::delete('links', self::$keys);
-		$delete->execute($link);
+		$delete = History::delete('links', $link, self::$keys);
 	}
 	
 	private static function setEndpoints(&$link, $node)
