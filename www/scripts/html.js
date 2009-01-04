@@ -53,7 +53,7 @@ var CzfHtml =
 	{
 		var html = '<label for="' + id + '">' + label + ':</label><br />';
 		html += '<input type="text" name="' + id + '" id="' + id + '" ';
-		html += 'value="' + value + '" size="18" maxlength="50" /><br/>';
+		html += 'value="' + this.nullFix(value) + '" size="18" maxlength="50" /><br/>';
 		return html;
 	}
 	,
@@ -61,8 +61,13 @@ var CzfHtml =
 	{
 		var html = '<label for="' + id + '">' + label + ':</label><br />';
 		html += '<textarea name="' + id + '" id="' + id + '" rows="4" cols="17">';
-		html += value + '</textarea><br/>';
+		html += this.nullFix(value) + '</textarea><br/>';
 		return html;
+	}
+	,
+	nullFix: function(text)
+	{
+		return (text !== null) ? text : "";
 	}
 	,
 	select: function(id, label, value, options, nowrap)

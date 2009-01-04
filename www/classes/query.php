@@ -121,10 +121,7 @@ class Query
 	public function execute($values)
 	{
 		foreach ($this->columns as $col)
-			if ($values[$col] === '') //Empty strings are stored as NULL
-				$this->stmt->bindParam(":$col", $null = null);
-			else
-				$this->stmt->bindParam(":$col", $values[$col]);
+			$this->stmt->bindParam(":$col", $values[$col]);
 		
 		return $this->stmt->execute($row);
 	}

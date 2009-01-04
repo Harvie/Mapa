@@ -67,7 +67,10 @@ var CzfNodeInfo =
 		               "url_homepage", "address", "visibility" ];
 		
 		for (i in fields)
-			this.info[fields[i]] = document.nodeform[fields[i]].value;
+		{
+			var value = document.nodeform[fields[i]].value;
+			this.info[fields[i]] = (value === "") ? null : value;
+		}
 	}
 	,
 	createNode: function()

@@ -26,8 +26,12 @@ $select->setFetchMode(PDO::FETCH_NUM);
 foreach ($select as $row)
 {
 	foreach ($row as $i => $value)
+	{
 		if ($row[$i] !== null)
 			$row[$i] = iconv('WINDOWS-1250', 'UTF-8', $row[$i]);
+		if ($row[$i] === '')
+			$row[$i] = null;
+	}
 
 	$insert->execute($row);
 }

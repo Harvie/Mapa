@@ -33,6 +33,9 @@ var CzfAjax =
 		{
 			var key;
 			
+			if (data[i] === null)
+				continue;
+			
 			if (prefix != null)
 				key = prefix + "[" + i + "]";
 			else

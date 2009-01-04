@@ -66,8 +66,11 @@ class Controller
 		if (is_numeric($data))
 			return $data;
 		
-		if (is_string($data) || is_null($data))
+		if (is_string($data))
 			return '"' . self::escape($data) . '"';
+		
+		if (is_null($data))
+			return 'null';
 	}
 	
 	protected static function writeJSON($data)
