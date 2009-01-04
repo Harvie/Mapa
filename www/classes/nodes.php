@@ -36,16 +36,16 @@ class Nodes
 	
 	public static function fetchInfo($id)
 	{
-		$query = Query::prepare('SELECT * FROM nodes WHERE id = ?');
-		$query->execute(array($id));
-		return $query->fetch(PDO::FETCH_ASSOC);
+		$query = Query::select('nodes');
+		$query->execute(array('id' => $id));
+		return $query->fetch();
 	}
 	
 	public static function fetchPos($id)
 	{
-		$query = Query::prepare('SELECT lat,lng FROM nodes WHERE id = ?');
-		$query->execute(array($id));
-		return $query->fetch();
+		$query = Query::select('nodes', array('lat', 'lng'));
+		$query->execute(array('id' => $id));
+		return $query->fetch(PDO::FETCH_ASSOC);
 	}
 	
 	public static function findByName($name)

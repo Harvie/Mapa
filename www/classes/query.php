@@ -9,9 +9,9 @@ class Query
 	}
 	
 	//Only factory methods are public
-	private function __construct($sql, $columns)
+	private function __construct($sql, $columns, $readonly)
 	{
-		if (!self::$transaction)
+		if (!$readonly && !self::$transaction)
 			throw new Exception('INSERT or UPDATE outside transaction is not allowed.');
 		
 		$this->columns = $columns;
@@ -21,6 +21,15 @@ class Query
 	public static function prepare($sql)
 	{
 		return self::$db->prepare($sql);
+	}
+	
+	public static function select($table, $columns = null, $keys = array('id'))
+	{
+		$sql = 'SELECT ';
+		$sql .= $columns ? implode(',',$columns) : '*';
+		$sql .= "FROM $table ";
+		$sql .= 'WHERE '.implode(' AND ', self::makeNamedParams($keys));
+		return new Query($sql, $keys, true);
 	}
 	
 	public static function insert($table, $columns)
@@ -34,18 +43,22 @@ class Query
 	public static function update($table, $columns, $keys = array('id'))
 	{
 		$sql = "UPDATE $table SET ";
-		$fn = create_function('$col', 'return "$col = :$col";');
-		$sql .= implode(',', array_map($fn, $columns));
-		$sql .= ' WHERE '.implode(' AND ', array_map($fn, $keys));
+		$sql .= implode(',', self::makeNamedParams($columns));
+		$sql .= ' WHERE '.implode(' AND ', self::makeNamedParams($keys));
 		return new Query($sql, array_merge($columns, $keys));
 	}
 	
 	public static function delete($table, $keys = array('id'))
 	{
 		$sql = "DELETE FROM $table ";
-		$fn = create_function('$col', 'return "$col = :$col";');
-		$sql .= ' WHERE '.implode(' AND ', array_map($fn, $keys));
+		$sql .= ' WHERE '.implode(' AND ', self::makeNamedParams($keys));
 		return new Query($sql, $keys);
+	}
+	
+	public static function makeNamedParams($columns)
+	{
+		$fn = create_function('$col', 'return "$col = :$col";');
+		return array_map($fn, $columns);
 	}
 	
 	public static function filtersToSQL($table, $column, $filters)
@@ -113,7 +126,12 @@ class Query
 			else
 				$this->stmt->bindParam(":$col", $values[$col]);
 		
-		return $result = $this->stmt->execute($row);
+		return $this->stmt->execute($row);
+	}
+	
+	public function fetch()
+	{
+		return $this->stmt->fetch(PDO::FETCH_ASSOC);
 	}
 	
 	private static $db = null;
