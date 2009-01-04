@@ -36,7 +36,7 @@ if ($id != 0 && is_array($_POST['links']))
 		if(isset($link['insert']))
 			Links::insert($link, $id, $link['id']);
 		
-		if(isset($link['delete']))
+		if(isset($link['remove']))
 			Links::delete($link, $_POST);
 	}
 
