@@ -5,9 +5,8 @@ $info = Nodes::fetchInfo($id);
 if (!$info) return;
 
 $info['owner'] = array(
-	'id' => $info['owner'],
-	'name' => User::getNameByID($info['owner']),
-	'profile' => Config::$profilePrefix . $info['owner'],
+	'name' => User::getNameByID($info['owner_id']),
+	'profile' => Config::$profilePrefix . $info['owner_id'],
 );
 
 History::convertChangeInfo($info);

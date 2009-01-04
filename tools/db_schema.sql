@@ -26,7 +26,7 @@ CREATE TABLE nodes (
     url_homepage text,
     url_thread text,
     visibility text,
-    owner integer NOT NULL,
+    owner_id integer NOT NULL,
     created_on timestamp,
     created_by integer,
     changed_on timestamp,
@@ -50,7 +50,7 @@ CREATE TABLE nodes_history (
     url_homepage text,
     url_thread text,
     visibility text,
-    owner integer,
+    owner_id integer,
     changed_on timestamp NOT NULL,
     changed_by integer NOT NULL,
     PRIMARY KEY (id, changed_on)

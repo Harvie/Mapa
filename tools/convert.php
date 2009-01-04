@@ -19,7 +19,7 @@ $select = $mysql->query('SELECT id,name,lat-0.00005,lon,type,status,address,'.
                                'visibilitydesc,urlphotos,urlhomepage,urlthread,'.
 			       'ownerid,changed_on,changed_by FROM node');
 $insert = $pgsql->prepare('INSERT INTO nodes (id,name,lat,lng,type,status,address,visibility,'.
-                          'url_photos,url_homepage,url_thread,owner,changed_on,changed_by) '.
+                          'url_photos,url_homepage,url_thread,owner_id,changed_on,changed_by) '.
 			  'VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
 
 $select->setFetchMode(PDO::FETCH_NUM);
