@@ -14,6 +14,8 @@ class History
 	
 	public static function update($table, $data, $columns, $keys = array('id'))
 	{
+		self::makeBackup($table, $data, $keys);
+		
 		$columns = array_merge($columns, array('changed_on', 'changed_by'));
 		$data['changed_by'] = User::getID();
 		$data['changed_on'] = 'now';
@@ -24,8 +26,41 @@ class History
 	
 	public static function delete($table, $data, $keys = array('id'))
 	{
+		self::makeBackup($table, $data, $keys);
+		
+		//The time of deletion is marked by row of nulls
+		$emptyData = array('changed_by' => User::getID(), 'changed_on' => 'now');
+		foreach ($keys as $col)
+			$emptyData[$col] = $data[$col];
+		self::storeBackup($table, $emptyData);
+		
 		$delete = Query::delete($table, $keys);
 		$delete->execute($data);
+	}
+	
+	private function makeBackup($table, $data, $keys)
+	{
+		$select = Query::select($table, null, $keys);
+		$select->execute($data);
+		$oldData = $select->fetch();
+		if (!$oldData) return;
+		
+		self::storeBackup($table, $oldData);
+	}
+	
+	private static function storeBackup($table, $data)
+	{
+		if (!isset($data['changed_on']))
+		{
+			$data['changed_on'] = $data['created_on'];
+			$data['changed_by'] = $data['created_by'];
+		}
+		
+		unset($data['created_on']);
+		unset($data['created_by']);
+		
+		$insert = Query::insert("${table}_history", array_keys($data));
+		$insert->execute($data);
 	}
 	
 	public static function makeChangeInfo($time, $userID)

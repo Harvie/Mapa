@@ -9,7 +9,7 @@ class Query
 	}
 	
 	//Only factory methods are public
-	private function __construct($sql, $columns, $readonly)
+	private function __construct($sql, $columns, $readonly = false)
 	{
 		if (!$readonly && !self::$transaction)
 			throw new Exception('INSERT or UPDATE outside transaction is not allowed.');

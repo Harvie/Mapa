@@ -35,6 +35,29 @@ CREATE TABLE nodes (
 
 
 --
+-- Name: nodes_history; Type: TABLE; Schema: public; Owner: mapa; Tablespace: 
+--
+
+CREATE TABLE nodes_history (
+    id integer NOT NULL,
+    name character varying(50),
+    lat double precision,
+    lng double precision,
+    "type" integer,
+    status integer,
+    address text,
+    url_photos text,
+    url_homepage text,
+    url_thread text,
+    visibility text,
+    owner integer,
+    changed_on timestamp NOT NULL,
+    changed_by integer NOT NULL,
+    PRIMARY KEY (id, changed_on)
+);
+
+
+--
 -- Name: links; Type: TABLE; Schema: public; Owner: mapa; Tablespace: 
 --
 
@@ -53,6 +76,26 @@ CREATE TABLE links (
     changed_on timestamp,
     changed_by integer
 );
+
+
+--
+-- Name: links_history; Type: TABLE; Schema: public; Owner: mapa; Tablespace: 
+--
+
+CREATE TABLE links_history (
+    node1 integer NOT NULL,
+    node2 integer NOT NULL,
+    media integer,
+    active integer,
+    backbone integer,
+    lat1 double precision,
+    lng1 double precision,
+    lat2 double precision,
+    lng2 double precision,
+    changed_on timestamp,
+    changed_by integer
+);
+
 
 ALTER TABLE links ADD CONSTRAINT links_node1_key UNIQUE (node1, node2);
 ALTER TABLE links ADD CHECK(lat1 <= lat2);
