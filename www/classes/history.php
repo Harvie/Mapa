@@ -14,7 +14,10 @@ class History
 	
 	public static function update($table, $data, $columns, $keys = array('id'))
 	{
-		self::makeBackup($table, $data, $keys);
+		//Make a backup before replacing
+		$oldData = self::fetchOldData($table, $data, $keys);
+		if (!$oldData || !self::isChanged($columns, $oldData, $data)) return;
+		self::storeBackup($table, $oldData);
 		
 		$columns = array_merge($columns, array('changed_on', 'changed_by'));
 		$data['changed_by'] = User::getID();
@@ -26,7 +29,10 @@ class History
 	
 	public static function delete($table, $data, $keys = array('id'))
 	{
-		self::makeBackup($table, $data, $keys);
+		//Make a backup before deleting
+		$oldData = self::fetchOldData($table, $data, $keys);
+		if (!$oldData) return;
+		self::storeBackup($table, $oldData);
 		
 		//The time of deletion is marked by row of nulls
 		$emptyData = array('changed_by' => User::getID(), 'changed_on' => 'now');
@@ -38,14 +44,20 @@ class History
 		$delete->execute($data);
 	}
 	
-	private function makeBackup($table, $data, $keys)
+	private static function fetchOldData($table, $data, $keys)
 	{
 		$select = Query::select($table, null, $keys);
 		$select->execute($data);
-		$oldData = $select->fetch();
-		if (!$oldData) return;
+		return $select->fetch();
+	}
+	
+	private static function isChanged($columns, $old, $new)
+	{
+		foreach ($columns as $col)
+			if ($old[$col] != $new[$col])
+				return true;
 		
-		self::storeBackup($table, $oldData);
+		return false;
 	}
 	
 	private static function storeBackup($table, $data)

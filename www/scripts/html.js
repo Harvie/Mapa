@@ -98,8 +98,8 @@ var CzfHtml =
 	form: function(contents, id, onsubmit)
 	{
 		var html = '<form action="#" method="get" name="' + id + '" onsubmit="' + onsubmit + '">';
-        html += '<div>' + contents + '</div></form>';
-        return html;
+		html += '<div>' + contents + '</div></form>';
+		return html;
 	}
 	,
 	panelPart: function(contents, id, label)
