@@ -69,6 +69,7 @@ var CzfNodeInfo =
 		for (i in fields)
 		{
 			var value = document.nodeform[fields[i]].value;
+			value = value.replace(/\r/g, ""); //Convert to UNIX line breaks
 			this.info[fields[i]] = (value === "") ? null : value;
 		}
 	}
