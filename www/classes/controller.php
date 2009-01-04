@@ -56,8 +56,7 @@ class Controller
 			{
 				$output = "{\n";
 				foreach ($data as $var => $value)
-					if ($value !== null)
-						$output .= "$indent\t$var: " . self::recursiveJSON($value, "$indent\t") . ",\n";
+					$output .= "$indent\t$var: " . self::recursiveJSON($value, "$indent\t") . ",\n";
 				$output[strlen($output) - 2] = ' '; //Remove last comma - hack for IE
 				$output .= $indent."}";
 			}
