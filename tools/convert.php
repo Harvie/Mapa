@@ -3,7 +3,7 @@
 
 error_reporting(E_ALL);
 
-$mysql = new PDO('mysql:dbname=czfreemapa', 'mapa', 'n0d3m0n1t0r');
+$mysql = new PDO('mysql:dbname=czfreemapa', 'mapa', 'XXXXXXXX');
 $mysql->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
 $mysql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $mysql->query('SET NAMES latin1');
@@ -50,6 +50,9 @@ $insert = $pgsql->prepare('INSERT INTO links (node1,node2,media,backbone,active,
 $select->setFetchMode(PDO::FETCH_NUM);
 foreach ($select as $row)
 	$insert->execute($row);
+
+$pgsql->query('DELETE FROM links_history');
+$pgsql->query('DELETE FROM nodes_history');
 
 $pgsql->query("UPDATE nodes SET type = 11 FROM links WHERE node1 = nodes.id AND backbone = 1 AND active = 1 AND nodes.type = 1");
 $pgsql->query("UPDATE nodes SET type = 11 FROM links WHERE node2 = nodes.id AND backbone = 1 AND active = 1 AND nodes.type = 1");
