@@ -18,7 +18,7 @@ var CzfHtml =
 	,
 	click: function(title, action)
 	{
-		return '<span onclick="' + action + '">' + title + '</span>';
+		return '<span class="click" onclick="' + action + '">' + title + '</span>';
 	}
 	,
 	span: function(contents, classList)
@@ -133,7 +133,7 @@ var CzfHtml =
 	{
 		var html = '';
 		html += '<div onclick="CzfHtml.showBlock(\'' + id + '\')" ';
-		html += 'class="click" id="' + id + '.label">' + label + '</div>';
+		html += 'class="click expand" id="' + id + '.label">' + label + '</div>';
 		html += '<div class="hidden" id="' + id + '">' + contents + '</div>';
 		return html;
 	}

@@ -87,12 +87,17 @@ var CzfNodeInfo =
 		return info;
 	}
 	,
+	center: function()
+	{
+		CzfMain.setPos(this.info.lat, this.info.lng);
+	}
+	,
 	createInfo: function(info)
 	{
 		var html = '';
 		
 		html += '<p>';
-		html += CzfHtml.info(tr("Name"), info.name);
+		html += CzfHtml.info(tr("Name"), CzfHtml.click(info.name, "CzfNodeInfo.center()"));
 		html += CzfHtml.info(tr("Type"), tr("nodeTypes")[info.type]);
 		html += CzfHtml.info(tr("Status"), tr("nodeStates")[info.status]);
 		html += CzfHtml.info(tr("Owner"), CzfInfo.userLink(info.owner));

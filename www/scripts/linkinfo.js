@@ -119,7 +119,7 @@ var CzfLinkInfo =
 		var imgSrc = "images/node/" + l.type + "-" + l.status + ".png";
 		var imgHtml = CzfHtml.img(imgTitle, imgSrc);
 		
-		var classes = [ "peername" ];
+		var classes = new Array();
 		if (l.backbone) classes.push("backbone");
 		if (!l.active)  classes.push("planned");
 		if (l.insert)   classes.push("added");
