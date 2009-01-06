@@ -40,7 +40,7 @@ CREATE TABLE nodes (
 
 CREATE TABLE nodes_history (
     id integer NOT NULL,
-    name character varying(50),
+    name text,
     lat double precision,
     lng double precision,
     "type" integer,
