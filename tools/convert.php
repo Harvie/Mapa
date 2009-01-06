@@ -40,6 +40,24 @@ foreach (array(array('node', 'nodes'), array('node_deleted', 'nodes_history')) a
 	}
 }
 
+$select = $mysql->query(
+	'SELECT DISTINCT h.changed_on, h.changed_by, h.nodeid, s.ownerid_before AS status,'.
+	       'IF(t.ownerid_before IS NULL, NULL, 0) AS type, o.ownerid_before AS owner_id '.
+	'FROM node_history AS h '.
+	'LEFT JOIN (SELECT * FROM node_history WHERE value = \'S\') AS s '.
+	'ON s.changed_by = h.changed_by AND s.changed_on = h.changed_on AND s.nodeid = h.nodeid '.
+	'LEFT JOIN (SELECT * FROM node_history WHERE value = \'T\') AS t '.
+	'ON t.changed_by = h.changed_by AND t.changed_on = h.changed_on AND t.nodeid = h.nodeid '.
+	'LEFT JOIN (SELECT * FROM node_history WHERE value = \'O\') AS o '.
+	'ON o.changed_by = h.changed_by AND o.changed_on = h.changed_on AND o.nodeid = h.nodeid');
+
+$insert = $pgsql->prepare('INSERT INTO nodes_history (changed_on,changed_by,id,status,type,owner_id) '.
+                          'VALUES(?,?,?,?,?,?)');
+
+$select->setFetchMode(PDO::FETCH_NUM);
+foreach ($select as $row)
+	$insert->execute($row);
+
 $pgsql->query('DELETE FROM links');
 $pgsql->query('DELETE FROM links_history');
 

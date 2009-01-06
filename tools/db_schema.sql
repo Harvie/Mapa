@@ -53,7 +53,7 @@ CREATE TABLE nodes_history (
     owner_id integer,
     changed_on timestamp NOT NULL,
     changed_by integer NOT NULL,
-    PRIMARY KEY (id, changed_on)
+    PRIMARY KEY (id, changed_on, changed_by)
 );
 
 
@@ -93,7 +93,8 @@ CREATE TABLE links_history (
     lat2 double precision,
     lng2 double precision,
     changed_on timestamp,
-    changed_by integer
+    changed_by integer,
+    PRIMARY KEY (node1, node2, changed_on, changed_by)
 );
 
 
