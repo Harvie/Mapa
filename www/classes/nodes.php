@@ -9,8 +9,8 @@ class Nodes
 	
 	public function insert($data)
 	{
-		$columns = array_merge(self::$columns, array('owner'));
-		$data['owner'] = User::getID();
+		$columns = array_merge(self::$columns, array('owner_id'));
+		$data['owner_id'] = User::getID();
 		
 		History::insert('nodes', $data, $columns);
 		return Query::lastInsertId();

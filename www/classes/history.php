@@ -17,7 +17,7 @@ class History
 		//Make a backup before replacing
 		$oldData = self::fetchOldData($table, $data, $keys);
 		if (!$oldData || !self::isChanged($columns, $oldData, $data)) return;
-		self::storeBackup($table, $oldData);
+		self::writeOldVersion($table, $oldData);
 		
 		$columns = array_merge($columns, array('changed_on', 'changed_by'));
 		$data['changed_by'] = User::getID();
@@ -32,13 +32,11 @@ class History
 		//Make a backup before deleting
 		$oldData = self::fetchOldData($table, $data, $keys);
 		if (!$oldData) return;
-		self::storeBackup($table, $oldData);
+		self::writeOldVersion($table, $oldData);
 		
-		//The time of deletion is marked by row of nulls
-		$emptyData = array('changed_by' => User::getID(), 'changed_on' => 'now');
-		foreach ($keys as $col)
-			$emptyData[$col] = $data[$col];
-		self::storeBackup($table, $emptyData);
+		//Preserve time of creation by a row of nulls
+		if ($oldData['created_on'] !== null)
+			self::writeCreationInfo($table, $oldData, $keys);
 		
 		$delete = Query::delete($table, $keys);
 		$delete->execute($data);
@@ -60,17 +58,30 @@ class History
 		return false;
 	}
 	
-	private static function storeBackup($table, $data)
+	private static function writeOldVersion($table, $data)
 	{
-		if (!isset($data['changed_on']))
-		{
-			$data['changed_on'] = $data['created_on'];
-			$data['changed_by'] = $data['created_by'];
-		}
+		$data['changed_on'] = 'now';
+		$data['changed_by'] = User::getID();
 		
 		unset($data['created_on']);
 		unset($data['created_by']);
 		
+		self::writeRecord($table, $data);
+	}
+	
+	private static function writeCreationInfo($table, $data, $keys)
+	{
+		$emptyData = array();
+		foreach ($keys as $col)
+			$emptyData[$col] = $data[$col];
+		
+		$emptyData['changed_on'] = $data['created_on'];
+		$emptyData['changed_by'] = $data['created_by'];
+		self::writeRecord($table, $emptyData);
+	}
+	
+	private static function writeRecord($table, $data)
+	{
 		$insert = Query::insert("${table}_history", array_keys($data));
 		$insert->execute($data);
 	}
