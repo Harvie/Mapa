@@ -21,7 +21,7 @@ CREATE TABLE nodes (
     lng double precision NOT NULL,
     "type" integer NOT NULL,
     status integer NOT NULL,
-    address text,
+    address text NOT NULL,
     url_photos text,
     url_homepage text,
     url_thread text,

@@ -33,7 +33,7 @@ foreach (array(array('node', 'nodes'), array('node_deleted', 'nodes_history')) a
 	{
 		foreach ($row as $i => $value)
 		{
-			if ($row[$i] === '')
+			if ($row[$i] === '' && $i != 6)
 				$row[$i] = null;
 	
 			if ($row[$i] !== null)
