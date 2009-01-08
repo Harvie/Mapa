@@ -74,6 +74,22 @@ var CzfNodeInfo =
 		}
 	}
 	,
+	checkForm: function()
+	{
+		var errors = "";
+		
+		if (document.nodeform.name.value === "")
+			errors += "\n" + tr("Node name must be filled in.");
+		
+		if (document.nodeform.address.value === "")
+			errors += "\n" + tr("Node address must be filled in.");
+		
+		if (errors !== "")
+			alert(tr("Changes cannot be saved:") + errors);
+		
+		return (errors === "");
+	}
+	,
 	createNode: function()
 	{
  		var info = CzfMain.clone(this.newInfo);

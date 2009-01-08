@@ -11,19 +11,30 @@ if (User::getRights() < User::RIGHTS_MAPPER)
 
 Query::beginTransaction();
 
-if ($id == 0)
-	$id = Nodes::insert($_POST);
-else
-{
-	if ($_POST['deleteNode'])
-	{
-		Nodes::delete($_POST);
-		$id = 0;
-	}
+try {
+	if ($id == 0)
+		$id = Nodes::insert($_POST);
 	else
-		Nodes::update($_POST, isset($_POST['moved']));
+	{
+		if ($_POST['deleteNode'])
+		{
+			Nodes::delete($_POST);
+			$id = 0;
+		}
+		else
+			Nodes::update($_POST, isset($_POST['moved']));
+	}
 }
-
+catch (PDOException $e)
+{
+	//UNIQUE violation - name already exists
+	if ($e->errorInfo[0] == 23505)
+		self::fail("DUPLICATE_NAME");
+	else
+		throw $e;
+	return;
+}
+	
 if ($id != 0 && is_array($_POST['links']))
 	foreach ($_POST['links'] as $link)
 	{
@@ -41,4 +52,4 @@ if ($id != 0 && is_array($_POST['links']))
 	}
 
 Query::commit();
-echo "{ id: $id }";
+self::writeJSON(array("id" => $id));

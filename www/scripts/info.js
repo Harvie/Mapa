@@ -83,6 +83,9 @@ var CzfInfo =
 	,
 	save: function()
 	{
+		if (!CzfNodeInfo.checkForm())
+			return;
+		
 		document.infoform.save.disabled = true;
 		document.infoform.cancel.disabled = true;
 		
@@ -106,7 +109,11 @@ var CzfInfo =
 		}
 		else
 		{
-			alert(result.error);
+			if (result.error == "DUPLICATE_NAME")
+				alert(CzfLang.format("Node with name '%s' already exists.", this.info.name));
+			else
+				alert(result.error);
+			
 			document.infoform.save.disabled = false;
 			document.infoform.cancel.disabled = false;
 		}
