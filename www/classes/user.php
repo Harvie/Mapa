@@ -28,7 +28,7 @@ class User
 			if ($row && $_COOKIE['bbpassword'] == $row['password'])
 			{
 				$_SESSION['userID'] = $row['userid'];
-				$_SESSION['userName'] = $row['username'];
+				$_SESSION['userName'] = self::convertName($row['username']);
 				$_SESSION['userRights'] = $row['mapperms'];
 			}
 		}
@@ -77,6 +77,12 @@ class User
 	public static function getNameByID($id)
 	{
 		$row = self::loadUserInfo($id);
-		return $row ? $row['username'] : false;
+		return $row ? self::convertName($row['username']) : false;
+	}
+	
+	public static function convertName($name)
+	{
+		// The user database is still in Windows encoding
+		return iconv("WINDOWS-1250", "UTF-8", $name);
 	}
 }
