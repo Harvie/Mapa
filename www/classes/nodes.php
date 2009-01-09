@@ -96,7 +96,7 @@ class Nodes
 		return self::$cols_basic;
 	}
 	
-	public static function getRights($node)
+	public static function getRights($node = null)
 	{
 		$rights = array(
 			'edit' => ($node === null) ? User::isLogged() : User::canEdit($node['owner_id']),

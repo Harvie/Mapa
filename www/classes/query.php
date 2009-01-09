@@ -27,7 +27,7 @@ class Query
 	{
 		$sql = 'SELECT ';
 		$sql .= $columns ? implode(',',$columns) : '*';
-		$sql .= "FROM $table ";
+		$sql .= " FROM $table ";
 		$sql .= 'WHERE '.implode(' AND ', self::makeNamedParams($keys));
 		return new Query($sql, $keys, true);
 	}
