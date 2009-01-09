@@ -1,25 +1,27 @@
 <?php
 
-if (!isset($_POST['id']))
+$node = $_POST;
+
+if (!isset($node['id']))
 	throw new Exception("Missing node ID!");
 
-$id = intval($_POST['id']);
-$_POST['id'] = $id;
+$id = intval($node['id']);
+$node['id'] = $id;
 
 Query::beginTransaction();
 
 try {
 	if ($id == 0)
-		$id = Nodes::insert($_POST);
+		$id = Nodes::insert($node);
 	else
 	{
-		if ($_POST['deleteNode'])
+		if ($node['deleteNode'])
 		{
-			Nodes::delete($_POST);
+			Nodes::delete($node);
 			$id = 0;
 		}
 		else
-			Nodes::update($_POST, isset($_POST['moved']));
+			Nodes::update($node, isset($node['moved']));
 	}
 }
 catch (PDOException $e)
@@ -32,20 +34,20 @@ catch (PDOException $e)
 	return;
 }
 	
-if ($id != 0 && is_array($_POST['links']))
-	foreach ($_POST['links'] as $link)
+if ($id != 0 && is_array($node['links']))
+	foreach ($node['links'] as $link)
 	{
 		if (!is_array($link))
 			continue;
 		
 		if(isset($link['update']))
-			Links::update($link, $_POST);
+			Links::update($link, $node);
 		
 		if(isset($link['insert']))
-			Links::insert($link, $id, $link['id']);
+			Links::insert($link, $node);
 		
 		if(isset($link['remove']))
-			Links::delete($link, $_POST);
+			Links::delete($link, $node);
 	}
 
 Query::commit();

@@ -22,25 +22,24 @@ class Links
 		return $query->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
-	public static function insert($data, $node1, $node2)
+	public static function insert($link, $node)
 	{
-		$pos1 = Nodes::fetchPos(intval($node1));
-		$pos2 = Nodes::fetchPos(intval($node2));
+		$nodes = array(intval($node['id']), intval($link['id']));
+		$pos = array(Nodes::fetchPos($nodes[0]), Nodes::fetchPos($nodes[1]));
 		
-		if (!$pos1 || !$pos2)
-			return false;
+		foreach (array(1,2) as $i => $n)
+		{
+			if (!$pos[$i])
+				return false;
+			
+			$link["node$n"] = $nodes[$i];
+			$link["lat$n"] = $pos[$i]['lat'];
+			$link["lng$n"] = $pos[$i]['lng'];
+		}
 		
-		$end1 = array($node1, $pos1['lat'], $pos1['lng']);
-		$end2 = array($node2, $pos2['lat'], $pos2['lng']);
-		
-		if (floatval($pos1['lat']) > floatval($pos2['lat']))
-			list($end1, $end2) = array($end2, $end1); //swap
-		
-		list($data['node1'], $data['lat1'], $data['lng1']) = $end1;
-		list($data['node2'], $data['lat2'], $data['lng2']) = $end2;
-		
+		self::reorderEndpoints($link);
 		$columns = array_merge(self::$cols_edit, array('lat1', 'lng1', 'lat2', 'lng2'));
-		History::insert('links', $data, array_merge($columns, self::$keys));
+		History::insert('links', $link, array_merge($columns, self::$keys));
 	}
 	
 	public static function update($link, $node)
@@ -100,13 +99,17 @@ class Links
 				$row['lng2'] = $lng;
 			}
 			
-			if (floatval($row['lat1']) > floatval($row['lat2']))
-			{
-				list(   $row['node1'], $row['lat1'], $row['lng1'], $row['node2'], $row['lat2'], $row['lng2'])
-				= array($row['node2'], $row['lat2'], $row['lng2'], $row['node1'], $row['lat1'], $row['lng1']);
-			}
-			
+			self::reorderEndpoints($row);
 			$insert->execute($row);
+		}
+	}
+	
+	public static function reorderEndpoints(&$l)
+	{
+		if (floatval($l['lat1']) > floatval($l['lat2']))
+		{
+			list(   $l['node1'], $l['lat1'], $l['lng1'], $l['node2'], $l['lat2'], $l['lng2'])
+			= array($l['node2'], $l['lat2'], $l['lng2'], $l['node1'], $l['lat1'], $l['lng1']);
 		}
 	}
 	
