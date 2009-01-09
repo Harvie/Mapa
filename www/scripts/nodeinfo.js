@@ -29,9 +29,9 @@ var CzfNodeInfo =
 		
 		if (this.info)
 			if (this.info.editing)
-				element.innerHTML = this.createEdit(this.info);
+				element.innerHTML = this.createEdit();
 			else
-				element.innerHTML= this.createInfo(this.info);
+				element.innerHTML= this.createInfo();
 		else
 			element.innerHTML = "";
 	}
@@ -108,8 +108,9 @@ var CzfNodeInfo =
 		CzfMain.setPos(this.info.lat, this.info.lng);
 	}
 	,
-	createInfo: function(info)
+	createInfo: function()
 	{
+		var info = this.info;
 		var html = '';
 		
 		html += '<p>';
@@ -155,14 +156,15 @@ var CzfNodeInfo =
 		return html;
 	}
 	,
-	createEdit: function(info)
+	createEdit: function()
 	{
+		var info = this.info;
 		var html = '';
 		
 		html += '<p>';
 		html += CzfHtml.edit("name", tr("Name"), info.name);
-		html += CzfHtml.select("type", tr("Type"), info.type, tr("nodeTypes"));
-		html += CzfHtml.select("status", tr("Status"), info.status, tr("nodeStates"));
+		html += CzfHtml.select("type", tr("Type"), info.type, this.getTypes());
+		html += CzfHtml.select("status", tr("Status"), info.status, this.getStates());
 		html += '</p>';
 		
 		html += '<p>';
@@ -178,6 +180,35 @@ var CzfNodeInfo =
 				this.roundAngle(info.lat) + "&nbsp;&nbsp;" + this.roundAngle(info.lng));
 		
 		return CzfHtml.form(html, "nodeform", "return false;");
+	}
+	,
+	getTypes: function()
+	{
+		var allowedTypes = new Object();
+		var allTypes = tr("nodeTypes");
+		var typeList = this.getRights().node_types;
+		
+		for (i in typeList)
+			allowedTypes[typeList[i]] = allTypes[typeList[i]];
+		
+		return allowedTypes;
+	}
+	,
+	getStates: function()
+	{
+		var allowedStates = new Object();
+		var allStates = tr("nodeStates");
+		var statusList = this.getRights().node_states;
+		
+		for (i in statusList)
+			allowedStates[statusList[i]] = allStates[statusList[i]];
+		
+		return allowedStates;
+	}
+	,
+	getRights: function()
+	{
+		return this.info ? this.info.rights : CzfConfig.defRights;
 	}
 	,
 	roundAngle: function(angle)

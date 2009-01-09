@@ -10,6 +10,7 @@ $info['owner'] = array(
 );
 
 History::convertChangeInfo($info);
+$info['rights'] = Nodes::getRights($info);
 
 $info['links'] = Links::selectFromNode($id);
 foreach ($info['links'] as $i => $link)

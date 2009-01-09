@@ -6,9 +6,6 @@ if (!isset($_POST['id']))
 $id = intval($_POST['id']);
 $_POST['id'] = $id;
 
-if (User::getRights() < User::RIGHTS_MAPPER)
-	throw new Exception("Permission denied.");
-
 Query::beginTransaction();
 
 try {

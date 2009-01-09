@@ -71,6 +71,9 @@ class Controller
 		
 		if (is_null($data))
 			return 'null';
+		
+		if (is_bool($data))
+			return $data ? 1 : 0;
 	}
 	
 	protected static function writeJSON($data)

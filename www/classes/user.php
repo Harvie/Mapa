@@ -4,7 +4,7 @@ class User
 {
 	const RIGHTS_NONE = -100;
 	const RIGHTS_USER = 0;
-	const RIGHTS_MAPPER = 0; //Everyone is mapper now
+	const RIGHTS_MAPPER = 100; //Everyone is mapper now
 	
 	public static function initialize()
 	{
@@ -57,6 +57,21 @@ class User
 	public static function getRights()
 	{
 		return $_SESSION['userRights'];
+	}
+	
+	public static function isMapper()
+	{
+		return $_SESSION['userRights'] == self::RIGHTS_MAPPER;
+	}
+	
+	public static function isLogged()
+	{
+		return $_SESSION['userRights'] == self::RIGHTS_USER;
+	}
+	
+	public static function canEdit($owner)
+	{
+		return self::isMapper() || (self::isLogged() && $owner == $_SESSION['userID']);
 	}
 	
 	public static function getNameByID($id)

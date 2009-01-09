@@ -2,7 +2,12 @@
 header("Content-type: text/html; charset=utf-8");
 $jsFiles = glob("scripts/*.js");
 $gmapKey = Config::$gmapKey;
-$languages = self::getLanguages();
+
+$config = array(
+	'languages' => self::getLanguages(),
+	'user' => array('id' => User::getID(), 'name' => User::getName()),
+	'defRights' => Nodes::getRights(),
+);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -15,20 +20,7 @@ $languages = self::getLanguages();
     <script type="text/javascript" src="<?=$file?>"></script>
 <? endforeach ?>
     <script type="text/javascript">
-    	var CzfConfig =
-    	{
-    		languages: [ "<?=implode('","', $languages) ?>" ],
-    		user: {
-    			id: <?= User::getID() ?>,
-    			name: "<?= self::escape(User::getName()) ?>",
-    			rights: <?= User::getRights() ?> 
-    		},
-    		RIGHTS: {
-    			NONE: <?= User::RIGHTS_NONE ?>,
-    			USER: <?= User::RIGHTS_USER ?>,
-    			MAPPER: <?= User::RIGHTS_MAPPER ?> 
-    		}
-    	}
+    	var CzfConfig = <?= self::recursiveJSON($config, "    	") ?> 
     </script>
   </head>
   
