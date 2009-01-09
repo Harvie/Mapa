@@ -126,7 +126,7 @@ var CzfLinkInfo =
 		if (l.remove)   classes.push("deleted");
 		
 		var peerName = CzfHtml.span(l.name, classes);
-		return CzfHtml.click(imgHtml + peerName, action);
+		return imgHtml + CzfHtml.click(peerName, action);
 	}
 	,
 	createChangeInfo: function(text, info)

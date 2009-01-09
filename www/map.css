@@ -127,6 +127,7 @@ h1 {
 
 #linkinfo .added {
 	background-color: yellow;
+	text-decoration: underline;
 }
 
 #linkinfo .deleted {
