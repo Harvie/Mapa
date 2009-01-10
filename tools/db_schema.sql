@@ -67,6 +67,7 @@ CREATE TABLE links (
     media integer,
     active integer DEFAULT 1 NOT NULL,
     backbone integer DEFAULT 0 NOT NULL,
+    secrecy integer DEFAULT 0 NOT NULL,
     lat1 double precision,
     lng1 double precision,
     lat2 double precision,

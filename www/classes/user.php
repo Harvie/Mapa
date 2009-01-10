@@ -4,7 +4,7 @@ class User
 {
 	const RIGHTS_NONE = -100;
 	const RIGHTS_USER = 0;
-	const RIGHTS_MAPPER = 100; //Everyone is mapper now
+	const RIGHTS_MAPPER = 100;
 	
 	public static function initialize()
 	{

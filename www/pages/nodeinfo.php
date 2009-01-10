@@ -13,7 +13,7 @@ History::convertChangeInfo($info);
 $info['rights'] = Nodes::getRights($info);
 $info['linkRights'] = Links::getRights(null, $info);
 
-$info['links'] = Links::selectFromNode($id);
+$info['links'] = Links::selectFromNode($info);
 foreach ($info['links'] as $i => $link)
 {
 	History::convertChangeInfo($info['links'][$i]);

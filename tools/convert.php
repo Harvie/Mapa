@@ -102,11 +102,12 @@ $select = $mysql->query("SELECT IF(n1.lat < n2.lat, id1, id2), IF(n1.lat < n2.la
                         "line.type+0, IF(backbone='1',1,0), 1-IF(inplanning='1',1,0), ".
                         "IF(n1.lat < n2.lat, n1.lat, n2.lat)-0.00005, IF(n1.lat < n2.lat, n1.lon, n2.lon), ".
                         "IF(n1.lat < n2.lat, n2.lat, n1.lat)-0.00005, IF(n1.lat < n2.lat, n2.lon, n1.lon), ".
+                        "CASE IF(perm1 < perm2, perm1, perm2) WHEN 40 THEN -100 WHEN 10 THEN 100 ELSE 0 END, ".
                         "line.changed_on, line.changed_by ".
                         "FROM line JOIN node AS n1 ON id1 = n1.id JOIN node AS n2 ON id2 = n2.id ".
-                        "WHERE (perm1 >= 30 OR perm2 >= 30) AND id1 != id2 GROUP BY id1,id2");
+                        "WHERE (perm1 > 0 AND perm2 > 0) AND id1 != id2 GROUP BY id1,id2");
 $insert = $pgsql->prepare('INSERT INTO links (node1,node2,media,backbone,active,lat1,lng1,lat2,lng2,'.
-                          'changed_on,changed_by) VALUES(?,?,?,?,?,?,?,?,?,?,?)');
+                          'secrecy,changed_on,changed_by) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)');
 
 $select->setFetchMode(PDO::FETCH_NUM);
 foreach ($select as $row)

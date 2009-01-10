@@ -7,18 +7,27 @@ class Links
 	private static $cols_log = array('links.changed_on', 'links.changed_by', 'links.created_on', 'links.created_by');
 	private static $filters = array('media', 'active', 'backbone');
 	
-	public static function selectFromNode($id)
+	public static function selectFromNode($node)
 	{
+		$filter = "";
+		$values = array($node['id']);
+		
+		if (!User::canEdit($node['owner_id']))
+		{
+			$filter = " AND secrecy <= ?";
+			array_push($values, User::getRights());
+		}
+		
 		$columns = array_merge(Nodes::getBasicColumns(), self::$cols_edit, self::$cols_log);
 		$collist = implode(',', $columns);
 		
 		$query = Query::prepare(
-			"SELECT $collist FROM links JOIN nodes ON node2 = nodes.id WHERE node1 = ?".
+			"SELECT $collist FROM links JOIN nodes ON node2 = nodes.id WHERE node1 = ?$filter".
 			' UNION ALL '.
-			"SELECT $collist FROM links JOIN nodes ON node1 = nodes.id WHERE node2 = ?"
+			"SELECT $collist FROM links JOIN nodes ON node1 = nodes.id WHERE node2 = ?$filter"
 		);
 		
-		$query->execute(array($id, $id));
+		$query->execute(array_merge($values, $values));
 		return $query->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
@@ -27,7 +36,8 @@ class Links
 		$sql = "SELECT lat1,lng1,lat2,lng2,media,active,backbone FROM links ".
 		       "JOIN nodes AS n1 ON node1 = n1.id JOIN nodes AS n2 ON node2 = n2.id ".
 		       "WHERE ((lat1 < ? AND lng1 < ? AND lat2 > ? AND lng2 > ?) ".
-		           "OR (lat1 < ? AND lng2 < ? AND lat2 > ? AND lng1 > ?))";
+		           "OR (lat1 < ? AND lng2 < ? AND lat2 > ? AND lng1 > ?)) ".
+		          "AND secrecy <= ?";
 		
 		$sql .= Nodes::makeFilterSQL('n1', $nodefilters);
 		$sql .= Nodes::makeFilterSQL('n2', $nodefilters);
@@ -36,7 +46,7 @@ class Links
 			$sql .= Query::filtersToSQL('links', $column, $linkfilters);
 
 		$select = Query::prepare($sql);
-		$select->execute(array_merge($bounds, $bounds));
+		$select->execute(array_merge($bounds, $bounds, array(User::getRights())));
 		$select->setFetchMode(PDO::FETCH_ASSOC);
 		return $select;
 	}
