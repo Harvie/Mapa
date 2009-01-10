@@ -23,10 +23,15 @@ foreach (array(array('node', 'nodes'), array('node_deleted', 'nodes_history')) a
 {
 	$select = $mysql->query('SELECT id,name,lat-0.00005,lon,type,status,address,'.
 	                               'visibilitydesc,urlphotos,urlhomepage,urlthread,'.
-                                   "ownerid,changed_on,changed_by FROM $tables[0]");
-	$insert = $pgsql->prepare("INSERT INTO $tables[1] (id,name,lat,lng,type,status,address,visibility,".
-                                'url_photos,url_homepage,url_thread,owner_id,changed_on,changed_by) '.
-                              'VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+	                               'peoplecount,IF(peoplehide = 1, 1, 0),'.
+	                               'machinecount,IF(machinehide = 1, 1, 0),'.
+	                               "ownerid,changed_on,changed_by FROM $tables[0]");
+	
+	$insert = $pgsql->prepare("INSERT INTO $tables[1] (id,name,lat,lng,type,status,".
+	                            'address,visibility,url_photos,url_homepage,url_thread,'.
+	                            'people_count,people_hide,machine_count,machine_hide,'.
+	                            'owner_id,changed_on,changed_by) '.
+	                          'VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
 	
 	$select->setFetchMode(PDO::FETCH_NUM);
 	foreach ($select as $row)
@@ -35,7 +40,7 @@ foreach (array(array('node', 'nodes'), array('node_deleted', 'nodes_history')) a
 		{
 			if ($row[$i] === '' && $i != 6)
 				$row[$i] = null;
-	
+			
 			if ($row[$i] !== null)
 				$row[$i] = str_replace("\r", '', iconv('WINDOWS-1250', 'UTF-8', $row[$i]));
 		}
