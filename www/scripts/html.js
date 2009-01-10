@@ -70,8 +70,10 @@ var CzfHtml =
 	edit: function(id, label, value, params)
 	{
 		var title =  this.label(id, label) + "<br/>";
-		var attr = { type: "text", name: id, id: id, size: 18, maxlength: 50, value: this.nullFix(value) };
-		return title + this.elem("input", attr) + "<br/>";
+		var attr = { type: "text", name: id, id: id, value: this.nullFix(value) };
+		attr.size = (params && params.size) ? params.size : 18;
+		attr.maxlength = (params && params.max) ? params.max : 50;
+		return title + this.elem("input", attr) + (attr.size > 5 ? "<br/>" : " ");
 	}
 	,
 	longEdit: function(id, label, value)
@@ -102,11 +104,12 @@ var CzfHtml =
 	,
 	checkbox: function(id, label, value, params)
 	{
+		var label = this.elem("label", { "for" : id }, label);
 		var attr = { type: "checkbox", name: id, id: id };
 		if (value) attr.checked = "checked";
 		if (params && params.disabled) attr.disabled = "disabled";
 		if (params && params.onchange) attr.onchange = params.onchange;
-		return this.elem("input", attr) + this.label(id, label) + "<br/>";
+		return this.elem("input", attr) + label + "<br/>";
 	}
 	,
 	form: function(contents, id, onsubmit)

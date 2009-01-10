@@ -3,7 +3,8 @@
 class Nodes
 {
 	private static $columns = array('name', 'type', 'status', 'address', 'lat', 'lng',
-	                                'url_photos', 'url_homepage', 'url_thread');
+	                                'url_photos', 'url_homepage', 'url_thread', 'visibility',
+	                                'people_count', 'people_hide', 'machine_count', 'machine_hide');
 	private static $cols_basic = array('id', 'name', 'type', 'status', 'lat', 'lng');
 	private static $filters = array('type', 'status');
 	
@@ -27,6 +28,7 @@ class Nodes
 	public static function update($data, $allowMove)
 	{
 		self::checkRights($data);
+		$columns = self::$columns;
 		
 		if ($allowMove)
 			Links::fixLinkEndpoints($data['id'], $data['lat'], $data['lng']);
@@ -36,7 +38,7 @@ class Nodes
 			unset($columns['lng']);
 		}
 		
-		History::update('nodes', $data, self::$columns);
+		History::update('nodes', $data, $columns);
 	}
 	
 	public static function delete($data)
@@ -47,7 +49,15 @@ class Nodes
 	
 	public static function fetchInfo($id)
 	{
-		return self::fetchByID($id, null);
+		$info = self::fetchByID($id, null);
+		
+		if ($info['people_hide'] && !User::canEdit($info['owner_id']))
+			$info['people_count'] = null;
+		
+		if ($info['machine_hide'] && !User::canEdit($info['owner_id']))
+			$info['machine_count'] = null;
+		
+		return $info;
 	}
 	
 	public static function fetchPos($id)

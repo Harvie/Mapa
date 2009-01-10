@@ -63,13 +63,20 @@ var CzfNodeInfo =
 		if (!document.nodeform)
 			return;
 		
-		var fields = [ "name", "type", "status", "url_thread", "url_photos",
-		               "url_homepage", "address", "visibility" ];
+		var fields = [ "name", "type", "status", "address", "visibility",
+		               "url_thread", "url_photos", "url_homepage",
+		               "people_count", "people_hide", "machine_count", "machine_hide" ];
 		
 		for (i in fields)
 		{
-			var value = document.nodeform[fields[i]].value;
-			value = value.replace(/\r/g, ""); //Convert to UNIX line breaks
+			var value;
+			var field = document.nodeform[fields[i]];
+			
+			if (field.type == "checkbox")
+				value = field.checked ? 1 : 0;
+			else //Convert to UNIX line breaks
+				value = field.value.replace(/\r/g, "");
+			
 			this.info[fields[i]] = (value === "") ? null : value;
 		}
 	}
@@ -123,6 +130,12 @@ var CzfNodeInfo =
 		
 		var more = CzfHtml.info(tr("Node ID"), info.id);
 		
+		if (info.people_count !== null)
+			more += CzfHtml.info(tr("People count"), info.people_count);
+		
+		if (info.machine_count !== null)
+			more += CzfHtml.info(tr("Machine count"), info.machine_count);
+		
 		if (info.created)
 		{
 			more += CzfHtml.info(tr("Created on"), tr("dateFormat")(info.created.date));
@@ -169,14 +182,18 @@ var CzfNodeInfo =
 		html += CzfHtml.select("status", tr("Status"), info.status, this.getStates());
 		html += '</p>';
 		
+		html += CzfHtml.longEdit("address", tr("Address"), info.address);
+		html += CzfHtml.longEdit("visibility", tr("Visibility description"), info.visibility);
+		
 		html += '<p>';
 		html += CzfHtml.edit("url_thread", tr("Thread"), info.url_thread);
 		html += CzfHtml.edit("url_photos", tr("Photos"), info.url_photos);
 		html += CzfHtml.edit("url_homepage", tr("Homepage"), info.url_homepage);
+		html += CzfHtml.edit("people_count", tr("People count"), info.people_count, {size:3, max:4});
+		html += CzfHtml.checkbox("people_hide", tr("Secret"), info.people_hide);
+		html += CzfHtml.edit("machine_count", tr("Machine count"), info.machine_count, {size:3, max:4});
+		html += CzfHtml.checkbox("machine_hide", tr("Secret"), info.people_hide);
 		html += '</p>';
-		
-		html += CzfHtml.longEdit("address", tr("Address"), info.address);
-		html += CzfHtml.longEdit("visibility", tr("Visibility description"), info.visibility);
 		
 		html += CzfHtml.longInfo(tr("Coordinates"),
 				this.roundAngle(info.lat) + "&nbsp;&nbsp;" + this.roundAngle(info.lng));
