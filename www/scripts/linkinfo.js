@@ -93,6 +93,7 @@ var CzfLinkInfo =
 		
 		var controls = "";
 		controls += CzfHtml.select("media", tr("Type"), l.media, tr("linkMedia"), true);
+		controls += CzfHtml.select("secrecy", tr("Secrecy"), l.secrecy, tr("secrecy"), true);
 		controls += CzfHtml.checkbox("backbone", tr("Backbone link"), "", l.backbone);
 		controls += CzfHtml.checkbox("planned", tr("Planned link"), "", !l.active, !l.rights.active);
 		controls += CzfHtml.button("close", tr("Close"), "CzfLinkInfo.closeEdit()");
@@ -184,6 +185,7 @@ var CzfLinkInfo =
 		
 		var l = this.opened;
 		l.media = document.linkform.media.value;
+		l.secrecy = document.linkform.secrecy.value;
 		l.backbone = document.linkform.backbone.checked ? 1 : 0;
 		l.active = document.linkform.planned.checked ? 0 : 1;
 	}

@@ -7,6 +7,7 @@ var CzfLang =
 			nodeTypes:   { 0: "Unknown", 1: "Client", 9: "Full AP", 10: "Street access AP", 11: "Router", 98: "InfoPoint", 99: "Non-CZF" },
 			nodeStates:  { 1: "Active", 10: "Down", 40: "In testing", 79: "Under construction", 80: "In planning", 90: "Obsolete" },
 			linkMedia:   { 0: "Unknown", 1: "2.4G", 2: "FSO", 3: "UTP", 4: "Fiber", 5: "VPN", 6: "FSO + WiFi", 7: "5G", 8: "10G", 9: "Licensed", 99: "Other" },
+			secrecy:     { "-100": "None", 0: "Registered", 100: "Mapper" },
 			
 			mediaInfo: {
 				0: "Unknown type of link",
@@ -71,6 +72,9 @@ var CzfLang =
 			"Changed on" : "Změněno",
 			"Changed by" : "Změnil",
 			"More info..." : "Další údaje...",
+			"Secrecy" : "Utajení",
+			"Backbone link" : "Páteřní spoj",
+			"Planned link" : "Plánovaný spoj",
 			"Changed by %s on %s.": "Změnil %s %s.",
 			"Created by %s on %s.": "Přidal %s %s.",
 			"You can add a new link by right clicking on target node on the map." : "Nový spoj přidáte kliknutím pravým tlačítkem na cílový bod na mapě.",
@@ -89,6 +93,7 @@ var CzfLang =
 			nodeTypes:   { 0: "Neznámý", 1: "Klient", 9: "Přístupový bod", 10: "Otevřený př. bod", 11: "Router", 98: "InfoPoint", 99: "Non-CZF" },
 			nodeStates:  { 1: "Aktivní", 10: "Nefunkční", 40: "Zkušební", 79: "Ve stavbě", 80: "Plánovaný", 90: "Zastaralý" },
 			linkMedia:   { 0: "Neznámý", 1: "2.4G", 2: "FSO", 3: "UTP", 4: "Vlákno", 5: "VPN", 6: "FSO + WiFi", 7: "5G", 8: "10G", 9: "Licencovaný", 99: "Jiný" },
+			secrecy:     { "-100": "Žádné", 0: "Přihlášení", 100: "Mappeři" },
 			
 			mediaInfo: {
 				0: "Neznámý typ spoje",
