@@ -49,7 +49,7 @@ var CzfHtml =
 		return html;
 	}
 	,
-	edit: function(id, label, value)
+	edit: function(id, label, value, params)
 	{
 		var html = '<label for="' + id + '">' + label + ':</label><br />';
 		html += '<input type="text" name="' + id + '" id="' + id + '" ';
@@ -70,10 +70,10 @@ var CzfHtml =
 		return (text !== null) ? text : "";
 	}
 	,
-	select: function(id, label, value, options, nowrap)
+	select: function(id, label, value, options, params)
 	{
 		var html = '<label for="' + id + '">' + label + ':</label>';
-		html += nowrap ? ' ' : '<br/>';
+		html += (params && params.nowrap) ? ' ' : '<br/>';
 		
 		html += '<select name="' + id + '">';
 		for (i in options)
@@ -87,12 +87,13 @@ var CzfHtml =
 		return html;
 	}
 	,
-	checkbox: function(id, label, onchange, checked, disabled)
+	checkbox: function(id, label, value, params)
 	{
 		var html = '<input type="checkbox" ';
-		html += (checked ? ' checked="checked"' : '');
-		html += (disabled ? ' disabled="disabled"' : '');
-		html += 'name="' + id + '" id="' + id + '" onchange="' + onchange + '"/>';
+		html += (value ? ' checked="checked"' : '');
+		html += (params && params.disabled ? ' disabled="disabled"' : '');
+		html += (params && params.onchange ? ' onchange="' + params.onchange + '"' : '');
+		html += 'name="' + id + '" id="' + id + '" />';
 		html += '<label for="' + id + '">' + label + '</label><br />';
 		return html;
 	}

@@ -8,22 +8,24 @@ var CzfFilters =
 	{
 		this.filters = element;
 		
+		var params = { onchange: "CzfFilters.changed(this)" };
 		var html = "";
-		html += CzfHtml.checkbox("hideall", tr("Hide everything"), "CzfFilters.changed(this)");
-		html += CzfHtml.checkbox("hidelabels", tr("Hide labels"), "CzfFilters.changed(this)");
-		html += CzfHtml.checkbox("hidelinks", tr("Hide lines"), "CzfFilters.changed(this)");
-		html += CzfHtml.checkbox("autofilter", tr("Automatic filter"), "CzfFilters.changed(this)");
+		
+		html += CzfHtml.checkbox("hideall", tr("Hide everything"), false, params);
+		html += CzfHtml.checkbox("hidelabels", tr("Hide labels"), false, params);
+		html += CzfHtml.checkbox("hidelinks", tr("Hide lines"), false, params);
+		html += CzfHtml.checkbox("autofilter", tr("Automatic filter"), false, params);
 		
 		html += tr("Node filter") + ":<br/>";
-		html += CzfHtml.checkbox("actnode", tr("Only active"), "CzfFilters.changed(this)");
-		html += CzfHtml.checkbox("aponly", tr("Only AP"), "CzfFilters.changed(this)");
-		html += CzfHtml.checkbox("obsolete", tr("Show obsolete"), "CzfFilters.changed(this)");
-		html += CzfHtml.checkbox("alien", tr("Show non-czfree"), "CzfFilters.changed(this)");
+		html += CzfHtml.checkbox("actnode", tr("Only active"), false, params);
+		html += CzfHtml.checkbox("aponly", tr("Only AP"), false, params);
+		html += CzfHtml.checkbox("obsolete", tr("Show obsolete"), false, params);
+		html += CzfHtml.checkbox("alien", tr("Show non-czfree"), false, params);
 		
 		html += tr("Link filter") + ":<br/>";
-		html += CzfHtml.checkbox("actlink", tr("Only active"), "CzfFilters.changed(this)");
-		html += CzfHtml.checkbox("bbonly", tr("Only backbone"), "CzfFilters.changed(this)");
-		html += CzfHtml.checkbox("vpn", tr("Show VPN links"), "CzfFilters.changed(this)");
+		html += CzfHtml.checkbox("actlink", tr("Only active"), false, params);
+		html += CzfHtml.checkbox("bbonly", tr("Only backbone"), false, params);
+		html += CzfHtml.checkbox("vpn", tr("Show VPN links"), false, params);
 		
 		this.filters.innerHTML = html;
 	}
