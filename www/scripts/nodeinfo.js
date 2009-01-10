@@ -95,7 +95,7 @@ var CzfNodeInfo =
  		var info = CzfMain.clone(this.newInfo);
 		info.links = new Array();
 		info.editing = true;
-		info.rights = CzfConfig.defRights;
+		info.rights = CzfConfig.nodeRights;
 		
 		var latlng = CzfMap.getCenter();
 		info.lat = latlng.lat();
@@ -187,7 +187,7 @@ var CzfNodeInfo =
 	{
 		var allowedTypes = new Object();
 		var allTypes = tr("nodeTypes");
-		var typeList = this.info.rights.node_types;
+		var typeList = this.info.rights.types;
 		
 		for (i in typeList)
 			allowedTypes[typeList[i]] = allTypes[typeList[i]];
@@ -199,7 +199,7 @@ var CzfNodeInfo =
 	{
 		var allowedStates = new Object();
 		var allStates = tr("nodeStates");
-		var statusList = this.info.rights.node_states;
+		var statusList = this.info.rights.states;
 		
 		for (i in statusList)
 			allowedStates[statusList[i]] = allStates[statusList[i]];

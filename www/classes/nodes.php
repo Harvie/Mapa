@@ -7,11 +7,11 @@ class Nodes
 	private static $cols_basic = array('id', 'name', 'type', 'status', 'lat', 'lng');
 	private static $filters = array('type', 'status');
 	
-	private static $node_types = array(1, 9, 10, 11, 98, 99, 0);
-	private static $node_types_user = array(1, 9, 10);
+	private static $types = array(1, 9, 10, 11, 98, 99, 0);
+	private static $types_user = array(1, 9, 10);
 	
-	private static $node_states = array(80, 79, 40, 1, 90);
- 	private static $node_states_user = array(80, 79);
+	private static $states = array(80, 79, 40, 1, 90);
+ 	private static $states_user = array(80, 79);
 	
 	public function insert($data)
 	{
@@ -108,17 +108,17 @@ class Nodes
 	{
 		$rights = array(
 			'edit' => ($node === null) ? User::isLogged() : User::canEdit($node['owner_id']),
-			'node_types' => User::isMapper() ? self::$node_types : self::$node_types_user,
-			'node_states' => User::isMapper() ? self::$node_states : self::$node_states_user,
+			'types' => User::isMapper() ? self::$types : self::$types_user,
+			'states' => User::isMapper() ? self::$states : self::$states_user,
 		);
 		
 		if ($node && !User::isMapper())
 		{
-			if (!in_array($node['type'], $rights['node_types']))
-				array_push($rights['node_types'], $node['type']);
+			if (!in_array($node['type'], $rights['types']))
+				array_push($rights['types'], $node['type']);
 		
-			if (!in_array($node['status'], $rights['node_states']))
-				array_push($rights['node_states'], $node['status']);
+			if (!in_array($node['status'], $rights['states']))
+				array_push($rights['states'], $node['status']);
 		}
 		
 		return $rights;
@@ -126,16 +126,17 @@ class Nodes
 	
 	private static function checkRights($node)
 	{
-		$orig = ($node['id'] == 0) ? null : self::fetchInfo($node['id']);
+		$cols = array('owner_id', 'status', 'type');
+		$orig = $node['id'] ? self::fetchByID($node['id'], $cols) : null;
 		$rights = self::getRights($orig);
 		
 		if (!$rights['edit'])
 			throw new Exception('Permission to edit the node denied.');
 		
-		if (!in_array($node['status'], $rights['node_states']))
+		if (!in_array($node['status'], $rights['states']))
 			throw new Exception('Permission to set node status denied.');
 		
-		if (!in_array($node['type'], $rights['node_types']))
+		if (!in_array($node['type'], $rights['types']))
 			throw new Exception('Permission to set node type denied.');
 	}
 }

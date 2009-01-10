@@ -31,7 +31,7 @@ var CzfMain =
 		var html = this.createUserInfo();
 		html += "<h1>" + document.title + "</h1>";
 		
-		if (CzfConfig.defRights.edit)
+		if (CzfConfig.nodeRights.edit)
 			html += CzfHtml.button("addnode", tr("New node"), "CzfInfo.addNode()");
 		
 		html += CzfHtml.panelPart("", "search", tr("Search"));

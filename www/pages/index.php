@@ -6,7 +6,7 @@ $gmapKey = Config::$gmapKey;
 $config = array(
 	'languages' => self::getLanguages(),
 	'user' => array('id' => User::getID(), 'name' => User::getName()),
-	'defRights' => Nodes::getRights(),
+	'nodeRights' => Nodes::getRights(),
 );
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
