@@ -47,16 +47,24 @@ class Nodes
 	
 	public static function fetchInfo($id)
 	{
-		$query = Query::select('nodes');
-		$query->execute(array('id' => $id));
-		return $query->fetch();
+		return self::fetchByID($id, null);
 	}
 	
 	public static function fetchPos($id)
 	{
-		$query = Query::select('nodes', array('lat', 'lng'));
+		return self::fetchByID($id, array('lat', 'lng'));
+	}
+	
+	private static function fetchByID($id, $columns)
+	{
+		$query = Query::select('nodes', $columns);
 		$query->execute(array('id' => $id));
-		return $query->fetch(PDO::FETCH_ASSOC);
+		$row = $query->fetch(PDO::FETCH_ASSOC);
+		
+		if ($row == false)
+			throw new Exception("Invalid node ID!");
+		
+		return $row;
 	}
 	
 	public static function findByName($name)
@@ -116,7 +124,7 @@ class Nodes
 		return $rights;
 	}
 	
-	public static function checkRights($node)
+	private static function checkRights($node)
 	{
 		$orig = ($node['id'] == 0) ? null : self::fetchInfo($node['id']);
 		$rights = self::getRights($orig);

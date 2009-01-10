@@ -22,6 +22,25 @@ class Links
 		return $query->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
+	public static function selectInArea($bounds, $nodefilters, $linkfilters)
+	{
+		$sql = "SELECT lat1,lng1,lat2,lng2,media,active,backbone FROM links ".
+		       "JOIN nodes AS n1 ON node1 = n1.id JOIN nodes AS n2 ON node2 = n2.id ".
+		       "WHERE ((lat1 < ? AND lng1 < ? AND lat2 > ? AND lng2 > ?) ".
+		           "OR (lat1 < ? AND lng2 < ? AND lat2 > ? AND lng1 > ?))";
+		
+		$sql .= Nodes::makeFilterSQL('n1', $nodefilters);
+		$sql .= Nodes::makeFilterSQL('n2', $nodefilters);
+		
+		foreach (self::$filters as $column)
+			$sql .= Query::filtersToSQL('links', $column, $linkfilters);
+
+		$select = Query::prepare($sql);
+		$select->execute(array_merge($bounds, $bounds));
+		$select->setFetchMode(PDO::FETCH_ASSOC);
+		return $select;
+	}
+	
 	public static function insert($link, $node)
 	{
 		$nodes = array(intval($node['id']), intval($link['id']));
@@ -104,31 +123,12 @@ class Links
 		}
 	}
 	
-	public static function reorderEndpoints(&$l)
+	private static function reorderEndpoints(&$l)
 	{
 		if (floatval($l['lat1']) > floatval($l['lat2']))
 		{
 			list(   $l['node1'], $l['lat1'], $l['lng1'], $l['node2'], $l['lat2'], $l['lng2'])
 			= array($l['node2'], $l['lat2'], $l['lng2'], $l['node1'], $l['lat1'], $l['lng1']);
 		}
-	}
-	
-	public static function selectInArea($bounds, $nodefilters, $linkfilters)
-	{
-		$sql = "SELECT lat1,lng1,lat2,lng2,media,active,backbone FROM links ".
-		       "JOIN nodes AS n1 ON node1 = n1.id JOIN nodes AS n2 ON node2 = n2.id ".
-		       "WHERE ((lat1 < ? AND lng1 < ? AND lat2 > ? AND lng2 > ?) ".
-		           "OR (lat1 < ? AND lng2 < ? AND lat2 > ? AND lng1 > ?))";
-		
-		$sql .= Nodes::makeFilterSQL('n1', $nodefilters);
-		$sql .= Nodes::makeFilterSQL('n2', $nodefilters);
-		
-		foreach (self::$filters as $column)
-			$sql .= Query::filtersToSQL('links', $column, $linkfilters);
-
-		$select = Query::prepare($sql);
-		$select->execute(array_merge($bounds, $bounds));
-		$select->setFetchMode(PDO::FETCH_ASSOC);
-		return $select;
 	}
 }
