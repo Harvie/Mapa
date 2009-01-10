@@ -1,5 +1,20 @@
 var CzfHtml =
 {
+	elem: function(name, attributes, contents)
+	{
+		var html = "<" + name;
+		
+		for (attrName in attributes)
+			html += " " + attrName + '="' + attributes[attrName] + '"';
+		
+		if (contents === undefined)
+			html += " />";
+		else
+			html += ">" + contents + "</" + name +">";
+		
+		return html;
+	}
+	,
 	info: function(title, text)
 	{
 		return title + ': ' + text + '<br/>';
@@ -7,62 +22,63 @@ var CzfHtml =
 	,
 	longInfo: function(title, text)
 	{
-		var html = '<p>' + title + ': <div class="text">' + text + '</div></p>';
-		return html.replace(/\n/g, "<br/>");
+		var info = this.elem("div", {class:"text"}, text.replace(/\n/g, "<br/>"));
+		return this.elem("p", {}, title + ": " + info);
 	}
 	,
 	link: function(title, target)
 	{
-		return '<a href="' + target + '" target="_blank">' + title + '</a>';
+		return this.elem("a", { href: target, target: "_blank" }, title);
 	}
 	,
 	click: function(title, action)
 	{
-		return '<span class="click" onclick="' + action + '">' + title + '</span>';
+		return this.elem("span", { class: "click", onclick: action }, title);
 	}
 	,
 	span: function(contents, classList)
 	{
 		var classes = classList.join(" ");
-		return '<span class="' + classes + '">' + contents + '</span>';
+		return this.elem("span", { class: classList.join(" ") }, contents);
 	}
 	,
 	img: function(title, src)
 	{
-		return '<img src="' + src + '" alt="' + title + '" title="' + title + '" />';
+		return this.elem("img", { src: src, alt: title, title: title });
 	}
 	,
 	expl: function(title, text)
 	{
-		return '<span title="' + title + '">' + text + '</span>';
+		return this.elem("span", { title: title }, text);
 	}
 	,
 	clear: function(spacer)
 	{
-		return '<div class="clear">' + (spacer ? '&nbsp;' : '') + '</div>';
+		return this.elem("div", { class: "clear" }, (spacer ? "&nbsp;" : ""));
 	}
 	,
 	button: function(id, label, action)
 	{
-		var html = '<button name="' + id + '" onclick="' + action + '" type="button">';
-		html += label + '</button>';
-		return html;
+		return this.elem("button", { name: id, onclick: action, type: "button" }, label);
+	}
+	,
+	label: function(id, label)
+	{
+		return this.elem("label", { "for": id }, label + ":");
 	}
 	,
 	edit: function(id, label, value, params)
 	{
-		var html = '<label for="' + id + '">' + label + ':</label><br />';
-		html += '<input type="text" name="' + id + '" id="' + id + '" ';
-		html += 'value="' + this.nullFix(value) + '" size="18" maxlength="50" /><br/>';
-		return html;
+		var title =  this.label(id, label) + "<br/>";
+		var attr = { type: "text", name: id, id: id, size: 18, maxlength: 50, value: this.nullFix(value) };
+		return title + this.elem("input", attr) + "<br/>";
 	}
 	,
 	longEdit: function(id, label, value)
 	{
-		var html = '<label for="' + id + '">' + label + ':</label><br />';
-		html += '<textarea name="' + id + '" id="' + id + '" rows="4" cols="17">';
-		html += this.nullFix(value) + '</textarea><br/>';
-		return html;
+		var title = this.label(id, label) + "<br/>";
+		var attr = { name: id, id: id, rows: 4, cols: 17 };
+		return title + this.elem("textarea", attr, this.nullFix(value)) + "<br/>";
 	}
 	,
 	nullFix: function(text)
@@ -72,47 +88,40 @@ var CzfHtml =
 	,
 	select: function(id, label, value, options, params)
 	{
-		var html = '<label for="' + id + '">' + label + ':</label>';
-		html += (params && params.nowrap) ? ' ' : '<br/>';
+		var title = this.label(id, label) + ((params && params.nowrap) ? " " : "<br/>");
+		var optHtml = "";
 		
-		html += '<select name="' + id + '">';
 		for (i in options)
 		{
-			selected = (i == value) ? ' selected="selected"' : '';
-			html += '<option value="' + i + '"' + selected + '>';
-			html += options[i] + '</option>';
+			var attr = (i == value) ? { value: i, selected: "selected" } : { value: i };
+			optHtml += this.elem("option", attr, options[i]);
 		}
-		html += '</select><br/>';
 		
-		return html;
+		return title + this.elem("select", { name: id }, optHtml) + "<br/>";
 	}
 	,
 	checkbox: function(id, label, value, params)
 	{
-		var html = '<input type="checkbox" ';
-		html += (value ? ' checked="checked"' : '');
-		html += (params && params.disabled ? ' disabled="disabled"' : '');
-		html += (params && params.onchange ? ' onchange="' + params.onchange + '"' : '');
-		html += 'name="' + id + '" id="' + id + '" />';
-		html += '<label for="' + id + '">' + label + '</label><br />';
-		return html;
+		var attr = { type: "checkbox", name: id, id: id };
+		if (value) attr.checked = "checked";
+		if (params && params.disabled) attr.disabled = "disabled";
+		if (params && params.onchange) attr.onchange = params.onchange;
+		return this.elem("input", attr) + this.label(id, label) + "<br/>";
 	}
 	,
 	form: function(contents, id, onsubmit)
 	{
-		var html = '<form action="#" method="get" name="' + id + '" onsubmit="' + onsubmit + '">';
-		html += '<div>' + contents + '</div></form>';
-		return html;
+		var attr = { action: "#", method: "get", name: id, onsubmit: onsubmit };
+		return this.elem("form", attr, this.elem("div", {}, contents));
 	}
 	,
 	panelPart: function(contents, id, label)
 	{
-		var html = '<div onclick="CzfHtml.togglePanel(\'' + id + '\')">';
-		html += '<img src="images/plus.png" alt="expand" id="' + id + '.img" />';
-		html += '<b>' + label + '</b></div>';
-		html += '<div class="panelpart" id="' + id + '">';
-		html += contents + '</div>';
-		return html;
+		var img = this.elem("img", { src: "images/plus.png", id: id + ".img" });
+		var title = img + this.elem("b", {}, label);
+		var header = this.elem("div", { onclick: "CzfHtml.togglePanel('" + id + "')" }, title);
+		var body = this.elem("div", { class: "panelpart", id: id }, contents);
+		return header + body;
 	}
 	,
 	togglePanel: function(id)
@@ -134,11 +143,11 @@ var CzfHtml =
 	,
 	hiddenBlock: function(contents, id, label)
 	{
-		var html = '';
-		html += '<div onclick="CzfHtml.showBlock(\'' + id + '\')" ';
-		html += 'class="click expand" id="' + id + '.label">' + label + '</div>';
-		html += '<div class="hidden" id="' + id + '">' + contents + '</div>';
-		return html;
+		var attr = { onclick: "CzfHtml.showBlock('" + id + "')",
+		             class: "click expand", id: id + ".label" };
+		var header = this.elem("div", attr, label);
+		var hidden = this.elem("div", { class: "hidden", id: id }, contents);
+		return header + hidden;
 	}
 	,
 	showBlock: function(id)
