@@ -96,6 +96,7 @@ var CzfNodeInfo =
 		info.links = new Array();
 		info.editing = true;
 		info.rights = CzfConfig.nodeRights;
+		info.linkRights = CzfConfig.linkRights;
 		
 		var latlng = CzfMap.getCenter();
 		info.lat = latlng.lat();

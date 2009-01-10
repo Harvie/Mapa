@@ -57,6 +57,8 @@ class Links
 		}
 		
 		self::reorderEndpoints($link);
+		self::checkRights($link, $node);
+		
 		$columns = array_merge(self::$cols_edit, array('lat1', 'lng1', 'lat2', 'lng2'));
 		History::insert('links', $link, array_merge($columns, self::$keys));
 	}
@@ -64,6 +66,7 @@ class Links
 	public static function update($link, $node)
 	{
 		self::setEndpoints($link, $node);
+		self::checkRights($link, $node);
 		History::update('links', $link, self::$cols_edit, self::$keys);
 	}
 		
@@ -130,5 +133,29 @@ class Links
 			list(   $l['node1'], $l['lat1'], $l['lng1'], $l['node2'], $l['lat2'], $l['lng2'])
 			= array($l['node2'], $l['lat2'], $l['lng2'], $l['node1'], $l['lat1'], $l['lng1']);
 		}
+	}
+	
+	public static function getRights($link = null, $node = null)
+	{
+		return array(
+			'active' => (User::isMapper() || ($link && $link['active'])
+			             || ($node && $node['status'] == 1)),
+		);
+	}
+	
+	private static function fetchByKey($keyVal, $columns)
+	{
+		$query = Query::select('links', $columns, self::$keys);
+		$query->execute($keyVal);
+		return $query->fetch(PDO::FETCH_ASSOC);
+	}
+	
+	private static function checkRights($link, $node)
+	{
+		$orig = self::fetchByKey($link, array('active'));
+		$rights = self::getRights($orig, $node);
+		
+		if ($link['active'] && !$rights['active'])
+			throw new Exception('Permission to make link '.$link['id'].' active denied.');
 	}
 }

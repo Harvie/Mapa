@@ -107,7 +107,7 @@ class Nodes
 	public static function getRights($node = null)
 	{
 		$rights = array(
-			'edit' => ($node === null) ? User::isLogged() : User::canEdit($node['owner_id']),
+			'edit' => $node ? User::canEdit($node['owner_id']) : User::isLogged(),
 			'types' => User::isMapper() ? self::$types : self::$types_user,
 			'states' => User::isMapper() ? self::$states : self::$states_user,
 		);

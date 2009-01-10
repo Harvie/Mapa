@@ -87,9 +87,11 @@ var CzfHtml =
 		return html;
 	}
 	,
-	checkbox: function(id, label, onchange, checked)
+	checkbox: function(id, label, onchange, checked, disabled)
 	{
-		var html = '<input type="checkbox" ' + (checked ? ' checked="checked"' : '');
+		var html = '<input type="checkbox" ';
+		html += (checked ? ' checked="checked"' : '');
+		html += (disabled ? ' disabled="disabled"' : '');
 		html += 'name="' + id + '" id="' + id + '" onchange="' + onchange + '"/>';
 		html += '<label for="' + id + '">' + label + '</label><br />';
 		return html;

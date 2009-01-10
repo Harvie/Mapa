@@ -94,7 +94,7 @@ var CzfLinkInfo =
 		var controls = "";
 		controls += CzfHtml.select("media", tr("Type"), l.media, tr("linkMedia"), true);
 		controls += CzfHtml.checkbox("backbone", tr("Backbone link"), "", l.backbone);
-		controls += CzfHtml.checkbox("planned", tr("Planned link"), "", !l.active);
+		controls += CzfHtml.checkbox("planned", tr("Planned link"), "", !l.active, !l.rights.active);
 		controls += CzfHtml.button("close", tr("Close"), "CzfLinkInfo.closeEdit()");
 		
 		if (l.remove)
@@ -236,6 +236,8 @@ var CzfLinkInfo =
 		l.lat = node.lat;
 		l.lng = node.lng;
 		
+		l.rights = this.info.linkRights;
+		l.active = l.rights.active;
 		return l;
 	}
 	,

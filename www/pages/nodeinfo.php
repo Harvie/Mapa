@@ -11,9 +11,13 @@ $info['owner'] = array(
 
 History::convertChangeInfo($info);
 $info['rights'] = Nodes::getRights($info);
+$info['linkRights'] = Links::getRights(null, $info);
 
 $info['links'] = Links::selectFromNode($id);
 foreach ($info['links'] as $i => $link)
+{
 	History::convertChangeInfo($info['links'][$i]);
+	$info['links'][$i]['rights'] = Links::getRights($link, $info);
+}
 
 self::writeJSON($info);
