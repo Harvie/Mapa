@@ -1,9 +1,11 @@
 var CzfLinkInfo =
 {
-	newLink: { media: 0, active: 1, backbone: 0 },
 	info: null,
 	elementID: null,
 	opened: null,
+	newLink: { media: 0, active: 1, backbone: 0, secrecy: -100 },
+	fields: [ "media", "planned", "backbone", "secrecy",
+	          "nominal_speed", "real_speed", "czf_speed" ],
 	
 	initialize: function(elementID)
 	{
@@ -111,8 +113,18 @@ var CzfLinkInfo =
 		controls += CzfHtml.select("secrecy", tr("Secrecy"), l.secrecy, tr("secrecy"), { nowrap: true });
 		controls += CzfHtml.checkbox("backbone", tr("Backbone link"), l.backbone);
 		controls += CzfHtml.checkbox("planned", tr("Planned link"), !l.active, { disabled: !l.rights.active });
-		controls += CzfHtml.button("close", tr("Close"), "CzfLinkInfo.closeEdit()");
 		
+		controls += "<p>" + tr("Speeds:") + "</p>";
+		controls += "<table>";
+		var speedFields = { nominal_speed: tr("Nominal"), real_speed: tr("Real"), czf_speed: tr("CZFree") };
+		for (field in speedFields)
+		{
+			var edit = CzfHtml.edit(field, null, l[field], { size: 4, max: 5 });
+			controls += "<tr><td>" + speedFields[field] + ":</td><td>" + edit + "</td></tr>";
+		}
+		controls += "</table>"
+		
+		controls += CzfHtml.button("close", tr("Close"), "CzfLinkInfo.closeEdit()");
 		if (l.remove)
 			controls += CzfHtml.button("restore", tr("Restore"), "CzfLinkInfo.deleteLink()");
 		else
@@ -198,11 +210,11 @@ var CzfLinkInfo =
 		if (!this.info || !document.linkform || !this.opened)
 			return;
 		
-		var l = this.opened;
-		l.media = document.linkform.media.value;
-		l.secrecy = document.linkform.secrecy.value;
-		l.backbone = document.linkform.backbone.checked ? 1 : 0;
-		l.active = document.linkform.planned.checked ? 0 : 1;
+		CzfInfo.copyFormData(this.fields, document.linkform, this.opened);
+		
+		//The checkbox has opposite meaning
+		this.opened.active = this.opened.planned ? 0 : 1;
+		delete this.opened.planned;
 	}
 	,
 	addLink: function(node)

@@ -67,23 +67,24 @@ var CzfHtml =
 		return this.elem("button", { name: id, onclick: action, type: "button" }, label);
 	}
 	,
-	label: function(id, label)
+	label: function(id, label, params)
 	{
-		return this.elem("label", { "for": id }, label + ":");
+		var html = this.elem("label", { "for": id }, label + ":");
+		return html + (params && params.nowrap ? " " : "<br/>");
 	}
 	,
 	edit: function(id, label, value, params)
 	{
-		var title =  this.label(id, label) + "<br/>";
+		var title = label ? this.label(id, label, params) : "";
 		var attr = { type: "text", name: id, id: id, value: this.nullFix(value) };
 		attr.size = (params && params.size) ? params.size : 18;
 		attr.maxlength = (params && params.max) ? params.max : 50;
-		return title + this.elem("input", attr) + (attr.size > 5 ? "<br/>" : " ");
+		return title + this.elem("input", attr) + (attr.size > 3 ? "<br/>" : " ");
 	}
 	,
-	longEdit: function(id, label, value)
+	longEdit: function(id, label, value, params)
 	{
-		var title = this.label(id, label) + "<br/>";
+		var title = label ? this.label(id, label, params) : "";
 		var attr = { name: id, id: id, rows: 4, cols: 17 };
 		return title + this.elem("textarea", attr, this.nullFix(value)) + "<br/>";
 	}
@@ -95,7 +96,7 @@ var CzfHtml =
 	,
 	select: function(id, label, value, options, params)
 	{
-		var title = this.label(id, label) + ((params && params.nowrap) ? " " : "<br/>");
+		var title = label ? this.label(id, label, params) : "";
 		var optHtml = "";
 		
 		for (i in options)

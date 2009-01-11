@@ -1,8 +1,11 @@
 var CzfNodeInfo =
 {
-	newInfo: { id: 0, name: "", type: 1, status: 80, url_thread: "", url_photos: "", url_homepage: "", address: "", visibility: "" },
 	info: null,
 	elementID: null,
+	newInfo: { id: 0, type: 1, status: 80 },
+	fields: [ "name", "type", "status", "address", "visibility",
+	          "url_thread", "url_photos", "url_homepage",
+	          "people_count", "people_hide", "machine_count", "machine_hide" ],
 	
 	initialize: function(elementID)
 	{
@@ -63,22 +66,7 @@ var CzfNodeInfo =
 		if (!document.nodeform)
 			return;
 		
-		var fields = [ "name", "type", "status", "address", "visibility",
-		               "url_thread", "url_photos", "url_homepage",
-		               "people_count", "people_hide", "machine_count", "machine_hide" ];
-		
-		for (i in fields)
-		{
-			var value;
-			var field = document.nodeform[fields[i]];
-			
-			if (field.type == "checkbox")
-				value = field.checked ? 1 : 0;
-			else //Convert to UNIX line breaks
-				value = field.value.replace(/\r/g, "");
-			
-			this.info[fields[i]] = (value === "") ? null : value;
-		}
+		CzfInfo.copyFormData(this.fields, document.nodeform, this.info);
 	}
 	,
 	checkForm: function()

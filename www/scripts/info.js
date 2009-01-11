@@ -125,6 +125,22 @@ var CzfInfo =
 		this.setNode(this.info.id);
 	}
 	,
+	copyFormData: function(fields, form, storage)
+	{
+		for (i in fields)
+		{
+			var value;
+			var field = form[fields[i]];
+			
+			if (field.type == "checkbox")
+				value = field.checked ? 1 : 0;
+			else //Convert to UNIX line breaks
+				value = field.value.replace(/\r/g, "");
+			
+			storage[fields[i]] = (value === "") ? null : value;
+		}
+	}
+	,
 	createHTML: function()
 	{
 		var html = "";
