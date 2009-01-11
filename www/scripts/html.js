@@ -91,7 +91,7 @@ var CzfHtml =
 	,
 	nullFix: function(text)
 	{
-		return (text !== null) ? text : "";
+		return (text !== null && text !== undefined) ? text : "";
 	}
 	,
 	select: function(id, label, value, options, params)

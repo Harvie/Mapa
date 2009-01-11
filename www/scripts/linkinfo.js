@@ -210,11 +210,22 @@ var CzfLinkInfo =
 		if (!this.info || !document.linkform || !this.opened)
 			return;
 		
+		this.fixFormData();
 		CzfInfo.copyFormData(this.fields, document.linkform, this.opened);
 		
 		//The checkbox has opposite meaning
 		this.opened.active = this.opened.planned ? 0 : 1;
 		delete this.opened.planned;
+	}
+	,
+	fixFormData: function()
+	{
+		var form = document.linkform;
+		var fields = [ "nominal_speed", "real_speed", "czf_speed" ];
+		
+		for (i in fields)
+			if (!form[fields[i]].value.match(/^[0-9]*(\.[0-9]+)?$/))
+				form[fields[i]].value = CzfHtml.nullFix(this.opened[fields[i]]);
 	}
 	,
 	addLink: function(node)
