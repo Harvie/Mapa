@@ -84,12 +84,19 @@ var CzfNodeInfo =
 	checkForm: function()
 	{
 		var errors = "";
+		var form = document.nodeform;
 		
-		if (document.nodeform.name.value === "")
+		if (form.name.value === "")
 			errors += "\n" + tr("Node name must be filled in.");
 		
-		if (document.nodeform.address.value === "")
+		if (form.address.value === "")
 			errors += "\n" + tr("Node address must be filled in.");
+		
+		if (!form.people_count.value.match(/^[0-9]*$/))
+			errors += "\n" + tr("People count must be a number.");
+		
+		if (!form.machine_count.value.match(/^[0-9]*$/))
+			errors += "\n" + tr("Machine count must be a number.");
 		
 		if (errors !== "")
 			alert(tr("Changes cannot be saved:") + errors);
