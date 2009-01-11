@@ -22,7 +22,7 @@ var CzfHtml =
 	,
 	longInfo: function(title, text)
 	{
-		var info = this.elem("div", {class:"text"}, text.replace(/\n/g, "<br/>"));
+		var info = this.elem("div", { "class": "text" }, text.replace(/\n/g, "<br/>"));
 		return this.elem("p", {}, title + ": " + info);
 	}
 	,
@@ -33,18 +33,18 @@ var CzfHtml =
 	,
 	click: function(title, action)
 	{
-		return this.elem("span", { class: "click", onclick: action }, title);
+		return this.elem("span", { "class": "click", onclick: action }, title);
 	}
 	,
-	div: function(contents, class)
+	div: function(contents, _class)
 	{
-		return this.elem("div", { class: class }, contents);
+		return this.elem("div", { "class": _class }, contents);
 	}
 	,
 	span: function(contents, classList)
 	{
 		var classes = classList.join(" ");
-		return this.elem("span", { class: classList.join(" ") }, contents);
+		return this.elem("span", { "class": classList.join(" ") }, contents);
 	}
 	,
 	img: function(title, src)
@@ -52,14 +52,14 @@ var CzfHtml =
 		return this.elem("img", { src: src, alt: title, title: title });
 	}
 	,
-	expl: function(title, text, class)
+	expl: function(title, text, _class)
 	{
-		return this.elem("span", { title: title, class: (class ? class : "expl") }, text);
+		return this.elem("span", { title: title, "class": (_class ? _class : "expl") }, text);
 	}
 	,
 	clear: function(spacer)
 	{
-		return this.elem("div", { class: "clear" }, (spacer ? "&nbsp;" : ""));
+		return this.elem("div", { "class": "clear" }, (spacer ? "&nbsp;" : ""));
 	}
 	,
 	button: function(id, label, action)
@@ -129,7 +129,7 @@ var CzfHtml =
 		var img = this.elem("img", { src: "images/plus.png", id: id + ".img" });
 		var title = img + this.elem("b", {}, label);
 		var header = this.elem("div", { onclick: "CzfHtml.togglePanel('" + id + "')" }, title);
-		var body = this.elem("div", { class: "panelpart", id: id }, contents);
+		var body = this.elem("div", { "class": "panelpart", id: id }, contents);
 		return header + body;
 	}
 	,
@@ -153,9 +153,9 @@ var CzfHtml =
 	hiddenBlock: function(contents, id, label)
 	{
 		var attr = { onclick: "CzfHtml.showBlock('" + id + "')",
-		             class: "click expand", id: id + ".label" };
+		             "class": "click expand", id: id + ".label" };
 		var header = this.elem("div", attr, label);
-		var hidden = this.elem("div", { class: "hidden", id: id }, contents);
+		var hidden = this.elem("div", { "class": "hidden", id: id }, contents);
 		return header + hidden;
 	}
 	,
