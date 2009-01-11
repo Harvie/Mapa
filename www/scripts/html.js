@@ -36,6 +36,11 @@ var CzfHtml =
 		return this.elem("span", { class: "click", onclick: action }, title);
 	}
 	,
+	div: function(contents, class)
+	{
+		return this.elem("div", { class: class }, contents);
+	}
+	,
 	span: function(contents, classList)
 	{
 		var classes = classList.join(" ");
@@ -47,9 +52,9 @@ var CzfHtml =
 		return this.elem("img", { src: src, alt: title, title: title });
 	}
 	,
-	expl: function(title, text)
+	expl: function(title, text, class)
 	{
-		return this.elem("span", { title: title }, text);
+		return this.elem("span", { title: title, class: (class ? class : "expl") }, text);
 	}
 	,
 	clear: function(spacer)

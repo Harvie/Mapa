@@ -70,19 +70,34 @@ var CzfLinkInfo =
 	,
 	createLinkInfo: function(l, action)
 	{
-		var html = "";
+		var html = CzfHtml.div(this.createPeerInfo(l, action), "peerinfo");
 		
-		html += '<div class="peerinfo">';
-		html += this.createPeerInfo(l, action);
-		html += '</div>';
-		
-		html += '<div class="linkinfo">';
-		html += CzfHtml.expl(tr("mediaInfo")[l.media], tr("linkMedia")[l.media]);
-		html += ' - ' + this.formatDist(l.dist);
-		html += '</div>';
+		var media = CzfHtml.expl(tr("mediaInfo")[l.media], tr("linkMedia")[l.media]);
+		html += CzfHtml.div(media + ' - ' + this.formatDist(l.dist), "linkinfo");
 		html += CzfHtml.clear();
 		
+		html += this.createSpeedInfo(l);
+		html += CzfHtml.clear();
 		return html;
+	}
+	,
+	createSpeedInfo: function(l)
+	{
+		var speeds = new Array();
+		
+		if (l.nominal_speed !== null)
+			speeds.push(CzfHtml.expl(tr("Nominal speed"), l.nominal_speed, "nominal"));
+		
+		if (l.real_speed !== null)
+			speeds.push(CzfHtml.expl(tr("Real speed"), l.real_speed, "real"));
+		
+		if (l.czf_speed !== null)
+			speeds.push(CzfHtml.expl(tr("CZFree speed"), l.czf_speed, "czfree"));
+		
+		if (speeds.length > 0)
+			return CzfHtml.div(speeds.join("/") + " Mbit", "linkinfo");
+		else
+			return "";
 	}
 	,
 	createLinkEdit: function(l, action)

@@ -3,7 +3,7 @@
 class Links
 {
 	private static $keys = array('node1', 'node2');
-	private static $cols_edit = array('media', 'active', 'backbone', 'secrecy');
+	private static $cols_edit = array('media', 'active', 'backbone', 'secrecy', 'nominal_speed', 'real_speed', 'czf_speed');
 	private static $cols_log = array('links.changed_on', 'links.changed_by', 'links.created_on', 'links.created_by');
 	private static $filters = array('media', 'active', 'backbone');
 	

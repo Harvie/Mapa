@@ -72,6 +72,7 @@ h1 {
 
 #panel .click {
 	text-decoration: underline;
+	cursor: pointer;
 }
 
 #panel .expand {
@@ -94,10 +95,6 @@ h1 {
 	margin-left: 0.4em;
 	font-style: italic;
 	font-size: 90%;
-}
-
-#linkinfo span[onclick] {
-	cursor: pointer;
 }
 
 #linkinfo .peerinfo {
@@ -143,6 +140,18 @@ h1 {
 #linkinfo .note {
 	font-style: italic;
 	font-size: 90%;
+}
+
+#linkinfo .nominal {
+	color: DarkRed;
+}
+
+#linkinfo .real {
+	color: DarkBlue;
+}
+
+#linkinfo .czfree {
+	color: DarkGreen;
 }
 
 .label {
