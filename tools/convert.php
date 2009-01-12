@@ -21,7 +21,7 @@ $pgsql->query('DELETE FROM nodes_history');
 
 foreach (array(array('node', 'nodes'), array('node_deleted', 'nodes_history')) as $tables)
 {
-	$select = $mysql->query('SELECT id,name,lat-0.00005,lon,type,status,address,'.
+	$select = $mysql->query('SELECT id,name,lat,lon,type,status,address,'.
 	                               'visibilitydesc,urlphotos,urlhomepage,urlthread,'.
 	                               'peoplecount,IF(peoplehide = 1, 1, 0),'.
 	                               'machinecount,IF(machinehide = 1, 1, 0),'.
@@ -36,6 +36,9 @@ foreach (array(array('node', 'nodes'), array('node_deleted', 'nodes_history')) a
 	$select->setFetchMode(PDO::FETCH_NUM);
 	foreach ($select as $row)
 	{
+		if ($row[2] > 49.983199 && $row[2] < 50.164494 && $row[3] > 14.278815 && $row[3] < 14.594228)
+			$row[2] -= 0.00005;
+		
 		foreach ($row as $i => $value)
 		{
 			if ($row[$i] === '' && $i != 6)
@@ -105,16 +108,14 @@ $pgsql->query('DELETE FROM links_history');
 
 $select = $mysql->query("SELECT IF(n1.lat < n2.lat, id1, id2), IF(n1.lat < n2.lat, id2, id1), ".
                         "line.type+0, IF(backbone='1',1,0), 1-IF(inplanning='1',1,0), ".
-                        "IF(n1.lat < n2.lat, n1.lat, n2.lat)-0.00005, IF(n1.lat < n2.lat, n1.lon, n2.lon), ".
-                        "IF(n1.lat < n2.lat, n2.lat, n1.lat)-0.00005, IF(n1.lat < n2.lat, n2.lon, n1.lon), ".
                         "CASE IF(perm1 < perm2, perm1, perm2) WHEN 40 THEN -100 WHEN 10 THEN 100 ELSE 0 END, ".
                         "line.changed_on, line.changed_by, nominalspeed, realspeed, czfspeed ".
                         "FROM line JOIN node AS n1 ON id1 = n1.id JOIN node AS n2 ON id2 = n2.id ".
                         "WHERE (perm1 > 0 AND perm2 > 0) AND id1 != id2 GROUP BY id1,id2");
 
-$insert = $pgsql->prepare('INSERT INTO links (node1,node2,media,backbone,active,lat1,lng1,lat2,lng2,'.
-                          'secrecy,changed_on,changed_by, nominal_speed, real_speed, czf_speed) '.
-                          'VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+$insert = $pgsql->prepare('INSERT INTO links (node1,node2,media,backbone,active,secrecy,'.
+                          'changed_on,changed_by, nominal_speed, real_speed, czf_speed) '.
+                          'VALUES(?,?,?,?,?,?,?,?,?,?,?)');
 
 $select->setFetchMode(PDO::FETCH_NUM);
 foreach ($select as $row)
@@ -136,6 +137,9 @@ foreach ($select as $row)
 	
 	$insert->execute($row);
 }
+
+$pgsql->query("UPDATE links SET lat1 = nodes.lat, lng1 = nodes.lng FROM nodes WHERE node1 = nodes.id");
+$pgsql->query("UPDATE links SET lat2 = nodes.lat, lng2 = nodes.lng FROM nodes WHERE node2 = nodes.id");
 
 $pgsql->query("UPDATE nodes SET type = 11 FROM links WHERE node1 = nodes.id AND backbone = 1 AND active = 1 AND nodes.type = 1");
 $pgsql->query("UPDATE nodes SET type = 11 FROM links WHERE node2 = nodes.id AND backbone = 1 AND active = 1 AND nodes.type = 1");
