@@ -106,7 +106,7 @@ var CzfLinkInfo =
 	{
 		var html = "";
 		
-		html += this.createPeerInfo(l, action) + "<br/>";
+		html += this.createPeerInfo(l, action) + BR;
 		
 		var controls = "";
 		controls += CzfHtml.select("media", tr("Type"), l.media, tr("linkMedia"), { nowrap: true });

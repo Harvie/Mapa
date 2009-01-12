@@ -1,3 +1,5 @@
+var BR = "<br/>";
+
 var CzfHtml =
 {
 	elem: function(name, attributes, contents)
@@ -22,7 +24,7 @@ var CzfHtml =
 	,
 	longInfo: function(title, text)
 	{
-		var info = this.elem("div", { "class": "text" }, text.replace(/\n/g, "<br/>"));
+		var info = this.elem("div", { "class": "text" }, text.replace(/\n/g, BR));
 		return this.elem("p", {}, title + ": " + info);
 	}
 	,
@@ -70,7 +72,7 @@ var CzfHtml =
 	label: function(id, label, params)
 	{
 		var html = this.elem("label", { "for": id }, label + ":");
-		return html + (params && params.nowrap ? " " : "<br/>");
+		return html + (params && params.nowrap ? " " : BR);
 	}
 	,
 	edit: function(id, label, value, params)
@@ -79,14 +81,14 @@ var CzfHtml =
 		var attr = { type: "text", name: id, id: id, value: this.nullFix(value) };
 		attr.size = (params && params.size) ? params.size : 18;
 		attr.maxlength = (params && params.max) ? params.max : 50;
-		return title + this.elem("input", attr) + (attr.size > 3 ? "<br/>" : " ");
+		return title + this.elem("input", attr) + (attr.size > 3 ? BR : " ");
 	}
 	,
 	longEdit: function(id, label, value, params)
 	{
 		var title = label ? this.label(id, label, params) : "";
 		var attr = { name: id, id: id, rows: 4, cols: 17 };
-		return title + this.elem("textarea", attr, this.nullFix(value)) + "<br/>";
+		return title + this.elem("textarea", attr, this.nullFix(value)) + BR;
 	}
 	,
 	nullFix: function(text)
@@ -105,7 +107,7 @@ var CzfHtml =
 			optHtml += this.elem("option", attr, options[i]);
 		}
 		
-		return title + this.elem("select", { name: id }, optHtml) + "<br/>";
+		return title + this.elem("select", { name: id }, optHtml) + BR;
 	}
 	,
 	checkbox: function(id, label, value, params)
@@ -115,7 +117,7 @@ var CzfHtml =
 		if (value) attr.checked = "checked";
 		if (params && params.disabled) attr.disabled = "disabled";
 		if (params && params.onchange) attr.onchange = params.onchange;
-		return this.elem("input", attr) + label + "<br/>";
+		return this.elem("input", attr) + label + BR;
 	}
 	,
 	form: function(contents, id, onsubmit)
