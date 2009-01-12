@@ -228,11 +228,28 @@ var CzfLinkInfo =
 				form[fields[i]].value = CzfHtml.nullFix(this.opened[fields[i]]);
 	}
 	,
-	addLink: function(node)
+	rightClick: function(node)
 	{
-		if (!this.info.editing)
+		if (!this.info)
 			return;
 		
+		if (this.info.editing)
+			this.addLink(node);
+		else
+			this.showDistance(node);
+	}
+	,
+	showDistance: function(node)
+	{
+		var latlng1 = new GLatLng(this.info.lat, this.info.lng);
+		var latlng2 = new GLatLng(node.lat, node.lng);
+		var dist = this.formatDist(latlng1.distanceFrom(latlng2));
+		alert(CzfLang.format("Distance from node '%s' to node '%s' is %s.",
+		                     this.info.name, node.name, dist));
+	}
+	,
+	addLink: function(node)
+	{
 		if (!this.checkLinkEnd(node))
 			return;
 		

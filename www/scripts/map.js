@@ -24,8 +24,8 @@ var CzfMap =
 		GEvent.bind(this.map, "resize", this, this.moved);
 		GEvent.bind(this.map, "zoomend", this, this.zoomed);
 		GEvent.bind(this.map, "click", this, this.clicked);
-		GEvent.bind(this.map, "maptypechanged", this, this.typechanged);
-		GEvent.bind(this.map, "singlerightclick", this, this.rightclick);
+		GEvent.bind(this.map, "maptypechanged", this, this.typeChanged);
+		GEvent.bind(this.map, "singlerightclick", this, this.rightClick);
 	}
 	,
 	setPosition: function(state)
@@ -63,7 +63,7 @@ var CzfMap =
 		CzfFilters.updateAutoFilter(newZoom);
 	}
 	,
-	typechanged: function()
+	typeChanged: function()
 	{
 		var state = CzfMain.getState();
 		state.type = this.map.getCurrentMapType().getUrlArg();
@@ -74,16 +74,16 @@ var CzfMap =
 	{
 		// Hack for Opera (no right click support)
 		if (window.event && window.event.shiftKey)
-			return this.rightclick(point, null, overlay);
+			return this.rightClick(point, null, overlay);
 		
 		if (overlay && overlay.czfNode)
 			CzfMain.setNode(overlay.czfNode.id);
 	}
 	,
-	rightclick: function(point, src, overlay)
+	rightClick: function(point, src, overlay)
 	{
 		if (overlay && overlay.czfNode)
-			CzfLinkInfo.addLink(overlay.czfNode);
+			CzfLinkInfo.rightClick(overlay.czfNode);
 	}
 	,
 	loadIcons: function()

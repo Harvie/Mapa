@@ -101,6 +101,7 @@ var CzfLang =
 			"CZFree Node Monitor" : "Mapa sítě CZFree",
 			"User" : "Uživatel",
 			"not logged in": "nepřihlášen",
+			"Distance from node '%s' to node '%s' is %s.": "Vzdálenost bodu '%s' od bodu '%s' je %s.",
 			
 			nodeTypes:   { 0: "Neznámý", 1: "Klient", 9: "Přístupový bod", 10: "Otevřený př. bod", 11: "Router", 98: "InfoPoint", 99: "Non-CZF" },
 			nodeStates:  { 1: "Aktivní", 10: "Nefunkční", 40: "Zkušební", 79: "Ve stavbě", 80: "Plánovaný", 90: "Zastaralý" },
