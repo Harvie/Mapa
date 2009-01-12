@@ -174,7 +174,7 @@ var CzfLinkInfo =
 			km = str.substr(0, digits - 3);
 			
 			if (digits < 6)
-				km += "." + str.substr(digits - 2, 6 - digits);
+				km += "." + str.substr(digits - 3, 6 - digits);
 			
 			str = km + "k";
 		}
