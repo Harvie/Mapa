@@ -1,6 +1,7 @@
 var CzfMap =
 {
-	mediaColors: [ "#000000", "#00CC00", "#AA2222", "#88DDFF", "#AA22AA", "#00FFFF", "#FF0000", "#CCCCCC", "#FFFFFF", "#FF8800" ],
+	mediaColors: { 0: "#000000", 1: "#00CC00", 2: "#BB0000", 3: "#66CCFF", 4: "#AA22AA", 5: "#00FFFF", 6: "#FF4444",
+	               7: "#CCCCCC", 8: "#FFFFFF", 9: "#FF8800", 10: "#FFFF00", 11: "#0000FF", 99: "#777733" },
 	icons: new Object(),
 	map: null,
 	marker: null,
