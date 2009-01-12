@@ -118,7 +118,7 @@ var CzfMap =
 		urlParams.links = new Object();
 		if (state.bbonly)    urlParams.links.backbone_include = [1];
 		if (state.actlink)   urlParams.links.active_include = [1];
-		if (!state.vpn)      urlParams.links.media_exclude = [5];
+		if (!state.vpn)      urlParams.links.media_exclude = [5,11];
 
 		CzfAjax.get("data", urlParams, GEvent.callback(this, this.readData));
 	}
