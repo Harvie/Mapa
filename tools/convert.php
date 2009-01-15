@@ -36,7 +36,7 @@ foreach (array(array('node', 'nodes'), array('node_deleted', 'nodes_history')) a
 	$select->setFetchMode(PDO::FETCH_NUM);
 	foreach ($select as $row)
 	{
-		if ($row[2] > 49.983199 && $row[2] < 50.164494 && $row[3] > 14.278815 && $row[3] < 14.594228)
+		if ($row[2] > 49.983199 && $row[2] < 50.0383 && $row[3] > 14.34135 && $row[3] < 14.594228)
 			$row[2] -= 0.00005;
 		
 		foreach ($row as $i => $value)
