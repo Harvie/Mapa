@@ -19,6 +19,21 @@ class Links
 		}
 		
 		$columns = array_merge(Nodes::getBasicColumns(), self::$cols_edit, self::$cols_log);
+		$query = self::selectFromNodeGeneric($columns, $filter, $values);
+		return $query->fetchAll(PDO::FETCH_ASSOC);
+	}
+	
+	public static function deleteFromNode($node)
+	{
+		$values = array($node['id']);
+		$query = self::selectFromNodeGeneric(self::$keys, "", $values);
+		
+		foreach ($query as $link)
+			History::delete('links', $link, self::$keys);
+	}
+	
+	private static function selectFromNodeGeneric($columns, $filter, $values)
+	{
 		$collist = implode(',', $columns);
 		
 		$query = Query::prepare(
@@ -28,7 +43,7 @@ class Links
 		);
 		
 		$query->execute(array_merge($values, $values));
-		return $query->fetchAll(PDO::FETCH_ASSOC);
+		return $query;
 	}
 	
 	public static function selectInArea($bounds, $nodefilters, $linkfilters)
@@ -70,7 +85,7 @@ class Links
 	public static function delete($link, $node)
 	{
 		self::fillNodes($link, $node);
-		$delete = History::delete('links', $link, self::$keys);
+		History::delete('links', $link, self::$keys);
 	}
 	
 	private static function fillNodes(&$link, $node)

@@ -45,6 +45,7 @@ class Nodes
 	public static function delete($data)
 	{
 		self::checkRights($data);
+		Links::deleteFromNode($data);
 		History::delete('nodes', $data);
 	}
 	
