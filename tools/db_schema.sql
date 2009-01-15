@@ -115,9 +115,15 @@ CREATE TABLE links_history (
 
 
 ALTER TABLE links ADD CONSTRAINT links_node1_key UNIQUE (node1, node2);
+ALTER TABLE links ADD CHECK(node1 < node2);
 ALTER TABLE links ADD CHECK(lat1 <= lat2);
 
 CREATE INDEX nodes_lat_lng_idx ON nodes USING btree (lat, lng);
 CREATE INDEX links_node1_idx ON links USING btree (node1);
 CREATE INDEX links_node2_idx ON links USING btree (node2);
 CREATE INDEX links_points_idx ON links USING btree (lat1, lng1, lat2, lng2);
+
+
+CREATE OR REPLACE FUNCTION if(boolean,anyelement,anyelement) RETURNS anyelement AS $$
+  SELECT CASE WHEN $1 THEN $2 ELSE $3 END;
+$$ LANGUAGE sql;

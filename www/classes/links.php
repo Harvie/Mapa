@@ -53,37 +53,35 @@ class Links
 	
 	public static function insert($link, $node)
 	{
-		$nodes = array(intval($node['id']), intval($link['id']));
-		$pos = array(Nodes::fetchPos($nodes[0]), Nodes::fetchPos($nodes[1]));
-		
-		foreach (array(1,2) as $i => $n)
-		{
-			if (!$pos[$i])
-				return false;
-			
-			$link["node$n"] = $nodes[$i];
-			$link["lat$n"] = $pos[$i]['lat'];
-			$link["lng$n"] = $pos[$i]['lng'];
-		}
-		
-		self::reorderEndpoints($link);
+		self::fillNodes($link, $node);
 		self::checkRights($link, $node);
-		
-		$columns = array_merge(self::$cols_edit, array('lat1', 'lng1', 'lat2', 'lng2'));
-		History::insert('links', $link, array_merge($columns, self::$keys));
+		History::insert('links', $link, array_merge(self::$cols_edit, self::$keys));
+		self::updatePos($link);
 	}
 	
 	public static function update($link, $node)
 	{
-		self::setEndpoints($link, $node);
+		self::fillNodes($link, $node);
 		self::checkRights($link, $node);
 		History::update('links', $link, self::$cols_edit, self::$keys);
+		self::updatePos($link);
 	}
 		
 	public static function delete($link, $node)
 	{
-		self::setEndpoints($link, $node);
+		self::fillNodes($link, $node);
 		$delete = History::delete('links', $link, self::$keys);
+	}
+	
+	private static function fillNodes(&$link, $node)
+	{
+		$node1 = intval($node['id']);
+		$node2 = intval($link['id']);
+		
+		if ($node1 < $node2)
+			list($link['node1'], $link['node2']) = array($node1, $node2);
+		else
+			list($link['node1'], $link['node2']) = array($node2, $node);
 	}
 	
 	private static function setEndpoints(&$link, $node)
@@ -100,49 +98,30 @@ class Links
 		}
 	}
 	
-	// Coordinates of link endpoints are duplicated in table links so they
-	// can be indexed for fast retrieval of links that cross viewport. Also
-	// links are always stored that lat1 <= lat2. So if the node was moved,
-	// the coordinates must be updated and also sometimes the line endpoints
-	// have to be swapped.
-	public static function fixLinkEndpoints($id, $lat, $lng)
+	private static function updatePos($link)
 	{
-		$select = Query::prepare('SELECT * FROM links WHERE node1 = ? OR node2 = ? FOR UPDATE');
-		$select->execute(array($id, $id));
-		$links = $select->fetchAll(PDO::FETCH_ASSOC);
-		
-		if (count($links) == 0)
-			return;
-		
-		$delete = Query::prepare('DELETE FROM links WHERE node1 = ? OR node2 = ?');
-		$delete->execute(array($id, $id));
-		
-		$insert = Query::insert('links', array_keys($links[0]));
-		foreach ($links as $row)
-		{
-			if ($row['node1'] == $id)
-			{
-				$row['lat1'] = $lat;
-				$row['lng1'] = $lng;
-			}
-			else
-			{
-				$row['lat2'] = $lat;
-				$row['lng2'] = $lng;
-			}
-			
-			self::reorderEndpoints($row);
-			$insert->execute($row);
-		}
+		self::updatePosGeneric("node1 = ? AND node2 = ?", array($link['node1'], $link['node2']));
 	}
 	
-	private static function reorderEndpoints(&$l)
+	public static function fixLinkEndpoints($id)
 	{
-		if (floatval($l['lat1']) > floatval($l['lat2']))
-		{
-			list(   $l['node1'], $l['lat1'], $l['lng1'], $l['node2'], $l['lat2'], $l['lng2'])
-			= array($l['node2'], $l['lat2'], $l['lng2'], $l['node1'], $l['lat1'], $l['lng1']);
-		}
+		self::updatePosGeneric("node1 = ? OR node2 = ?", array($id, $id));
+	}
+	
+	// Coordinates of link endpoints are duplicated in table links so that 
+	// they can be indexed for fast retrieval of links that cross viewport.
+	// Also the endpoints are ordered so that lat1 <= lat2. If the node was
+	// moved, the coordinates have to be updated.
+	private static function updatePosGeneric($where, $values)
+	{
+		$sql = 'UPDATE links SET lat1 = IF(n1.lat < n2.lat, n1.lat, n2.lat), '.
+		                        'lng1 = IF(n1.lat < n2.lat, n1.lng, n2.lng), '.
+		                        'lat2 = IF(n1.lat < n2.lat, n2.lat, n1.lat), '.
+		                        'lng2 = IF(n1.lat < n2.lat, n2.lng, n1.lng) '.
+		       'FROM nodes AS n1, nodes AS n2 WHERE node1 = n1.id AND node2 = n2.id';
+		
+		$update = Query::prepare("$sql AND ($where)");
+		$update->execute($values);
 	}
 	
 	public static function getRights($link = null, $node = null)

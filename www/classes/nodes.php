@@ -30,15 +30,16 @@ class Nodes
 		self::checkRights($data);
 		$columns = self::$columns;
 		
-		if ($allowMove)
-			Links::fixLinkEndpoints($data['id'], $data['lat'], $data['lng']);
-		else
+		if (!$allowMove)
 		{
 			unset($columns['lat']);
 			unset($columns['lng']);
 		}
 		
 		History::update('nodes', $data, $columns);
+		
+		if ($allowMove)
+			Links::fixLinkEndpoints($data['id']);
 	}
 	
 	public static function delete($data)

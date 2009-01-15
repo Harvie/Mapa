@@ -106,7 +106,7 @@ foreach ($select as $row)
 $pgsql->query('DELETE FROM links');
 $pgsql->query('DELETE FROM links_history');
 
-$select = $mysql->query("SELECT IF(n1.lat < n2.lat, id1, id2), IF(n1.lat < n2.lat, id2, id1), ".
+$select = $mysql->query("SELECT IF(id1 < id2, id1, id2), IF(id1 < id2, id2, id1), ".
                         "line.type+0, IF(backbone='1',1,0), 1-IF(inplanning='1',1,0), ".
                         "CASE IF(perm1 < perm2, perm1, perm2) WHEN 40 THEN -100 WHEN 10 THEN 100 ELSE 0 END, ".
                         "line.changed_on, line.changed_by, nominalspeed, realspeed, czfspeed ".
@@ -138,8 +138,11 @@ foreach ($select as $row)
 	$insert->execute($row);
 }
 
-$pgsql->query("UPDATE links SET lat1 = nodes.lat, lng1 = nodes.lng FROM nodes WHERE node1 = nodes.id");
-$pgsql->query("UPDATE links SET lat2 = nodes.lat, lng2 = nodes.lng FROM nodes WHERE node2 = nodes.id");
+$pgsql->query("UPDATE links SET lat1 = IF(n1.lat < n2.lat, n1.lat, n2.lat), ".
+                               "lng1 = IF(n1.lat < n2.lat, n1.lng, n2.lng), ".
+                               "lat2 = IF(n1.lat < n2.lat, n2.lat, n1.lat), ".
+                               "lng2 = IF(n1.lat < n2.lat, n2.lng, n1.lng) ".
+              "FROM nodes AS n1, nodes AS n2 WHERE node1 = n1.id AND node2 = n2.id");
 
 $pgsql->query("UPDATE nodes SET type = 11 FROM links WHERE node1 = nodes.id AND backbone = 1 AND active = 1 AND nodes.type = 1");
 $pgsql->query("UPDATE nodes SET type = 11 FROM links WHERE node2 = nodes.id AND backbone = 1 AND active = 1 AND nodes.type = 1");
