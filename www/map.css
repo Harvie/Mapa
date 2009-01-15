@@ -85,6 +85,11 @@ h1 {
 	margin-right: 0.2em;
 }
 
+#panel .note {
+	font-style: italic;
+	font-size: 90%;
+}
+
 #userinfo {
 	float: right;
 	font-size: 90%;
@@ -142,11 +147,6 @@ h1 {
 	margin-left: 7px;
 	padding-left: 10px;
 	border-left: 1px dotted black;
-}
-
-#linkinfo .note {
-	font-style: italic;
-	font-size: 90%;
 }
 
 #linkinfo .nominal {

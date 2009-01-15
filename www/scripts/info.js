@@ -12,6 +12,8 @@ var CzfInfo =
 		
 		CzfNodeInfo.initialize("nodeinfo");
 		CzfLinkInfo.initialize("linkinfo");
+		
+		this.updateInfo();
 	}
 	,
 	setNode: function(nodeid)
@@ -158,14 +160,19 @@ var CzfInfo =
 		}
 		else
 		{
-			 if (this.info && this.info.rights.edit)
-			 {
-			 	html += CzfHtml.button("edit", tr("Edit"), "CzfInfo.editNode()");
-			 	html += CzfHtml.button("edit", tr("Delete"), "CzfInfo.deleteNode()");
-			 }
-			 
-			 html += '<div id="nodeinfo"></div>';
-			 html += '<div id="linkinfo"></div>';
+			if (this.info && this.info.rights.edit)
+			{
+				html += CzfHtml.button("edit", tr("Edit"), "CzfInfo.editNode()");
+				html += CzfHtml.button("edit", tr("Delete"), "CzfInfo.deleteNode()");
+			}
+			
+			if (!this.info)
+				html += '<p class="note">'
+				      + tr("Left click on a node on the map to display information.")
+				      + '</p>';
+			
+			html += '<div id="nodeinfo"></div>';
+			html += '<div id="linkinfo"></div>';
 		}
 		
 		return html;
