@@ -61,12 +61,12 @@ class User
 	
 	public static function isMapper()
 	{
-		return $_SESSION['userRights'] == self::RIGHTS_MAPPER;
+		return $_SESSION['userRights'] >= self::RIGHTS_MAPPER;
 	}
 	
 	public static function isLogged()
 	{
-		return $_SESSION['userRights'] == self::RIGHTS_USER;
+		return $_SESSION['userRights'] >= self::RIGHTS_USER;
 	}
 	
 	public static function canEdit($owner)
