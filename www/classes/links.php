@@ -96,7 +96,7 @@ class Links
 		if ($node1 < $node2)
 			list($link['node1'], $link['node2']) = array($node1, $node2);
 		else
-			list($link['node1'], $link['node2']) = array($node2, $node);
+			list($link['node1'], $link['node2']) = array($node2, $node1);
 	}
 	
 	private static function setEndpoints(&$link, $node)
