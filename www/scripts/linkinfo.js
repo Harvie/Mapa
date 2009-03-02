@@ -45,7 +45,7 @@ var CzfLinkInfo =
 			l.dist = latlng1.distanceFrom(latlng2);
 		}
 		
-		info.links.sort(function(a,b) { return a.dist - b.dist; });
+		info.links.sort(this.linkCompare);
 		
 		for (i in info.links)
 		{
@@ -162,6 +162,14 @@ var CzfLinkInfo =
 		var html = '<div class="note">';
 		html += CzfLang.format(text, CzfInfo.userLink(info), tr("dateFormat")(info.date));
 		return html + '</div>';
+	}
+	,
+	linkCompare: function(l1,l2)
+	{
+		if (l1.backbone != l2.backbone)
+			return l2.backbone - l1.backbone;
+		else
+			return l1.dist - l2.dist;
 	}
 	,
 	formatDist: function(meters)
