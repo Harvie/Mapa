@@ -15,12 +15,14 @@ class Query
 			throw new Exception('INSERT or UPDATE outside transaction is not allowed.');
 		
 		$this->columns = $columns;
-		$this->stmt = self::$db->prepare($sql);
+		$this->stmt = self::prepare($sql);
 	}
 	
 	public static function prepare($sql)
 	{
-		return self::$db->prepare($sql);
+		$stmt = self::$db->prepare($sql);
+		$stmt->setFetchMode(PDO::FETCH_ASSOC);
+		return $stmt;
 	}
 	
 	public static function select($table, $columns = null, $keys = array('id'))
@@ -131,12 +133,11 @@ class Query
 	
 	public function fetch()
 	{
-		return $this->stmt->fetch(PDO::FETCH_ASSOC);
+		return $this->stmt->fetch();
 	}
 	
 	public function fetchAllAssoc($key = 'id')
 	{
-		$this->stmt->setFetchMode(PDO::FETCH_ASSOC);
 		$data = array();
 		
 		foreach ($this->stmt as $row)

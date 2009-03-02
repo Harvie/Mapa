@@ -20,7 +20,7 @@ class Links
 		
 		$columns = array_merge(Nodes::getBasicColumns(), self::$cols_edit, self::$cols_log);
 		$query = self::selectFromNodeGeneric($columns, $filter, $values);
-		return $query->fetchAll(PDO::FETCH_ASSOC);
+		return $query->fetchAll();
 	}
 	
 	public static function deleteFromNode($node)
@@ -62,7 +62,6 @@ class Links
 
 		$select = Query::prepare($sql);
 		$select->execute(array_merge($bounds, $bounds, array(User::getRights())));
-		$select->setFetchMode(PDO::FETCH_ASSOC);
 		return $select;
 	}
 	
@@ -152,7 +151,7 @@ class Links
 	{
 		$query = Query::select('links', $columns, self::$keys);
 		$query->execute($keyVal);
-		return $query->fetch(PDO::FETCH_ASSOC);
+		return $query->fetch();
 	}
 	
 	private static function checkRights($link, $node)

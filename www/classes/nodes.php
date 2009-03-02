@@ -71,7 +71,7 @@ class Nodes
 	{
 		$query = Query::select('nodes', $columns);
 		$query->execute(array('id' => $id));
-		$row = $query->fetch(PDO::FETCH_ASSOC);
+		$row = $query->fetch();
 		
 		if ($row == false)
 			throw new Exception("Invalid node ID!");
@@ -86,7 +86,6 @@ class Nodes
 		
 		$select = Query::prepare('SELECT id, name, lat, lng FROM nodes WHERE name ILIKE ? ORDER BY name LIMIT 20');
 		$select->execute(array("%$name%"));
-		$select->setFetchMode(PDO::FETCH_ASSOC);
 		return $select;
 	}
 	
@@ -98,7 +97,6 @@ class Nodes
 		$sql .= self::makeFilterSQL('nodes', $filters);
 		$select = Query::prepare($sql);
 		$select->execute($bounds);
-		$select->setFetchMode(PDO::FETCH_ASSOC);
 		return $select;
 	}
 	
