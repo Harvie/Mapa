@@ -144,6 +144,7 @@ class Links
 		return array(
 			'active' => (User::isMapper() || ($link && $link['active'])
 			             || ($node && $node['status'] == 1)),
+			'backbone' => (User::isMapper() || ($link && $link['backbone'])),
 		);
 	}
 	
@@ -161,5 +162,8 @@ class Links
 		
 		if ($link['active'] && !$rights['active'])
 			throw new Exception('Permission to make link '.$link['id'].' active denied.');
+		
+		if ($link['backbone'] && !$rights['backbone'])
+			throw new Exception('Permission to mark link '.$link['id'].' as backbone denied.');
 	}
 }

@@ -111,7 +111,7 @@ var CzfLinkInfo =
 		var controls = "";
 		controls += CzfHtml.select("media", tr("Type"), l.media, tr("linkMedia"), { nowrap: true });
 		controls += CzfHtml.select("secrecy", tr("Secrecy"), l.secrecy, tr("secrecy"), { nowrap: true });
-		controls += CzfHtml.checkbox("backbone", tr("Backbone link"), l.backbone);
+		controls += CzfHtml.checkbox("backbone", tr("Backbone link"), l.backbone, { disabled: !l.rights.backbone });
 		controls += CzfHtml.checkbox("planned", tr("Planned link"), !l.active, { disabled: !l.rights.active });
 		
 		controls += "<p>" + tr("Speeds:") + "</p>";
