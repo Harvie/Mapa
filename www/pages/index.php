@@ -1,14 +1,19 @@
 <?php
 header("Content-type: text/html; charset=utf-8");
-$jsFiles = glob("scripts/*.js");
-$gmapKey = Config::$gmapKey;
+
+$networks = Query::select("networks", null, null);
+$networks->execute();
 
 $config = array(
 	'languages' => self::getLanguages(),
 	'user' => array('id' => User::getID(), 'name' => User::getName()),
 	'nodeRights' => Nodes::getRights(),
 	'linkRights' => Links::getRights(),
+	'networks' => $networks->fetchAllAssoc(),
 );
+
+$jsFiles = glob("scripts/*.js");
+$gmapKey = Config::$gmapKey;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

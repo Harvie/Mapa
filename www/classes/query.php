@@ -28,7 +28,10 @@ class Query
 		$sql = 'SELECT ';
 		$sql .= $columns ? implode(',',$columns) : '*';
 		$sql .= " FROM $table ";
-		$sql .= 'WHERE '.implode(' AND ', self::makeNamedParams($keys));
+		
+		if (is_array($keys))
+			$sql .= 'WHERE '.implode(' AND ', self::makeNamedParams($keys));
+		
 		return new Query($sql, $keys, true);
 	}
 	
@@ -129,6 +132,21 @@ class Query
 	public function fetch()
 	{
 		return $this->stmt->fetch(PDO::FETCH_ASSOC);
+	}
+	
+	public function fetchAllAssoc($key = 'id')
+	{
+		$this->stmt->setFetchMode(PDO::FETCH_ASSOC);
+		$data = array();
+		
+		foreach ($this->stmt as $row)
+		{
+			$id = $row[$key];
+			unset($row[$key]);
+			$data[$id] = $row;
+		}
+		
+		return $data;
 	}
 	
 	private static $db = null;

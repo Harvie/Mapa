@@ -115,10 +115,12 @@ var CzfNodeInfo =
 	createInfo: function()
 	{
 		var info = this.info;
+		var network = CzfConfig.networks[info.network];
 		var html = '';
 		
 		html += '<p>';
 		html += CzfHtml.info(tr("Name"), CzfHtml.click(info.name, "CzfNodeInfo.center()"));
+		html += CzfHtml.info(tr("Network"), CzfHtml.link(network.name, network.homepage));
 		html += CzfHtml.info(tr("Type"), tr("nodeTypes")[info.type]);
 		html += CzfHtml.info(tr("Status"), tr("nodeStates")[info.status]);
 		html += CzfHtml.info(tr("Owner"), CzfInfo.userLink(info.owner));

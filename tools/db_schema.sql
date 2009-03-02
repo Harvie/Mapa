@@ -21,6 +21,7 @@ CREATE TABLE nodes (
     lng double precision NOT NULL,
     "type" smallint NOT NULL,
     status smallint NOT NULL,
+    network int REFERENCES networks(id),
     address text NOT NULL,
     url_photos text,
     url_homepage text,
@@ -49,6 +50,7 @@ CREATE TABLE nodes_history (
     lng double precision,
     "type" smallint,
     status smallint,
+    network int,
     address text,
     url_photos text,
     url_homepage text,
@@ -111,6 +113,17 @@ CREATE TABLE links_history (
     changed_on timestamp,
     changed_by integer,
     PRIMARY KEY (node1, node2, changed_on, changed_by)
+);
+
+
+--
+-- Name: networks; Type: TABLE; Schema: public; Owner: mapa; Tablespace: 
+--
+
+CREATE TABLE networks (
+    id serial NOT NULL PRIMARY KEY,
+    name character varying(50) NOT NULL UNIQUE,
+    homepage text NOT NULL
 );
 
 
