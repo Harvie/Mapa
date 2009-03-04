@@ -2,6 +2,7 @@ var CzfSearch =
 {
 	state: new Object(),
 	geocoder: null,
+	marker: null,
 	addressField: null,
 	nameField: null,
 	results: null,
@@ -11,13 +12,23 @@ var CzfSearch =
 	{
 		this.geocoder = new GClientGeocoder();
 		
-		var addressInput = CzfHtml.edit("address", tr("Search address"), "");
+		var icon = new GIcon(G_DEFAULT_ICON);
+		icon.image = "images/marker-cyan.png";
+		this.marker = CzfMap.createMarker({icon: icon});
+		
+		var params = { onchange: "return CzfSearch.addressChanged()" };
+		var addressInput = CzfHtml.edit("address", tr("Search address"), "", params);
 		var addressForm = CzfHtml.form(addressInput, "addrform", "return CzfSearch.addressSearch('address')");
 		
 		var nameInput = CzfHtml.edit("nodename", tr("Search node name"), "");
 		var nameForm = CzfHtml.form(nameInput, "nameform", "return CzfSearch.nodeSearch('nodename')");
 		
 		element.innerHTML = addressForm + nameForm;
+	}
+	,
+	addressChanged: function()
+	{
+		this.marker.hide();
 	}
 	,
 	addressSearch: function(id)
@@ -35,8 +46,12 @@ var CzfSearch =
 		this.addressField.disabled = false;
 		this.addressField.className = latlng ? "normal" : "error";
 		
-		if (latlng != null)
-			CzfMain.setPos(latlng.lat(), latlng.lng());
+		if (latlng == null)
+			return;
+		
+		CzfMain.setPos(latlng.lat(), latlng.lng());
+		this.marker.setLatLng(latlng);
+		this.marker.show();
 	}
 	,
 	nodeSearch: function(id)

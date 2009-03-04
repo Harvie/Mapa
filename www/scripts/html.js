@@ -81,6 +81,7 @@ var CzfHtml =
 		var attr = { type: "text", name: id, id: id, value: this.nullFix(value) };
 		attr.size = (params && params.size) ? params.size : 18;
 		attr.maxlength = (params && params.max) ? params.max : 50;
+		if (params && params.onchange) attr.onchange = params.onchange;
 		return title + this.elem("input", attr) + (attr.size > 3 ? BR : " ");
 	}
 	,
