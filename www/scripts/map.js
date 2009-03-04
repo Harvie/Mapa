@@ -4,7 +4,7 @@ var CzfMap =
 	               7: "#CCCCCC", 8: "#FFFFFF", 9: "#FF8800", 10: "#FFFF00", 11: "#0000FF", 99: "#777733" },
 	icons: new Object(),
 	map: null,
-	marker: null,
+	markers: new Array(),
 	
 	initialize: function(element)
 	{
@@ -128,6 +128,14 @@ var CzfMap =
 		var state = CzfMain.getState();
 		this.map.clearOverlays();
 		
+		for (i in this.markers)
+		{	//Bug workaround: hidden marker is shown
+			var marker = this.markers[i];
+			var isHidden = marker.isHidden();
+			this.map.addOverlay(marker);
+			if (isHidden) marker.hide();
+		}
+		
 		for (i in jsonData.nodes)
 		{
 			var node = jsonData.nodes[i];
@@ -157,25 +165,16 @@ var CzfMap =
 			this.map.addOverlay(new GPolyline(linePoints, "#000000", width + 2, opacity));
 			this.map.addOverlay(new GPolyline(linePoints, color, width, opacity));
 		}
+	}
+	,
+	createMarker: function(options)
+	{
+		var pos = new GLatLng(0,0);
+		var marker = new GMarker(pos, options);
+		marker.hide();
 		
-		if (this.marker)
-			this.map.addOverlay(this.marker);
-	}
-	,
-	addMarker: function(pos, fn)
-	{
-		this.marker = new GMarker(pos, {draggable: true});
-		this.map.addOverlay(this.marker);
-		GEvent.addListener(this.marker, "dragend", fn);
-	}
-	,
-	removeMarker: function()
-	{
-		if (this.marker)
-		{
-			this.marker.hide();
-			this.marker = null;
-		}
+		this.markers.push(marker);
+		return marker;
 	}
 	,
 	getCenter: function()

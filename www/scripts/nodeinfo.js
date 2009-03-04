@@ -1,6 +1,7 @@
 var CzfNodeInfo =
 {
 	info: null,
+	marker: null,
 	elementID: null,
 	newInfo: { id: 0, type: 1, status: 80 },
 	fields: [ "name", "type", "status", "address", "visibility",
@@ -10,6 +11,10 @@ var CzfNodeInfo =
 	initialize: function(elementID)
 	{
 		this.elementID = elementID;
+		
+		var callback = GEvent.callback(this, this.markerMoved);
+		this.marker = CzfMap.createMarker({draggable: true});
+		GEvent.addListener(this.marker, "dragend", callback);
 	}
 	,
 	setInfo: function(newInfo)
@@ -41,13 +46,13 @@ var CzfNodeInfo =
 	,
 	updateMarker: function()
 	{
-		CzfMap.removeMarker();
+		this.marker.hide();
 		
 		if (this.info && this.info.editing)
 		{
 			var pos = new GLatLng(this.info.lat, this.info.lng);
-			var callback = GEvent.callback(this, this.markerMoved);
-			CzfMap.addMarker(pos, callback);
+			this.marker.setLatLng(pos);
+			this.marker.show();
 		}
 	}
 	,
@@ -115,12 +120,17 @@ var CzfNodeInfo =
 	createInfo: function()
 	{
 		var info = this.info;
-		var network = CzfConfig.networks[info.network];
 		var html = '';
 		
 		html += '<p>';
 		html += CzfHtml.info(tr("Name"), CzfHtml.click(info.name, "CzfNodeInfo.center()"));
-		html += CzfHtml.info(tr("Network"), CzfHtml.link(network.name, network.homepage));
+		
+		if (info.network)
+		{
+			var network = CzfConfig.networks[info.network];
+			html += CzfHtml.info(tr("Network"), CzfHtml.link(network.name, network.homepage));
+		}
+		
 		html += CzfHtml.info(tr("Type"), tr("nodeTypes")[info.type]);
 		html += CzfHtml.info(tr("Status"), tr("nodeStates")[info.status]);
 		html += CzfHtml.info(tr("Owner"), CzfInfo.userLink(info.owner));
