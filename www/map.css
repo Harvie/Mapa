@@ -89,6 +89,12 @@ h1 {
 	margin-bottom: 0.5ex;
 }
 
+#panel .square {
+	width: 2ex;
+	height: 2ex;
+	border: 1px solid black;
+}
+
 #panel .note {
 	font-style: italic;
 	font-size: 90%;

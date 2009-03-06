@@ -30,6 +30,10 @@ var CzfLang =
 		}
 		,
 		cs: {
+			"Legend" : "Legenda",
+			"Node types" : "Druhy bodů",
+			"Node states" : "Stavy bodů",
+			"Link types" : "Druhy spojů",
 			"Edit" : "Upravit",
 			"Cancel" : "Zrušit",
 			"Save" : "Uložit",

@@ -173,7 +173,7 @@ var CzfNodeInfo =
 			html += CzfHtml.longInfo(tr("Visibility description"), info.visibility);
 		
 		html += CzfHtml.longInfo(tr("Coordinates"),
-				this.roundAngle(info.lat) + "&nbsp;&nbsp;" + this.roundAngle(info.lng));
+				this.roundAngle(info.lat) + NBSP + NBSP + this.roundAngle(info.lng));
 		
 		return html;
 	}

@@ -1,4 +1,5 @@
 var BR = "<br/>";
+var NBSP = "&nbsp;";
 
 var CzfHtml =
 {
@@ -19,7 +20,7 @@ var CzfHtml =
 	,
 	info: function(title, text)
 	{
-		return title + ': ' + text + '<br/>';
+		return title + ': ' + text + BR;
 	}
 	,
 	longInfo: function(title, text)
@@ -61,7 +62,22 @@ var CzfHtml =
 	,
 	clear: function(spacer)
 	{
-		return this.elem("div", { "class": "clear" }, (spacer ? "&nbsp;" : ""));
+		return this.elem("div", { "class": "clear" }, (spacer ? NBSP : ""));
+	}
+	,
+	table: function(rows)
+	{
+		var html = "";
+		
+		for (i in rows)
+		{
+			var row = "";
+			for (j in rows[i])
+				row += CzfHtml.elem("td", {}, rows[i][j]);
+			html += CzfHtml.elem("tr", {}, row);
+		}
+		
+		return this.elem("table", {}, html);
 	}
 	,
 	button: function(id, label, action)

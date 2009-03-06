@@ -37,6 +37,7 @@ var CzfMain =
 			html += " " + CzfHtml.click(tr("New node"), "CzfInfo.addNode()");
 		html += '</div>';
 		
+		html += CzfHtml.panelPart(this.createLegend(), "legend", tr("Legend"));
 		html += CzfHtml.panelPart("", "search", tr("Search"));
 		html += CzfHtml.panelPart("", "filters", tr("Filters"));
 		html += CzfHtml.panelPart("", "info", tr("Node info"));
@@ -61,6 +62,58 @@ var CzfMain =
 			html += CzfConfig.user.name;
 		
 		return html + '</div>';
+	}
+	,
+	createLegend: function()
+	{
+		return this.createTypeLegend()
+		     + this.createStatusLegend()
+		     + this.createMediaLegend();
+	}
+	,
+	createTypeLegend: function()
+	{
+		var nodeTypes = tr("nodeTypes");
+		var rows = new Array();
+		
+		for (i in nodeTypes)
+		{
+			var img = CzfHtml.img("", CzfMap.getNodeImg(i,1));
+			rows.push( [img, nodeTypes[i]] );
+		}
+		
+		return tr("Node types") + ":" + CzfHtml.table(rows);
+	}
+	,
+	createStatusLegend: function()
+	{
+		var nodeStates = tr("nodeStates");
+		var rows = new Array();
+		
+		for (i in nodeStates)
+		{
+			var img = CzfHtml.img("", CzfMap.getNodeImg(1,i));
+			rows.push( [img, nodeStates[i]] );
+		}
+		
+		return tr("Node states") + ":" + CzfHtml.table(rows);
+	}
+	,
+	createMediaLegend: function()
+	{
+		var mediaNames = tr("linkMedia");
+		var mediaInfo = tr("mediaInfo");
+		var rows = new Array();
+		
+		for (i in mediaNames)
+		{
+			var style = "background-color: " + CzfMap.getLinkColor(i);
+			var square = CzfHtml.elem("div", { "class": "square", style: style }, "");
+			var label = CzfHtml.expl(mediaInfo[i], mediaNames[i]);
+			rows.push( [square, label] );
+		}
+		
+		return tr("Link types") + ":" + CzfHtml.table(rows);
 	}
 	,
 	getState: function()

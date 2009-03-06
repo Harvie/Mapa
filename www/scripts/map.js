@@ -86,16 +86,28 @@ var CzfMap =
 			CzfLinkInfo.rightClick(overlay.czfNode);
 	}
 	,
+	getLinkColor: function(type)
+	{
+		return this.mediaColors[type];
+	}
+	,
+	getNodeImg: function(type, status)
+	{
+		return "images/node/" + type + "-" + status + ".png"
+	}
+	,
 	loadIcons: function()
 	{
 		for (t in tr("nodeTypes"))
 			for (s in tr("nodeStates"))
 			{
-				iconindex = parseInt(t) * 100 + parseInt(s);
-				this.icons[iconindex] = new GIcon();
-				this.icons[iconindex].image = "images/node/" + t + "-" + s + ".png";
-				this.icons[iconindex].iconSize = new GSize(15,15);
-				this.icons[iconindex].iconAnchor = new GPoint(7,7);
+				var icon = new GIcon();
+				icon.image = this.getNodeImg(t,s);
+				icon.iconSize = new GSize(15,15);
+				icon.iconAnchor = new GPoint(7,7);
+				
+				var iconindex = parseInt(t) * 100 + parseInt(s);
+				this.icons[iconindex] = icon;
 			}
 	}
 	,
