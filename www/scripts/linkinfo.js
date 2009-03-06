@@ -74,7 +74,8 @@ var CzfLinkInfo =
 	{
 		var html = CzfHtml.div(this.createPeerInfo(l, action), "peerinfo");
 		
-		var media = CzfHtml.expl(tr("mediaInfo")[l.media], tr("linkMedia")[l.media]);
+		var shortName = tr("linkMedia")[l.media].replace(/ GHz/, "G");
+		var media = CzfHtml.expl(tr("mediaInfo")[l.media], shortName);
 		html += CzfHtml.div(media + ' - ' + this.formatDist(l.dist), "linkinfo");
 		html += CzfHtml.clear();
 		
