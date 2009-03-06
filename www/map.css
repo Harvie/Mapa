@@ -19,7 +19,6 @@ h1 {
 	font-size: 115%;
 	text-align: center;
 	margin: 0;
-	margin-bottom: 0.5ex;
 	clear: both;
 }
 
@@ -85,9 +84,16 @@ h1 {
 	margin-right: 0.2em;
 }
 
+#panel .subtitle {
+	text-align: center;
+	margin-bottom: 0.5ex;
+}
+
 #panel .note {
 	font-style: italic;
 	font-size: 90%;
+	text-align: justify;
+	margin-right: 0.3em;
 }
 
 #userinfo {

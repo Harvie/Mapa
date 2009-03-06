@@ -31,8 +31,11 @@ var CzfMain =
 		var html = this.createUserInfo();
 		html += "<h1>" + document.title + "</h1>";
 		
+		html += '<div class="subtitle">';
+		html += CzfHtml.link(tr("Old map"), "/");
 		if (CzfConfig.nodeRights.edit)
-			html += CzfHtml.button("addnode", tr("New node"), "CzfInfo.addNode()");
+			html += " " + CzfHtml.click(tr("New node"), "CzfInfo.addNode()");
+		html += '</div>';
 		
 		html += CzfHtml.panelPart("", "search", tr("Search"));
 		html += CzfHtml.panelPart("", "filters", tr("Filters"));

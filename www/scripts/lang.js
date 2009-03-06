@@ -50,6 +50,7 @@ var CzfLang =
 			"Info" : "Údaje",
 			"Links" : "Spoje",
 			"Links to other nodes" : "Spojení s ostatními body",
+			"Old map": "Původní mapa",
 			"New node": "Nový bod",
 			"Node filter" : "Filtr bodů",
 			"Node info" : "Informace o bodu",
