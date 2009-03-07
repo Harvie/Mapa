@@ -33,7 +33,7 @@ CzfMarker.prototype.redraw = function(force) {
 	// Now position our DIV based on the DIV coordinates of our bounds
 	this.div.style.left = (p.x + 7) + "px";
 	this.div.style.top = (p.y - 7) + "px";
-	this.div.style.zIndex = z - 100000; //Put it behind marker
+	this.div.style.zIndex = CzfMap.zIndexProcess(this) - 10;
 }
 
 CzfMarker.prototype.remove = function()

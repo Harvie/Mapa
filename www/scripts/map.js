@@ -151,9 +151,11 @@ var CzfMap =
 		for (i in jsonData.nodes)
 		{
 			var node = jsonData.nodes[i];
-			var latlng = new GLatLng(node.lat, node.lng); 
+			var latlng = new GLatLng(node.lat, node.lng);
 			var iconindex = node.type * 100 + node.status;
-			var options = { icon: this.icons[iconindex], title: node.name };
+			var options = { title: node.name,
+			                icon: this.icons[iconindex],
+			                zIndexProcess: this.zIndexProcess };
 			var marker = state.hidelabels ? new GMarker(latlng, options)
 			                              : new CzfMarker(latlng, options);
 			marker.czfNode = node;
@@ -177,6 +179,18 @@ var CzfMap =
 			this.map.addOverlay(new GPolyline(linePoints, "#000000", width + 2, opacity));
 			this.map.addOverlay(new GPolyline(linePoints, color, width, opacity));
 		}
+	}
+	,
+	zIndexProcess: function(marker)
+	{
+		if (marker.czfNode === undefined)
+			return 0;
+		
+		var status = marker.czfNode.status;
+		var type = marker.czfNode.type;
+		
+		//Put active nodes and access points in front
+		return 2 * (status == 1) + (type >= 9 && type <= 11);
 	}
 	,
 	createMarker: function(options)
