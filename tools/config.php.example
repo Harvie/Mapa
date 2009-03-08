@@ -2,7 +2,9 @@
 
 class Config
 {
-	public static $gmapKey = "YOUR_GOOGLE_MAPS_KEY";
+	public static $gmapKeys = array(
+		"YOUR_DOMAIN" => "YOUR_GOOGLE_MAPS_KEY",
+	);
 	
 	public static $usersDB = array(
 		'dsn'	=> 'mysql:dbname=users',
