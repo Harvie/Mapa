@@ -40,9 +40,7 @@ var CzfLinkInfo =
 		for (i in info.links)
 		{
 			l = info.links[i];
-			var latlng1 = new GLatLng(info.lat, info.lng);
-			var latlng2 = new GLatLng(l.lat, l.lng);
-			l.dist = latlng1.distanceFrom(latlng2);
+			l.dist = CzfInfo.distance(info, l);
 		}
 		
 		info.links.sort(this.linkCompare);
@@ -76,7 +74,7 @@ var CzfLinkInfo =
 		
 		var shortName = tr("linkMedia")[l.media].replace(/ GHz/, "G");
 		var media = CzfHtml.expl(tr("mediaInfo")[l.media], shortName);
-		html += CzfHtml.div(media + ' - ' + this.formatDist(l.dist), "linkinfo");
+		html += CzfHtml.div(media + ' - ' + CzfInfo.formatDist(l.dist), "linkinfo");
 		html += CzfHtml.clear();
 		
 		html += this.createSpeedInfo(l);
@@ -173,24 +171,6 @@ var CzfLinkInfo =
 			return l1.dist - l2.dist;
 	}
 	,
-	formatDist: function(meters)
-	{
-		str = Math.round(meters).toString();
-		digits = str.length;
-		
-		if (digits > 3)
-		{
-			km = str.substr(0, digits - 3);
-			
-			if (digits < 6)
-				km += "." + str.substr(digits - 3, 6 - digits);
-			
-			str = km + "k";
-		}
-		
-		return str + "m";
-	}
-	,
 	showPeer: function(linknum)
 	{
 		link = this.info.links[linknum];
@@ -250,9 +230,7 @@ var CzfLinkInfo =
 	,
 	showDistance: function(node)
 	{
-		var latlng1 = new GLatLng(this.info.lat, this.info.lng);
-		var latlng2 = new GLatLng(node.lat, node.lng);
-		var dist = this.formatDist(latlng1.distanceFrom(latlng2));
+		var dist = CzfInfo.formatDist(CzfInfo.distance(this.info, node));
 		alert(CzfLang.format("Distance from node '%s' to node '%s' is %s.",
 		                     this.info.name, node.name, dist));
 	}

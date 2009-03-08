@@ -28,7 +28,6 @@ CzfMarker.prototype.redraw = function(force) {
 	// get the size and position of our rectangle
 	var latlng = this.getLatLng();
 	var p = this.map.fromLatLngToDivPixel(latlng);
-	var z = GOverlay.getZIndex(latlng.lat());
 	
 	// Now position our DIV based on the DIV coordinates of our bounds
 	this.div.style.left = (p.x + 7) + "px";

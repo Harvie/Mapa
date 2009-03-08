@@ -225,4 +225,29 @@ var CzfInfo =
 	{
 		return CzfHtml.link(userInfo.name, userInfo.profile)
 	}
+	,
+	distance: function(node1, node2)
+	{
+		var latlng1 = new GLatLng(node1.lat, node1.lng);
+		var latlng2 = new GLatLng(node2.lat, node2.lng);
+		return latlng1.distanceFrom(latlng2);
+	}
+	,
+	formatDist: function(meters)
+	{
+		str = Math.round(meters).toString();
+		digits = str.length;
+		
+		if (digits > 3)
+		{
+			km = str.substr(0, digits - 3);
+			
+			if (digits < 6)
+				km += "." + str.substr(digits - 3, 6 - digits);
+			
+			str = km + "k";
+		}
+		
+		return str + "m";
+	}
 }

@@ -172,9 +172,7 @@ var CzfNodeInfo =
 		if (info.visibility)
 			html += CzfHtml.longInfo(tr("Visibility description"), info.visibility);
 		
-		html += CzfHtml.longInfo(tr("Coordinates"),
-				this.roundAngle(info.lat) + NBSP + NBSP + this.roundAngle(info.lng));
-		
+		html += CzfHtml.longInfo(tr("Coordinates"), this.coord(this.info));
 		return html;
 	}
 	,
@@ -202,10 +200,18 @@ var CzfNodeInfo =
 		html += CzfHtml.checkbox("machine_hide", tr("Secret"), info.people_hide);
 		html += '</p>';
 		
-		html += CzfHtml.longInfo(tr("Coordinates"),
-				this.roundAngle(info.lat) + "&nbsp;&nbsp;" + this.roundAngle(info.lng));
-		
+		html += CzfHtml.longInfo(tr("Coordinates"), this.coord(this.info));
 		return CzfHtml.form(html, "nodeform", "return false;");
+	}
+	,
+	coord: function(node)
+	{
+		return this.roundAngle(node.lat) + NBSP + NBSP + this.roundAngle(node.lng);
+	}
+	,
+	roundAngle: function(angle)
+	{
+		return Math.round(angle * 100000) / 100000;
 	}
 	,
 	getTypes: function()
@@ -230,10 +236,5 @@ var CzfNodeInfo =
 			allowedStates[statusList[i]] = allStates[statusList[i]];
 		
 		return allowedStates;
-	}
-	,
-	roundAngle: function(angle)
-	{
-		return Math.round(angle * 100000) / 100000;
 	}
 }
