@@ -150,13 +150,9 @@ var CzfInfo =
 		if (this.info && this.info.editing)
 		{
 			html += this.createTabs(this.tabs);
-			
-			var buttons = '<p>';
-			buttons += CzfHtml.button("save", tr("Save"), "CzfInfo.save()");
-			buttons += CzfHtml.button("cancel", tr("Cancel"), "CzfInfo.cancelEdit()");
-			buttons += '</p>';
-			
-			html += CzfHtml.form(buttons, "infoform", "return false;");
+			var buttons = CzfHtml.button("save", tr("Save"), "CzfInfo.save()")
+			            + CzfHtml.button("cancel", tr("Cancel"), "CzfInfo.cancelEdit()");
+			html += CzfHtml.form(CzfHtml.p(buttons), "infoform", "return false;");
 		}
 		else
 		{
@@ -167,11 +163,10 @@ var CzfInfo =
 			}
 			
 			if (!this.info)
-				html += '<p class="note">'
-				      + tr("Left click on a node on the map to display information.")
-				      + '</p>';
+				html += CzfHtml.p(tr("Left click on a node on the map to display information."), "note");
 			
 			html += '<div id="nodeinfo"></div>';
+			html += CzfHtml.p(CzfHtml.click(tr("Nodes in neighborhood"), "CzfInfo.showNeighb()"));
 			html += '<div id="linkinfo"></div>';
 		}
 		
@@ -226,28 +221,8 @@ var CzfInfo =
 		return CzfHtml.link(userInfo.name, userInfo.profile)
 	}
 	,
-	distance: function(node1, node2)
+	showNeighb: function()
 	{
-		var latlng1 = new GLatLng(node1.lat, node1.lng);
-		var latlng2 = new GLatLng(node2.lat, node2.lng);
-		return latlng1.distanceFrom(latlng2);
-	}
-	,
-	formatDist: function(meters)
-	{
-		str = Math.round(meters).toString();
-		digits = str.length;
-		
-		if (digits > 3)
-		{
-			km = str.substr(0, digits - 3);
-			
-			if (digits < 6)
-				km += "." + str.substr(digits - 3, 6 - digits);
-			
-			str = km + "k";
-		}
-		
-		return str + "m";
+		this.element.innerHTML = CzfNeighb.createHTML(this.info);
 	}
 }

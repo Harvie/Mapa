@@ -37,12 +37,7 @@ var CzfLinkInfo =
 		if (info.links.length > 0)
 			html += "<p>" + tr("Links to other nodes") + ":</p>";
 		
-		for (i in info.links)
-		{
-			l = info.links[i];
-			l.dist = CzfInfo.distance(info, l);
-		}
-		
+		CzfNeighb.calcDistances(info.links, info);
 		info.links.sort(this.linkCompare);
 		
 		for (i in info.links)
@@ -74,7 +69,7 @@ var CzfLinkInfo =
 		
 		var shortName = tr("linkMedia")[l.media].replace(/ GHz/, "G");
 		var media = CzfHtml.expl(tr("mediaInfo")[l.media], shortName);
-		html += CzfHtml.div(media + ' - ' + CzfInfo.formatDist(l.dist), "linkinfo");
+		html += CzfHtml.div(media + ' - ' + CzfNeighb.formatDist(l.dist), "linkinfo");
 		html += CzfHtml.clear();
 		
 		html += this.createSpeedInfo(l);
@@ -142,18 +137,13 @@ var CzfLinkInfo =
 	,
 	createPeerInfo: function(l, action)
 	{
-		var imgTitle = tr("nodeTypes")[l.type] + ", " + tr("nodeStates")[l.status];
-		var imgSrc = "images/node/" + l.type + "-" + l.status + ".png";
-		var imgHtml = CzfHtml.img(imgTitle, imgSrc);
-		
 		var classes = new Array();
 		if (l.backbone) classes.push("backbone");
 		if (!l.active)  classes.push("planned");
 		if (l.insert)   classes.push("added");
 		if (l.remove)   classes.push("deleted");
 		
-		var peerName = CzfHtml.span(l.name, classes);
-		return imgHtml + CzfHtml.click(peerName, action);
+		return CzfNeighb.createNodeLink(l, classes, action);
 	}
 	,
 	createChangeInfo: function(text, info)
@@ -230,7 +220,7 @@ var CzfLinkInfo =
 	,
 	showDistance: function(node)
 	{
-		var dist = CzfInfo.formatDist(CzfInfo.distance(this.info, node));
+		var dist = CzfNeighb.formatDist(CzfNeighb.distance(this.info, node));
 		alert(CzfLang.format("Distance from node '%s' to node '%s' is %s.",
 		                     this.info.name, node.name, dist));
 	}

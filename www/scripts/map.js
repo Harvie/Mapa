@@ -2,8 +2,9 @@ var CzfMap =
 {
 	mediaColors: { 0: "#000000", 1: "#00CC00", 2: "#BB0000", 3: "#66CCFF", 4: "#AA22AA", 5: "#00FFFF", 6: "#FF4444",
 	               7: "#CCCCCC", 8: "#FFFFFF", 9: "#FF8800", 10: "#FFFF00", 11: "#0000FF", 99: "#777733" },
-	icons: new Object(),
 	map: null,
+	nodes: null,
+	icons: new Object(),
 	markers: new Array(),
 	
 	initialize: function(element)
@@ -138,6 +139,7 @@ var CzfMap =
 	readData: function(jsonData)
 	{
 		var state = CzfMain.getState();
+		this.nodes = jsonData.nodes;
 		this.map.clearOverlays();
 		
 		for (i in this.markers)
@@ -206,5 +208,10 @@ var CzfMap =
 	getCenter: function()
 	{
 		return this.map.getCenter();
+	}
+	,
+	getNodes: function()
+	{
+		return this.nodes;
 	}
 }

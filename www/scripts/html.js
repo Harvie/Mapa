@@ -39,6 +39,11 @@ var CzfHtml =
 		return this.elem("span", { "class": "click", onclick: action }, title);
 	}
 	,
+	p: function(contents, _class)
+	{
+		return this.elem("p", _class ? { "class": _class } : {}, contents);
+	}
+	,
 	div: function(contents, _class)
 	{
 		return this.elem("div", { "class": _class }, contents);
