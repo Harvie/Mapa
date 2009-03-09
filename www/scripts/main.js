@@ -131,8 +131,12 @@ var CzfMain =
 	{
 		this.state = newState;
 		
+		var showOnMap = !!this.state.goto;
+		if (this.state.goto)
+			delete this.state.goto;
+		
 		if (this.state.node)
-			this.setNode(this.state.node);
+			this.setNode(this.state.node, showOnMap);
 		
 		CzfFilters.updateControls(this.state);
 		CzfMap.setPosition(this.state);
@@ -146,11 +150,11 @@ var CzfMain =
 		CzfMap.setPosition(this.state);
 	}
 	,
-	setNode: function(nodeid)
+	setNode: function(nodeid, showOnMap)
 	{
 		this.state.node = nodeid;
 		CzfAnchor.update(this.state);
-		CzfInfo.setNode(nodeid);
+		CzfInfo.setNode(nodeid, showOnMap);
 	}
 	,
 	clone: function(obj)

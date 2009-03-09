@@ -112,18 +112,13 @@ var CzfNodeInfo =
 		return info;
 	}
 	,
-	center: function()
-	{
-		CzfMain.setPos(this.info.lat, this.info.lng);
-	}
-	,
 	createInfo: function()
 	{
 		var info = this.info;
 		var html = '';
 		
 		html += '<p>';
-		html += CzfHtml.info(tr("Name"), CzfHtml.click(info.name, "CzfNodeInfo.center()"));
+		html += CzfHtml.info(tr("Name"), CzfHtml.click(info.name, "CzfInfo.center()"));
 		
 		if (info.network)
 		{

@@ -1,8 +1,9 @@
 var CzfInfo =
 {
 	info: null,
-	editData: new Object(),
 	element: null,
+	showOnMap: false,
+	editData: new Object(),
 	tabs: [ { id: "nodeinfo", label: "Info" },
 	        { id: "linkinfo", label: "Links" } ],
 	
@@ -16,8 +17,10 @@ var CzfInfo =
 		this.updateInfo();
 	}
 	,
-	setNode: function(nodeid)
+	setNode: function(nodeid, showOnMap)
 	{
+		this.showOnMap = showOnMap;
+		
 		if (this.editData[nodeid])
 		{
 			this.setInfo(this.editData[nodeid]);
@@ -37,6 +40,12 @@ var CzfInfo =
 	{
 		this.info = newInfo;
 		this.updateInfo();
+		
+		if (this.showOnMap)
+		{
+			this.showOnMap = false;
+			this.center();
+		}
 	}
 	,
 	updateInfo: function()
@@ -48,6 +57,11 @@ var CzfInfo =
 		
 		CzfNodeInfo.setInfo(this.info);
 		CzfLinkInfo.setInfo(this.info);
+	}
+	,
+	center: function()
+	{
+		CzfMain.setPos(this.info.lat, this.info.lng);
 	}
 	,
 	addNode: function()
