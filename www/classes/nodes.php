@@ -22,7 +22,10 @@ class Nodes
 		$data['owner_id'] = User::getID();
 		
 		History::insert('nodes', $data, $columns);
-		return Query::lastInsertId();
+		$data['id'] = Query::lastInsertId();
+		
+		self::notifyAdd($data);
+		return $data['id'];
 	}
 	
 	public static function update($data, $allowMove)
@@ -74,7 +77,7 @@ class Nodes
 		$row = $query->fetch();
 		
 		if ($row == false)
-			throw new Exception("Invalid node ID!");
+			throw new Exception("Invalid node ID '$id'!");
 		
 		return $row;
 	}
@@ -148,5 +151,41 @@ class Nodes
 		
 		if (!in_array($node['type'], $rights['types']))
 			throw new Exception('Permission to set node type denied.');
+	}
+	
+	private static function notifyAdd($node)
+	{
+		$notifications = Query::select('notify', null, null);
+		$notifications->execute();
+		
+		foreach ($notifications->fetchAll() as $notify)
+		{
+			$center = self::fetchPos($notify['node_id']);
+			$distance = intval(self::distance($node, $center));
+			
+			if ($distance <= $notify['radius'])
+			{
+				$text = "New node '{$node['name']}' was added in distance {$distance}m.\n";
+				$baseurl = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']);
+				$url = $baseurl . "/#node={$node['id']}&goto=1";
+				$text .= "Follow this link to see the new node:\n$url\n";
+				mail($notify['email'], 'CZFree map notification', $text);
+			}
+		}
+	}
+	
+	private static function distance($node1, $node2)
+	{
+		$r = 6367e3; //Approximate Earth radius in Europe (in meters)
+		
+		$lat1 = floatval($node1['lat']);
+		$lng1 = floatval($node1['lng']);
+		$lat2 = floatval($node2['lat']);
+		$lng2 = floatval($node2['lng']);
+		
+		// Haversine formula for great circle distance
+		$sin1 = sin(deg2rad($lat1 - $lat2) / 2);
+		$sin2 = sin(deg2rad($lng1 - $lng2) / 2);
+		return 2 * $r * asin(sqrt($sin1 * $sin1 + cos($lat1) * cos($lat2) * $sin2 * $sin2));
 	}
 }

@@ -127,6 +127,19 @@ CREATE TABLE networks (
 );
 
 
+--
+-- Name: notify; Type: TABLE; Schema: public; Owner: mapa; Tablespace: 
+--
+
+CREATE TABLE notify (
+    user_id int NOT NULL,
+    node_id int NOT NULL REFERENCES nodes(id),
+    radius int NOT NULL,
+    email text NOT NULL,
+    PRIMARY KEY (user_id, node_id)
+);
+
+
 ALTER TABLE links ADD CONSTRAINT links_node1_key UNIQUE (node1, node2);
 ALTER TABLE links ADD CHECK(node1 < node2);
 ALTER TABLE links ADD CHECK(lat1 <= lat2);

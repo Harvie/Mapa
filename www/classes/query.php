@@ -123,17 +123,23 @@ class Query
 		return $id;
 	}
 	
-	public function execute($values)
+	public function execute($values = null)
 	{
-		foreach ($this->columns as $col)
-			$this->stmt->bindParam(":$col", $values[$col]);
+		if (is_array($this->columns))
+			foreach ($this->columns as $col)
+				$this->stmt->bindParam(":$col", $values[$col]);
 		
-		return $this->stmt->execute($row);
+		return $this->stmt->execute();
 	}
 	
 	public function fetch()
 	{
 		return $this->stmt->fetch();
+	}
+	
+	public function fetchAll()
+	{
+		return $this->stmt->fetchAll();
 	}
 	
 	public function fetchAllAssoc($key = 'id')
