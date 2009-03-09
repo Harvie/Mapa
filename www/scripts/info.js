@@ -166,7 +166,10 @@ var CzfInfo =
 				html += CzfHtml.p(tr("Left click on a node on the map to display information."), "note");
 			
 			html += '<div id="nodeinfo"></div>';
-			html += CzfHtml.p(CzfHtml.click(tr("Nodes in neighborhood"), "CzfInfo.showNeighb()"));
+			
+			if (this.info)
+				html += CzfHtml.p(CzfHtml.click(tr("Nodes in neighborhood"), "CzfInfo.showNeighb()"));
+			
 			html += '<div id="linkinfo"></div>';
 		}
 		
