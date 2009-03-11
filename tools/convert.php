@@ -151,8 +151,22 @@ $pgsql->query("UPDATE links SET media = 10 WHERE node1 = 10770 AND node2 = 359")
 $pgsql->query("UPDATE links SET media = 11 WHERE (node1 IN(10770,17595) OR node2 IN(10770,17595)) AND ".
               "sqrt(2.44 * (lat1 - lat2) * (lat1 - lat2) + (lng1 - lng2) * (lng1 - lng2)) * 71500 > 3000");
 
-$pgsql->query("UPDATE nodes SET network = 1 WHERE name LIKE 'p12.%' AND type IN(9,10,11)");
-$pgsql->query("UPDATE nodes SET network = 2 WHERE name LIKE 'Klfree%' AND type IN(9,10,11)");
+$pgsql->query("UPDATE nodes SET network =  1 WHERE name ILIKE 'p12.%' AND type IN(9,10,11)");
+$pgsql->query("UPDATE nodes SET network =  2 WHERE name ILIKE 'Klfree%' AND type IN(9,10,11)");
+$pgsql->query("UPDATE nodes SET network =  3 WHERE name ILIKE 'Svobodnasit.cz%' AND type IN(9,10,11)");
+$pgsql->query("UPDATE nodes SET network =  4 WHERE name ILIKE 'Repy\_%' AND type IN(9,10,11)");
+$pgsql->query("UPDATE nodes SET network =  5 WHERE name ILIKE 'Spojovaci.Net-%' AND type IN(9,10,11)");
+$pgsql->query("UPDATE nodes SET network =  6 WHERE name ILIKE 'ZAP-%' AND type IN(9,10,11)");
+$pgsql->query("UPDATE nodes SET network =  6 WHERE name ILIKE 'RAP-%' AND type IN(9,10,11)");
+$pgsql->query("UPDATE nodes SET network =  6 WHERE name ILIKE 'LAP-%' AND type IN(9,10,11)");
+$pgsql->query("UPDATE nodes SET network =  7 WHERE name ILIKE 'AVP %' AND type IN(9,10,11)");
+$pgsql->query("UPDATE nodes SET network =  8 WHERE name ILIKE 'Dedina\_%' AND type IN(9,10,11)");
+$pgsql->query("UPDATE nodes SET network =  9 WHERE name ILIKE 'Pe3ny%' AND type IN(9,10,11)");
+$pgsql->query("UPDATE nodes SET network = 10 WHERE name ILIKE 'HELL-%' AND type IN(9,10,11)");
+$pgsql->query("UPDATE nodes SET network = 11 WHERE name ILIKE 'www.podoli.org%' AND type IN(9,10,11)");
+$pgsql->query("UPDATE nodes SET network = 12 WHERE name ILIKE 'MntAP-%' AND type IN(9,10,11)");
+$pgsql->query("UPDATE nodes SET network = 13 WHERE name ILIKE '%.mh2net' AND type IN(9,10,11)");
+$pgsql->query("UPDATE nodes SET network = 14 WHERE name ILIKE '%.ulfree.net' AND type IN(9,10,11)");
 
 $pgsql->query("SELECT setval('nodes_id_seq', (SELECT MAX(id) FROM nodes))");
 $pgsql->commit();
