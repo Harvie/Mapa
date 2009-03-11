@@ -32,7 +32,7 @@ var CzfMain =
 		html += "<h1>" + document.title + "</h1>";
 		
 		html += '<div class="subtitle">';
-		html += CzfHtml.link(tr("Old map"), "/");
+		html += CzfHtml.link(tr("Old map"), "/old/");
 		if (CzfConfig.nodeRights.edit)
 			html += " " + CzfHtml.click(tr("New node"), "CzfInfo.addNode()");
 		html += '</div>';
