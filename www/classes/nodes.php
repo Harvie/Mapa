@@ -96,8 +96,9 @@ class Nodes
 	{
 		$sql = "SELECT id,name,lat,lng,type,status FROM nodes ".
 		       "WHERE lat < ? AND lng < ? AND lat > ? AND lng > ?";
-		
 		$sql .= self::makeFilterSQL('nodes', $filters);
+		$sql .= " ORDER BY lng";
+		
 		$select = Query::prepare($sql);
 		$select->execute($bounds);
 		return $select;
