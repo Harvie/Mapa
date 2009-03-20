@@ -16,7 +16,7 @@ SET default_with_oids = false;
 
 CREATE TABLE nodes (
     id serial NOT NULL PRIMARY KEY,
-    name character varying(50) NOT NULL UNIQUE,
+    name character varying(50) NOT NULL,
     lat double precision NOT NULL,
     lng double precision NOT NULL,
     "type" smallint NOT NULL,
@@ -144,6 +144,7 @@ ALTER TABLE links ADD CONSTRAINT links_node1_key UNIQUE (node1, node2);
 ALTER TABLE links ADD CHECK(node1 < node2);
 ALTER TABLE links ADD CHECK(lat1 <= lat2);
 
+CREATE UNIQUE INDEX nodes_name_lower_key ON nodes(lower(name));
 CREATE INDEX nodes_lat_lng_idx ON nodes USING btree (lat, lng);
 CREATE INDEX links_node1_idx ON links USING btree (node1);
 CREATE INDEX links_node2_idx ON links USING btree (node2);
