@@ -72,7 +72,7 @@ var CzfInfo =
 			return false;
 		}
 		
-		info = CzfNodeInfo.createNode();
+		var info = CzfNodeInfo.createNode();
 		info.actTab = "nodeinfo";
 		this.editData[0] = info;
 		this.setInfo(info);
