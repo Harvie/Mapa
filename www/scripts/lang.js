@@ -4,7 +4,8 @@ var CzfLang =
 	
 	translations: {
 		en: {
-			nodeTypes:   { 0: "Unknown", 1: "Client", 9: "Full AP", 10: "Street access AP", 11: "Router", 98: "InfoPoint", 99: "Non-CZF" },
+			nodeTypes:   { 0: "Unknown", 1: "Client", 9: "Full AP", 10: "Street access AP",
+			               11: "Router", 97: "Hidden", 98: "InfoPoint", 99: "Non-CZF" },
 			nodeStates:  { 1: "Active", 10: "Down", 40: "In testing", 79: "Under construction", 80: "In planning", 90: "Obsolete" },
 			linkMedia:   { 0: "Unknown", 1: "2.4 GHz", 7: "5 GHz", 8: "10 GHz", 3: "UTP", 4: "Fiber", 2: "FSO",
 			               6: "FSO + WiFi", 5: "VPN", 9: "Licensed", 10: "60 GHz+", 11: "Leased", 99: "Other" },
@@ -113,7 +114,8 @@ var CzfLang =
 			"Distance from node '%s' to node '%s' is %s.": "Vzdálenost bodu '%s' od bodu '%s' je %s.",
 			"Left click on a node on the map to display information." : "Klikněte levým tlačítkem na bod na mapě pro zobrazení informací.",
 			
-			nodeTypes:   { 0: "Neznámý", 1: "Klient", 9: "Přístupový bod", 10: "Otevřený př. bod", 11: "Router", 98: "InfoPoint", 99: "Non-CZF" },
+			nodeTypes:   { 0: "Neznámý", 1: "Klient", 9: "Přístupový bod", 10: "Otevřený př. bod",
+			               11: "Router", 97: "Skrytý", 98: "InfoPoint", 99: "Non-CZF" },
 			nodeStates:  { 1: "Aktivní", 10: "Nefunkční", 40: "Zkušební", 79: "Ve stavbě", 80: "Plánovaný", 90: "Zastaralý" },
 			linkMedia:   { 0: "Neznámý", 1: "2.4 GHz", 7: "5 GHz", 8: "10 GHz", 3: "UTP", 4: "Vlákno", 2: "FSO",
 			               6: "FSO + WiFi", 5: "VPN", 9: "Licencovaný", 10: "60 GHz+", 11: "Pronajatý", 99: "Jiný" },

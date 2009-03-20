@@ -3,5 +3,6 @@
 9	node.svg	#F94
 10	node.svg	#FFF
 11	node.svg	#D00
+97	hidden.svg
 98	info.svg
 99	nonczf.svg

@@ -8,7 +8,7 @@ class Nodes
 	private static $cols_basic = array('id', 'name', 'type', 'status', 'lat', 'lng');
 	private static $filters = array('type', 'status');
 	
-	private static $types = array(1, 9, 10, 11, 98, 99, 0);
+	private static $types = array(1, 9, 10, 11, 97, 98, 99, 0);
 	private static $types_user = array(1, 9, 10);
 	
 	private static $states = array(80, 79, 40, 1, 90);
@@ -120,13 +120,16 @@ class Nodes
 	
 	public static function getRights($node = null)
 	{
+		$mapper = User::isMapper();
+		
 		$rights = array(
 			'edit' => $node ? User::canEdit($node['owner_id']) : User::isLogged(),
-			'types' => User::isMapper() ? self::$types : self::$types_user,
-			'states' => User::isMapper() ? self::$states : self::$states_user,
+			'types' => $mapper ? self::$types : self::$types_user,
+			'states' => $mapper ? self::$states : self::$states_user,
+			'network' => $mapper,
 		);
 		
-		if ($node && !User::isMapper())
+		if ($node && !$mapper)
 		{
 			if (!in_array($node['type'], $rights['types']))
 				array_push($rights['types'], $node['type']);

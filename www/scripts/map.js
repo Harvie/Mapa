@@ -158,8 +158,12 @@ var CzfMap =
 			var options = { title: node.name,
 			                icon: this.icons[iconindex],
 			                zIndexProcess: this.zIndexProcess };
-			var marker = state.hidelabels ? new GMarker(latlng, options)
-			                              : new CzfMarker(latlng, options);
+			
+			if (state.hidelabels || node.type == 97)
+				var marker = new GMarker(latlng, options)
+			else
+				var marker = new CzfMarker(latlng, options);
+			
 			marker.czfNode = node;
 			this.map.addOverlay(marker);
 		}
