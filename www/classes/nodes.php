@@ -166,6 +166,9 @@ class Nodes
 	
 	private static function notifyAdd($node)
 	{
+		if (!Config::$mailFrom)
+			return;
+		
 		$notifications = Query::select('notify', null, null);
 		$notifications->execute();
 		
@@ -180,7 +183,8 @@ class Nodes
 				$baseurl = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']);
 				$url = $baseurl . "/#node={$node['id']}&goto=1";
 				$text .= "Follow this link to see the new node:\n$url\n";
-				mail($notify['email'], 'CZFree map notification', $text);
+				$header = 'From: "CZFree.Net Node Monitor" <' . Config::$mailFrom . '>';
+				mail($notify['email'], 'CZFree map notification', $text, $header);
 			}
 		}
 	}
