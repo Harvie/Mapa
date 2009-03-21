@@ -182,8 +182,8 @@ var CzfNodeInfo =
 		html += CzfHtml.select("status", tr("Status"), info.status, this.getStates());
 		html += '</p>';
 		
-		html += CzfHtml.longEdit("address", tr("Address"), info.address);
-		html += CzfHtml.longEdit("visibility", tr("Visibility description"), info.visibility);
+		html += CzfHtml.longEdit("address", tr("Address"), info.address, {rows:2});
+		html += CzfHtml.longEdit("visibility", tr("Visibility description"), info.visibility, {rows:4});
 		
 		html += '<p>';
 		html += CzfHtml.edit("url_thread", tr("Thread"), info.url_thread);

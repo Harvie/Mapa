@@ -109,7 +109,7 @@ var CzfHtml =
 	longEdit: function(id, label, value, params)
 	{
 		var title = label ? this.label(id, label, params) : "";
-		var attr = { name: id, id: id, rows: 4, cols: 17 };
+		var attr = { name: id, id: id, rows: params.rows, cols: 17 };
 		return title + this.elem("textarea", attr, this.nullFix(value)) + BR;
 	}
 	,
