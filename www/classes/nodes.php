@@ -2,8 +2,8 @@
 
 class Nodes
 {
-	private static $columns = array('name', 'network', 'type', 'status', 'address', 'lat', 'lng',
-	                                'url_photos', 'url_homepage', 'url_thread', 'visibility',
+	private static $columns = array('name', 'network', 'type', 'status', 'lat', 'lng', 'owner_id',
+	                                'url_photos', 'url_homepage', 'url_thread', 'visibility', 'address',
 	                                'people_count', 'people_hide', 'machine_count', 'machine_hide');
 	private static $cols_basic = array('id', 'name', 'type', 'status', 'lat', 'lng');
 	private static $filters = array('type', 'status');
@@ -18,10 +18,7 @@ class Nodes
 	{
 		self::checkRights($data);
 		
-		$columns = array_merge(self::$columns, array('owner_id'));
-		$data['owner_id'] = User::getID();
-		
-		History::insert('nodes', $data, $columns);
+		History::insert('nodes', $data, self::$columns);
 		$data['id'] = Query::lastInsertId();
 		
 		self::notifyAdd($data);
@@ -127,6 +124,7 @@ class Nodes
 			'types' => $mapper ? self::$types : self::$types_user,
 			'states' => $mapper ? self::$states : self::$states_user,
 			'network' => $mapper,
+			'owner' => $mapper,
 		);
 		
 		if ($node && !$mapper)
@@ -156,8 +154,14 @@ class Nodes
 		if (!in_array($node['type'], $rights['types']))
 			throw new Exception('Permission to set node type denied.');
 		
+		if ($orig === null)
+			$orig = array('network' => null, 'owner_id' => User::getID());
+		
 		if ($orig['network'] != $node['network'] && !$rights['network'])
 			throw new Exception('Permission to change network denied.');
+		
+		if ($orig['owner_id'] != $node['owner_id'] && !$rights['owner'])
+			throw new Exception('Permission to change node owner denied.');
 	}
 	
 	private static function notifyAdd($node)

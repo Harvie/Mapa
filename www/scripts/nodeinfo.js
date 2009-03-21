@@ -71,6 +71,13 @@ var CzfNodeInfo =
 		if (!document.nodeform)
 			return;
 		
+		var ownerField = document.nodeform.owner;
+		if (ownerField && ownerField.value != this.info.owner.name)
+		{
+			this.info.owner.name = ownerField.value;
+			this.info.owner.changed = true;
+		}
+		
 		CzfInfo.copyFormData(this.fields, document.nodeform, this.info);
 	}
 	,
@@ -104,6 +111,7 @@ var CzfNodeInfo =
 		info.editing = true;
 		info.rights = CzfConfig.nodeRights;
 		info.linkRights = CzfConfig.linkRights;
+		info.owner = { name: CzfConfig.user.name, changed: true };
 		
 		var latlng = CzfMap.getCenter();
 		info.lat = latlng.lat();
@@ -182,6 +190,8 @@ var CzfNodeInfo =
 		html += CzfHtml.select("status", tr("Status"), info.status, this.getStates());
 		if (info.rights.network)
 			html += CzfHtml.select("network", tr("Network"), info.network, this.getNetworks());
+		if (info.rights.owner)
+			html += CzfHtml.edit("owner", tr("Owner"), info.owner.name);
 		html += '</p>';
 		
 		html += CzfHtml.longEdit("address", tr("Address"), info.address, {rows:2});

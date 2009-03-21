@@ -7,6 +7,14 @@ if (!isset($node['id']))
 
 $node['id'] = intval($node['id']);
 
+if (isset($node['owner']['changed']))
+{
+	$node['owner_id'] = User::getIDByName($node['owner']['name']);
+	if ($node['owner_id'] === false)
+		throw new Exception("Node owner name is invalid!");
+}
+
+
 Query::beginTransaction();
 
 try {

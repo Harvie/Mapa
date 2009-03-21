@@ -6,6 +6,8 @@ class User
 	const RIGHTS_USER = 0;
 	const RIGHTS_MAPPER = 100;
 	
+	private static $db = null;
+	
 	public static function initialize()
 	{
 		session_name('CzfMap');
@@ -34,12 +36,20 @@ class User
 		}
 	}
 	
+	private static function query($sql)
+	{
+		if (!$db)
+		{
+			self::$db = new PDO(Config::$usersDB['dsn'], Config::$usersDB['user'], Config::$usersDB['pass']);
+			self::$db->query(Config::$usersDB['init']);
+		}
+		
+		return self::$db->prepare($sql);
+	}
+	
 	private static function loadUserInfo($id)
 	{
-		$db = new PDO(Config::$usersDB['dsn'], Config::$usersDB['user'], Config::$usersDB['pass']);
-		$db->query(Config::$usersDB['init']);
-		
-		$select = $db->prepare('SELECT userid, username, password, mapperms FROM user WHERE userid = ?');
+		$select = self::query('SELECT userid, username, password, mapperms FROM user WHERE userid = ?');
 		$select->execute(array($id));
 		return $select->fetch();
 	}
@@ -74,15 +84,32 @@ class User
 		return self::isMapper() || (self::isLogged() && $owner == $_SESSION['userID']);
 	}
 	
-	public static function getNameByID($id)
+	private static function getSingleVal($sql, $params)
 	{
-		$row = self::loadUserInfo($id);
-		return $row ? self::convertName($row['username']) : false;
+		$select = self::query($sql);
+		$select->execute($params);
+		$row = $select->fetch(PDO::FETCH_NUM);
+		return $row ? $row[0] : false;
 	}
 	
-	public static function convertName($name)
+	public static function getNameByID($id)
+	{
+		$name = self::getSingleVal('SELECT username FROM user WHERE userid = ?', array($id));
+		return ($name !== false) ? self::convertName($name) : false;
+	}
+	
+	public static function getIDByName($name)
+	{
+		$name = self::convertName($name, true);
+		return self::getSingleVal('SELECT userid FROM user WHERE username = ?', array($name));
+	}
+	
+	public static function convertName($name, $toDB = false)
 	{
 		// The user database is still in Windows encoding
-		return iconv("WINDOWS-1250", "UTF-8", $name);
+		if ($toDB)
+			return iconv("UTF-8", "WINDOWS-1250", $name);
+		else
+			return iconv("WINDOWS-1250", "UTF-8", $name);
 	}
 }
