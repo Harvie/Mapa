@@ -148,6 +148,9 @@ var CzfInfo =
 			var value;
 			var field = form[fields[i]];
 			
+			if (field === undefined)
+				continue;
+			
 			if (field.type == "checkbox")
 				value = field.checked ? 1 : 0;
 			else //Convert to UNIX line breaks

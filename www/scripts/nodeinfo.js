@@ -4,8 +4,8 @@ var CzfNodeInfo =
 	marker: null,
 	elementID: null,
 	newInfo: { id: 0, type: 1, status: 80 },
-	fields: [ "name", "type", "status", "address", "visibility",
-	          "url_thread", "url_photos", "url_homepage",
+	fields: [ "name", "network", "type", "status", "address",
+	          "visibility", "url_thread", "url_photos", "url_homepage",
 	          "people_count", "people_hide", "machine_count", "machine_hide" ],
 	
 	initialize: function(elementID)
@@ -180,6 +180,8 @@ var CzfNodeInfo =
 		html += CzfHtml.edit("name", tr("Name"), info.name);
 		html += CzfHtml.select("type", tr("Type"), info.type, this.getTypes());
 		html += CzfHtml.select("status", tr("Status"), info.status, this.getStates());
+		if (info.rights.network)
+			html += CzfHtml.select("network", tr("Network"), info.network, this.getNetworks());
 		html += '</p>';
 		
 		html += CzfHtml.longEdit("address", tr("Address"), info.address, {rows:2});
@@ -231,5 +233,15 @@ var CzfNodeInfo =
 			allowedStates[statusList[i]] = allStates[statusList[i]];
 		
 		return allowedStates;
+	}
+	,
+	getNetworks: function()
+	{
+		var networks = { "": tr("(none)") };
+		
+		for (i in CzfConfig.networks)
+			networks[i] = CzfConfig.networks[i].name;
+		
+		return networks;
 	}
 }

@@ -74,6 +74,7 @@ var CzfLang =
 			"Show obsolete" : "Zobrazit zastaralé",
 			"Name" : "Jméno",
 			"Network" : "Síť",
+			"(none)" : "(žádná)",
 			"Status" : "Stav",
 			"Thread" : "Diskuse",
 			"Type" : "Typ",

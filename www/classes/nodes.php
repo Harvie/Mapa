@@ -2,7 +2,7 @@
 
 class Nodes
 {
-	private static $columns = array('name', 'type', 'status', 'address', 'lat', 'lng',
+	private static $columns = array('name', 'network', 'type', 'status', 'address', 'lat', 'lng',
 	                                'url_photos', 'url_homepage', 'url_thread', 'visibility',
 	                                'people_count', 'people_hide', 'machine_count', 'machine_hide');
 	private static $cols_basic = array('id', 'name', 'type', 'status', 'lat', 'lng');
@@ -143,7 +143,7 @@ class Nodes
 	
 	private static function checkRights($node)
 	{
-		$cols = array('owner_id', 'status', 'type');
+		$cols = array('owner_id', 'network', 'status', 'type');
 		$orig = $node['id'] ? self::fetchByID($node['id'], $cols) : null;
 		$rights = self::getRights($orig);
 		
@@ -155,6 +155,9 @@ class Nodes
 		
 		if (!in_array($node['type'], $rights['types']))
 			throw new Exception('Permission to set node type denied.');
+		
+		if ($orig['network'] != $node['network'] && !$rights['network'])
+			throw new Exception('Permission to change network denied.');
 	}
 	
 	private static function notifyAdd($node)
