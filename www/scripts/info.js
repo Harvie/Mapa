@@ -170,6 +170,7 @@ var CzfInfo =
 			var buttons = CzfHtml.button("save", tr("Save"), "CzfInfo.save()")
 			            + CzfHtml.button("cancel", tr("Cancel"), "CzfInfo.cancelEdit()");
 			html += CzfHtml.form(CzfHtml.p(buttons), "infoform", "return false;");
+			html += CzfHtml.clear(true);
 		}
 		else
 		{
