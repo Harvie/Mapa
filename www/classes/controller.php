@@ -33,6 +33,7 @@ class Controller
 		$accept = strtolower($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
 		preg_match_all('/([-a-z]+)(;q=([0-9.]+))?/', $accept, $matches, PREG_SET_ORDER);
 		
+		$langs = array();
 		foreach ($matches as $match)
 			$langs[$match[1]] = (isset($match[3]) ? $match[3] : 1);
 		
