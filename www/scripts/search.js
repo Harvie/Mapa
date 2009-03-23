@@ -104,6 +104,7 @@ var CzfSearch =
 		{
 			this.nameSelect.parentNode.replaceChild(this.nameField,this.nameSelect);
 			this.nameField.disabled = false;
+			this.nameField.select();
 			return;
 		}
 		

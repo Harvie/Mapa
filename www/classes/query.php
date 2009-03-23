@@ -30,10 +30,15 @@ class Query
 		$sql = 'SELECT ';
 		$sql .= $columns ? implode(',',$columns) : '*';
 		$sql .= " FROM $table ";
-		
-		if (is_array($keys))
-			$sql .= 'WHERE '.implode(' AND ', self::makeNamedParams($keys));
-		
+		$sql .= 'WHERE '.implode(' AND ', self::makeNamedParams($keys));
+		return new Query($sql, $keys, true);
+	}
+	
+	public static function selectAll($table, $columns = null, $order = 'id')
+	{
+		$sql = 'SELECT ';
+		$sql .= $columns ? implode(',',$columns) : '*';
+		$sql .= " FROM $table ORDER BY $order";
 		return new Query($sql, $keys, true);
 	}
 	

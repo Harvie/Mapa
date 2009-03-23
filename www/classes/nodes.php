@@ -169,7 +169,7 @@ class Nodes
 		if (!Config::$mailFrom)
 			return;
 		
-		$notifications = Query::select('notify', null, null);
+		$notifications = Query::selectAll('notify', null, 'user_id');
 		$notifications->execute();
 		
 		foreach ($notifications->fetchAll() as $notify)

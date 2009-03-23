@@ -1,7 +1,7 @@
 <?php
 header("Content-type: text/html; charset=utf-8");
 
-$networks = Query::select("networks", null, null);
+$networks = Query::selectAll("networks", null, "name");
 $networks->execute();
 
 $config = array(
