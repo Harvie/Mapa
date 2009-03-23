@@ -108,7 +108,7 @@ var CzfLinkInfo =
 		controls += CzfHtml.checkbox("backbone", tr("Backbone link"), l.backbone, { disabled: !l.rights.backbone });
 		controls += CzfHtml.checkbox("planned", tr("Planned link"), !l.active, { disabled: !l.rights.active });
 		
-		controls += "<p>" + tr("Speeds:") + "</p>";
+		controls += "<p>" + tr("Speeds (in Mbit):") + "</p>";
 		controls += "<table>";
 		var speedFields = { nominal_speed: tr("Nominal"), real_speed: tr("Real"), czf_speed: tr("CZFree") };
 		for (field in speedFields)

@@ -76,6 +76,10 @@ h1 {
 	display: none;
 }
 
+#panel .small {
+	font-size: 90%;
+}
+
 #panel .click {
 	text-decoration: underline;
 	cursor: pointer;

@@ -187,7 +187,13 @@ var CzfNodeInfo =
 		html += '<p>';
 		html += CzfHtml.edit("name", tr("Name"), info.name);
 		html += CzfHtml.select("type", tr("Type"), info.type, this.getTypes());
-		html += CzfHtml.select("status", tr("Status"), info.status, this.getStates());
+		
+		var states = this.getStates();
+		html += CzfHtml.select("status", tr("Status"), info.status, states);
+		if (states[1] === undefined)
+			html += CzfHtml.div(CzfHtml.link(tr("How can I make the node active?"),
+			        "http://www.czfree.net/forum/misc.php?action=faq&faqgroupid=19#29"), "small");
+			
 		if (info.rights.network)
 			html += CzfHtml.select("network", tr("Network"), info.network, this.getNetworks());
 		if (info.rights.owner)
