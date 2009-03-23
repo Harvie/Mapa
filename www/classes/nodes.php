@@ -70,8 +70,7 @@ class Nodes
 	private static function fetchByID($id, $columns)
 	{
 		$query = Query::select('nodes', $columns);
-		$query->execute(array('id' => $id));
-		$row = $query->fetch();
+		$row = $query->execute(array('id' => $id))->fetch();
 		
 		if ($row == false)
 			throw new Exception("Invalid node ID '$id'!");
@@ -169,10 +168,10 @@ class Nodes
 		if (!Config::$mailFrom)
 			return;
 		
-		$notifications = Query::selectAll('notify', null, 'user_id');
-		$notifications->execute();
+		$select = Query::selectAll('notify', null, 'user_id');
+		$notifications = $select->execute();
 		
-		foreach ($notifications->fetchAll() as $notify)
+		foreach ($notifications as $notify)
 		{
 			$center = self::fetchPos($notify['node_id']);
 			$distance = intval(self::distance($node, $center));

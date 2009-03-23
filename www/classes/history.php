@@ -45,8 +45,7 @@ class History
 	private static function fetchOldData($table, $data, $keys)
 	{
 		$select = Query::select($table, null, $keys);
-		$select->execute($data);
-		return $select->fetch();
+		return $select->execute($data)->fetch();
 	}
 	
 	private static function isChanged($columns, $old, $new)

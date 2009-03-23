@@ -150,8 +150,7 @@ class Links
 	private static function fetchByKey($keyVal, $columns)
 	{
 		$query = Query::select('links', $columns, self::$keys);
-		$query->execute($keyVal);
-		return $query->fetch();
+		return $query->execute($keyVal)->fetch();
 	}
 	
 	private static function checkRights($link, $node)

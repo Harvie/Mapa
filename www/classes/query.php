@@ -134,17 +134,8 @@ class Query
 			foreach ($this->columns as $col)
 				$this->stmt->bindParam(":$col", $values[$col]);
 		
-		return $this->stmt->execute();
-	}
-	
-	public function fetch()
-	{
-		return $this->stmt->fetch();
-	}
-	
-	public function fetchAll()
-	{
-		return $this->stmt->fetchAll();
+		$this->stmt->execute();
+		return $this->stmt;
 	}
 	
 	public function fetchAllAssoc($key = 'id')
