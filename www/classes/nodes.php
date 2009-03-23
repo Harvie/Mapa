@@ -9,7 +9,7 @@ class Nodes
 	private static $filters = array('type', 'status');
 	
 	private static $types = array(1, 9, 10, 11, 97, 98, 99, 0);
-	private static $types_user = array(1, 9, 10);
+	private static $types_user = array(1, 9, 10, 11);
 	
 	private static $states = array(80, 79, 40, 1, 90);
  	private static $states_user = array(80, 79);
