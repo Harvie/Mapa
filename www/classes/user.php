@@ -104,7 +104,7 @@ class User
 	
 	public static function canEdit($node)
 	{
-		if ($owner == $_SESSION['userID'])
+		if ($node['owner_id'] == $_SESSION['userID'])
 			return true;
 		
 		if (!self::isMapper())
