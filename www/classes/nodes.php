@@ -53,10 +53,10 @@ class Nodes
 	{
 		$info = self::fetchByID($id, null);
 		
-		if ($info['people_hide'] && !User::canEdit($info['owner_id']))
+		if ($info['people_hide'] && !User::canEdit($info))
 			$info['people_count'] = null;
 		
-		if ($info['machine_hide'] && !User::canEdit($info['owner_id']))
+		if ($info['machine_hide'] && !User::canEdit($info))
 			$info['machine_count'] = null;
 		
 		return $info;
@@ -119,7 +119,7 @@ class Nodes
 		$mapper = User::isMapper();
 		
 		$rights = array(
-			'edit' => $node ? User::canEdit($node['owner_id']) : User::isLogged(),
+			'edit' => $node ? User::canEdit($node) : User::isLogged(),
 			'types' => $mapper ? self::$types : self::$types_user,
 			'states' => $mapper ? self::$states : self::$states_user,
 			'network' => $mapper,

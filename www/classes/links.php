@@ -12,7 +12,7 @@ class Links
 		$filter = "";
 		$values = array($node['id']);
 		
-		if (!User::canEdit($node['owner_id']))
+		if (!User::canEdit($node))
 		{
 			$filter = " AND secrecy <= ?";
 			array_push($values, User::getRights());

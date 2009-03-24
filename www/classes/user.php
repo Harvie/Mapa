@@ -102,9 +102,24 @@ class User
 		return $_SESSION['mapperArea'];
 	}
 	
-	public static function canEdit($owner)
+	public static function canEdit($node)
 	{
-		return self::isMapper() || (self::isLogged() && $owner == $_SESSION['userID']);
+		if ($owner == $_SESSION['userID'])
+			return true;
+		
+		if (!self::isMapper())
+			return false;
+		
+		if ($_SESSION['mapperArea']['global'])
+			return true;
+		
+		if ($_SESSION['mapperArea']['north'] >= $node['lat'] &&
+		    $_SESSION['mapperArea']['west']  <= $node['lng'] &&
+		    $_SESSION['mapperArea']['south'] <= $node['lat'] &&
+		    $_SESSION['mapperArea']['east']  >= $node['lng'])
+			return true;
+		
+		return false;
 	}
 	
 	private static function getSingleVal($sql, $params)
