@@ -104,6 +104,13 @@ class User
 		return self::getSingleVal('SELECT userid FROM user WHERE username = ?', array($name));
 	}
 	
+	public static function getContactInfo($id)
+	{
+		$select = self::query('SELECT username,icq,receiveemail,receivepm FROM user WHERE userid = ?');
+		$select->execute(array($id));
+		return $select->fetch();
+	}
+	
 	public static function convertName($name, $toDB = false)
 	{
 		// The user database is still in Windows encoding

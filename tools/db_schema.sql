@@ -139,6 +139,19 @@ CREATE TABLE notify (
     PRIMARY KEY (user_id, node_id)
 );
 
+--
+-- Name: mappers; Type: TABLE; Schema: public; Owner: mapa; Tablespace: 
+--
+
+CREATE TABLE mappers (
+    user_id int NOT NULL,
+    area_desc text NOT NULL,
+    north double precision NOT NULL,
+    west double precision NOT NULL,
+    south double precision NOT NULL,
+    east double precision NOT NULL,
+    global int NOT NULL DEFAULT 0
+);
 
 ALTER TABLE links ADD CONSTRAINT links_node1_key UNIQUE (node1, node2);
 ALTER TABLE links ADD CHECK(node1 < node2);
