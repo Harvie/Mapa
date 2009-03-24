@@ -3,14 +3,15 @@ header("Content-type: text/html; charset=utf-8");
 
 $forum = "http://www.czfree.net/forum";
 
-$select = Query::selectAll("mappers", null, "name");
+$select = Query::selectAll("mappers", null, "user_id");
 foreach ($select->execute() as $row)
 {
 	$id = $row['user_id'];
 	$contact = User::getContactInfo($id);
+	$name = User::convertName($contact['username']);
 	
 	$mapper = array(
-		'nick' => htmlspecialchars(User::convertName($contact['username'])),
+		'nick' => htmlspecialchars($name),
 		'profile' => htmlspecialchars("$forum/member.php?action=getinfo&userid=$id"),
 		'area' => htmlspecialchars($row['area_desc']),
 	);
@@ -27,8 +28,10 @@ foreach ($select->execute() as $row)
 		$mapper['flower'] = htmlspecialchars("http://web.icq.com/scripts/online.dll?icq={$contact['icq']}&img=5");
 	}
 	
-	$mappers[] = $mapper;
+	$mappers[$name] = $mapper;
 }
+
+uksort($mappers, strcasecmp);
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
