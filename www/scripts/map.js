@@ -54,7 +54,7 @@ var CzfMap =
 		CzfMain.setState(state);
 		
 		if (state.hideall)
-			this.map.clearOverlays();
+			this.drawBasic();
 		else
 			this.loadData(state);
 	}
@@ -140,15 +140,7 @@ var CzfMap =
 	{
 		var state = CzfMain.getState();
 		this.nodes = jsonData.nodes;
-		this.map.clearOverlays();
-		
-		for (i in this.markers)
-		{	//Bug workaround: hidden marker is shown
-			var marker = this.markers[i];
-			var isHidden = marker.isHidden();
-			this.map.addOverlay(marker);
-			if (isHidden) marker.hide();
-		}
+		this.drawBasic();
 		
 		for (i in jsonData.nodes)
 		{
@@ -197,6 +189,34 @@ var CzfMap =
 		
 		//Put active nodes and access points in front
 		return 2 * (status == 1) + (type >= 9 && type <= 11);
+	}
+	,
+	drawBasic: function()
+	{
+		this.map.clearOverlays();
+		
+		if (CzfConfig.mapperArea && !CzfConfig.mapperArea.global)
+		{
+			var area = CzfConfig.mapperArea;
+			var corners = [
+				new GLatLng(area.north, area.west),
+				new GLatLng(area.north, area.east),
+				new GLatLng(area.south, area.east),
+				new GLatLng(area.south, area.west),
+				new GLatLng(area.north, area.west)
+			];
+		
+			var rect = new GPolygon(corners, "#FF0000", 1, 1);
+			this.map.addOverlay(rect);
+		}
+		
+		for (i in this.markers)
+		{	//Bug workaround: hidden marker is shown
+			var marker = this.markers[i];
+			var isHidden = marker.isHidden();
+			this.map.addOverlay(marker);
+			if (isHidden) marker.hide();
+		}
 	}
 	,
 	createMarker: function(options)

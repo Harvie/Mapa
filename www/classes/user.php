@@ -31,14 +31,14 @@ class User
 			{
 				$_SESSION['userID'] = $row['userid'];
 				$_SESSION['userName'] = self::convertName($row['username']);
-				$_SESSION['userRights'] = $row['mapperms'];
+				self::loadMapperInfo($id);
 			}
 		}
 	}
 	
 	private static function query($sql)
 	{
-		if (!$db)
+		if (!self::$db)
 		{
 			self::$db = new PDO(Config::$usersDB['dsn'], Config::$usersDB['user'], Config::$usersDB['pass']);
 			self::$db->query(Config::$usersDB['init']);
@@ -49,9 +49,27 @@ class User
 	
 	private static function loadUserInfo($id)
 	{
-		$select = self::query('SELECT userid, username, password, mapperms FROM user WHERE userid = ?');
+		$select = self::query('SELECT userid, username, password FROM user WHERE userid = ?');
 		$select->execute(array($id));
 		return $select->fetch();
+	}
+	
+	private static function loadMapperInfo($id)
+	{
+		$columns = array('north','west','east','south','global');
+		$select = Query::select('mappers', $columns, array('user_id'));
+		$row = $select->execute(array('user_id' => $id))->fetch();
+		
+		if ($row)
+		{
+			$_SESSION['userRights'] = self::RIGHTS_MAPPER;
+			$_SESSION['mapperArea'] = $row;
+		}
+		else
+		{
+			$_SESSION['userRights'] = self::RIGHTS_USER;
+			$_SESSION['mapperArea'] = null;
+		}
 	}
 	
 	public static function getID()
@@ -77,6 +95,11 @@ class User
 	public static function isLogged()
 	{
 		return $_SESSION['userRights'] >= self::RIGHTS_USER;
+	}
+	
+	public static function getMapperArea()
+	{
+		return $_SESSION['mapperArea'];
 	}
 	
 	public static function canEdit($owner)

@@ -10,8 +10,8 @@ require_once('classes/links.php');
 
 try {
 	try {
-		User::initialize();
 		Query::initialize();
+		User::initialize();
 		Controller::run();
 	} catch (PDOException $e) {
 		Controller::fail($e->errorInfo[2]);

@@ -10,6 +10,7 @@ $config = array(
 	'nodeRights' => Nodes::getRights(),
 	'linkRights' => Links::getRights(),
 	'networks' => $networks->fetchAllAssoc(),
+	'mapperArea' => User::getMapperArea(),
 );
 
 $jsFiles = glob("scripts/*.js");

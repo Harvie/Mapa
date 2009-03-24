@@ -144,7 +144,7 @@ CREATE TABLE notify (
 --
 
 CREATE TABLE mappers (
-    user_id int NOT NULL,
+    user_id int NOT NULL UNIQUE,
     area_desc text NOT NULL,
     north double precision NOT NULL,
     west double precision NOT NULL,
