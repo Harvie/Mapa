@@ -31,7 +31,7 @@ class User
 			{
 				$_SESSION['userID'] = $row['userid'];
 				$_SESSION['userName'] = self::convertName($row['username']);
-				self::loadMapperInfo($id);
+				self::loadMapperInfo($row['userid']);
 			}
 		}
 	}
