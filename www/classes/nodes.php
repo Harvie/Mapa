@@ -140,7 +140,7 @@ class Nodes
 	
 	private static function checkRights($node)
 	{
-		$cols = array('owner_id', 'network', 'status', 'type');
+		$cols = array('owner_id', 'network', 'status', 'type', 'lat', 'lng');
 		$orig = $node['id'] ? self::fetchByID($node['id'], $cols) : null;
 		$rights = self::getRights($orig);
 		
