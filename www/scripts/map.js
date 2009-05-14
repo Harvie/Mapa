@@ -206,7 +206,7 @@ var CzfMap =
 				new GLatLng(area.north, area.west)
 			];
 		
-			var rect = new GPolygon(corners, "#FF0000", 1, 1);
+			var rect = new GPolygon(corners, "#FF0000", 1, 1, 0, 0);
 			this.map.addOverlay(rect);
 		}
 		
