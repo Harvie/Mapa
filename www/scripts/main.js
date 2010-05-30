@@ -147,6 +147,9 @@ var CzfMain =
 		if (this.state.node)
 			this.setNode(this.state.node, showOnMap);
 		
+		if (this.state.geolocate)
+			CzfSearch.remoteAddressSearch(this.state.geolocate, showOnMap);
+		
 		CzfFilters.updateControls(this.state);
 		CzfMap.setPosition(this.state);
 	}
@@ -157,6 +160,12 @@ var CzfMain =
 		this.state.lng = lng;
 		this.state.zoom = 17;
 		CzfMap.setPosition(this.state);
+	}
+	,
+	setGeolocate: function(address)
+	{
+		this.state.geolocate = address;
+		CzfAnchor.update(this.state);
 	}
 	,
 	setNode: function(nodeid, showOnMap)

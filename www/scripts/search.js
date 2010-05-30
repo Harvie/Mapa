@@ -7,6 +7,8 @@ var CzfSearch =
 	nameField: null,
 	results: null,
 	nameSelect: null,
+	currentAddress: null,
+	gotoResult: true,
 	
 	initialize: function(element)
 	{
@@ -20,12 +22,14 @@ var CzfSearch =
 		
 		var params = { onchange: "return CzfSearch.addressChanged()" };
 		var addressInput = CzfHtml.edit("address", tr("Search address"), "", params);
-		var addressForm = CzfHtml.form(addressInput, "addrform", "return CzfSearch.addressSearch('address')");
+		var addressForm = CzfHtml.form(addressInput, "addrform", "return CzfSearch.addressSearch()");
 		
 		var nameInput = CzfHtml.edit("nodename", tr("Search node name"), "");
-		var nameForm = CzfHtml.form(nameInput, "nameform", "return CzfSearch.nodeSearch('nodename')");
+		var nameForm = CzfHtml.form(nameInput, "nameform", "return CzfSearch.nodeSearch()");
 		
 		element.innerHTML = addressForm + nameForm;
+		this.addressField = document.getElementById("address");
+		this.nameField = document.getElementById("nodename");
 	}
 	,
 	addressChanged: function()
@@ -33,32 +37,57 @@ var CzfSearch =
 		this.marker.hide();
 	}
 	,
-	addressSearch: function(id)
+	addressSearch: function()
 	{
-		this.addressField = document.getElementById(id);
 		this.addressField.disabled = true;
 		
 		var address = this.addressField.value;
-		this.geocoder.getLatLng(address, GEvent.callback(this, this.addressDone));
+		this.currentAddress = address;
+		this.gotoResult = true;
+		
+		this.runAddressSearch(address);
 		return false;
+	}
+	,
+	remoteAddressSearch: function(encoded, goto)
+	{
+		var address = this.decodeAddress(encoded);
+		this.currentAddress = address;
+		this.gotoResult = goto;
+		
+		if (this.addressField)
+			this.addressField.value = address;
+		
+		this.runAddressSearch(address);
+	}
+	,
+	runAddressSearch: function(address)
+	{
+		this.geocoder.getLatLng(address, GEvent.callback(this, this.addressDone));
 	}
 	,
 	addressDone: function(latlng)
 	{
-		this.addressField.disabled = false;
-		this.addressField.className = latlng ? "normal" : "error";
+		if (this.addressField)
+		{
+			this.addressField.disabled = false;
+			this.addressField.className = latlng ? "normal" : "error";
+		}
 		
 		if (latlng == null)
 			return;
 		
-		CzfMain.setPos(latlng.lat(), latlng.lng());
+		CzfMain.setGeolocate(this.encodeAddress(this.currentAddress));
+		
+		if (this.gotoResult)
+			CzfMain.setPos(latlng.lat(), latlng.lng());
+		
 		this.marker.setLatLng(latlng);
 		this.marker.show();
 	}
 	,
-	nodeSearch: function(id)
+	nodeSearch: function()
 	{
-		this.nameField = document.getElementById(id);
 		this.nameField.disabled = true;
 		
 		var params = { query: this.nameField.value };
@@ -116,5 +145,20 @@ var CzfSearch =
 		var node = this.results[i];
 		CzfMain.setPos(node.lat, node.lng);
 		CzfMain.setNode(node.id);
+	}
+	,
+	encodeAddress: function(address)
+	{
+		var charCodes = [];
+		
+		for (var i = 0; i < address.length; i++)
+			charCodes.push(address.charCodeAt(i));
+		
+		return charCodes.join("|");
+	}
+	,
+	decodeAddress: function(encoded)
+	{
+		return String.fromCharCode.apply(null, encoded.split("|"));
 	}
 }
