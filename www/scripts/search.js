@@ -16,6 +16,8 @@ var CzfSearch =
 		icon.image = "images/marker-cyan.png";
 		this.marker = CzfMap.createMarker({icon: icon});
 		
+		if (!element) return;
+		
 		var params = { onchange: "return CzfSearch.addressChanged()" };
 		var addressInput = CzfHtml.edit("address", tr("Search address"), "", params);
 		var addressForm = CzfHtml.form(addressInput, "addrform", "return CzfSearch.addressSearch('address')");

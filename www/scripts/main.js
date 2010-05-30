@@ -11,9 +11,12 @@ var CzfMain =
 			return;
 		}
 		
+		var map = document.getElementById(mapID);
+		var panel = document.getElementById(panelID);
+		
 		CzfLang.initialize();
-		CzfMap.initialize(document.getElementById(mapID));
-		this.initPanel(document.getElementById(panelID));
+		CzfMap.initialize(map, !panel);
+		this.initPanel(panel);
 		
 		var callback = GEvent.callback(this, this.anchorChanged);
 		CzfAnchor.initialize(callback, this.defaults);
@@ -28,27 +31,33 @@ var CzfMain =
 	{
 		document.title = tr("CZFree Node Monitor");
 		
-		var html = this.createUserInfo();
-		html += "<h1>" + document.title + "</h1>";
-		
-		html += '<div class="subtitle">';
-		html += CzfHtml.link(tr("Old map"), "/old/");
-		if (CzfConfig.nodeRights.edit)
-			html += " " + CzfHtml.click(tr("New node"), "CzfInfo.addNode()");
-		html += '</div>';
-		
-		html += CzfHtml.panelPart(this.createLegend(), "legend", tr("Legend"));
-		html += CzfHtml.panelPart("", "search", tr("Search"));
-		html += CzfHtml.panelPart("", "filters", tr("Filters"));
-		html += CzfHtml.panelPart("", "info", tr("Node info"));
-		element.innerHTML = html;
+		if (element)
+		{
+			var html = this.createUserInfo();
+			html += "<h1>" + document.title + "</h1>";
+			
+			html += '<div class="subtitle">';
+			html += CzfHtml.link(tr("Old map"), "/old/");
+			if (CzfConfig.nodeRights.edit)
+				html += " " + CzfHtml.click(tr("New node"), "CzfInfo.addNode()");
+			html += '</div>';
+			
+			html += CzfHtml.panelPart(this.createLegend(), "legend", tr("Legend"));
+			html += CzfHtml.panelPart("", "search", tr("Search"));
+			html += CzfHtml.panelPart("", "filters", tr("Filters"));
+			html += CzfHtml.panelPart("", "info", tr("Node info"));
+			element.innerHTML = html;
+		}
 		
 		CzfSearch.initialize(document.getElementById("search"));
 		CzfFilters.initialize(document.getElementById("filters"));
 		CzfInfo.initialize(document.getElementById("info"));
 		
-		CzfHtml.togglePanel("search");
-		CzfHtml.togglePanel("info");
+		if (element)
+		{
+			CzfHtml.togglePanel("search");
+			CzfHtml.togglePanel("info");
+		}
 	}
 	,
 	createUserInfo: function()

@@ -6,6 +6,7 @@ var CzfFilters =
 	
 	initialize: function(element)
 	{
+		if (!element) return;
 		this.filters = element;
 		
 		var params = { onchange: "CzfFilters.changed(this)" };
@@ -64,6 +65,8 @@ var CzfFilters =
 	,
 	updateControls: function(state)
 	{
+		if (!this.filters) return;
+		
 		for (i in this.filters.childNodes)
 		{
 			child = this.filters.childNodes[i];

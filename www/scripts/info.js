@@ -9,6 +9,7 @@ var CzfInfo =
 	
 	initialize: function(element)
 	{
+		if (!element) return;
 		this.element = element;
 		
 		CzfNodeInfo.initialize("nodeinfo");
@@ -39,7 +40,9 @@ var CzfInfo =
 	setInfo: function(newInfo)
 	{
 		this.info = newInfo;
-		this.updateInfo();
+		
+		if (this.element)
+			this.updateInfo();
 		
 		if (this.showOnMap)
 		{

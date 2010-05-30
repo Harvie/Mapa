@@ -7,14 +7,17 @@ var CzfMap =
 	icons: new Object(),
 	markers: new Array(),
 	
-	initialize: function(element)
+	initialize: function(element, embedded)
 	{
 		this.map = new GMap2(element);
 		
-		this.map.addControl(new GLargeMapControl());
-		this.map.addControl(new GMapTypeControl());
-		this.map.addControl(new GOverviewMapControl());
-		this.map.addControl(new GScaleControl());
+		if (!embedded)
+		{
+			this.map.addControl(new GLargeMapControl());
+			this.map.addControl(new GMapTypeControl());
+			this.map.addControl(new GOverviewMapControl());
+			this.map.addControl(new GScaleControl());
+		}
 		
 		this.map.enableScrollWheelZoom();
 		this.map.enableDoubleClickZoom();

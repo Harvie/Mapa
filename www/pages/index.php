@@ -32,7 +32,11 @@ $gmapKey = Config::$gmapKeys[$_SERVER['SERVER_NAME']];
   </head>
   
   <body onload="CzfMain.start('map','panel')" onunload="CzfMain.stop()">
+<? if (isset($_GET['embedded'])): ?>
+    <div id="map" style="margin: 0"></div>
+<? else: ?>
     <div id="map"></div>
     <div id="panel"></div>
+<? endif ?>
   </body>
 </html>
