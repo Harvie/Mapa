@@ -14,7 +14,8 @@ class User
 		session_start();
 		
 		//The user logged in or out of forum after session was started
-		if (($_SESSION['userID'] > 0) != isset($_COOKIE['bbpassword']))
+		if ( (($_SESSION['userID'] > 0) != isset($_COOKIE['bbpassword']))
+		  || ($_COOKIE['bbuserid'] != $_SESSION['userID']) )
 			unset($_SESSION['userID']);
 		
 		if (!isset($_SESSION['userID']))
