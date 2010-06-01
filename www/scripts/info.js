@@ -43,6 +43,8 @@ var CzfInfo =
 		
 		if (this.element)
 			this.updateInfo();
+		else
+			CzfMain.postMessage("nodeSelected", [ this.info.id, this.info.name ]);
 		
 		if (this.showOnMap)
 		{

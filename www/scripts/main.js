@@ -175,6 +175,12 @@ var CzfMain =
 		CzfInfo.setNode(nodeid, showOnMap);
 	}
 	,
+	postMessage: function(type, values)
+	{
+		var msg = type + "\n" + values.join("\n");
+		parent.postMessage(msg, "*");
+	}
+	,
 	clone: function(obj)
 	{
 		copy = new Object();
