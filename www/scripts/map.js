@@ -130,6 +130,7 @@ var CzfMap =
 		if (state.actnode)   urlParams.nodes.status_include = [1];
 		if (!state.obsolete) urlParams.nodes.status_exclude = [90];
 		if (!state.alien)    urlParams.nodes.type_exclude = [99];
+		if (state.network)   urlParams.nodes.network_include = [state.network];
 		
 		urlParams.links = new Object();
 		if (state.bbonly)    urlParams.links.backbone_include = [1];

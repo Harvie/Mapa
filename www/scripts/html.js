@@ -129,7 +129,9 @@ var CzfHtml =
 			optHtml += this.elem("option", attr, options[i]);
 		}
 		
-		return title + this.elem("select", { name: id }, optHtml) + BR;
+		var attr = { name: id };
+		if (params && params.onchange) attr.onchange = params.onchange;
+		return title + this.elem("select", attr, optHtml) + BR;
 	}
 	,
 	checkbox: function(id, label, value, params)

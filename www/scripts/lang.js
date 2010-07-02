@@ -62,6 +62,7 @@ var CzfLang =
 			"New node": "Nový bod",
 			"Node filter" : "Filtr bodů",
 			"Node info" : "Informace o bodu",
+			"All networks" : "Všechny sítě",
 			"Only AP" : "Jenom AP",
 			"Only active" : "Jenom aktivní",
 			"Only backbone" : "Jenom páteřní",

@@ -195,7 +195,7 @@ var CzfNodeInfo =
 			        "http://www.czfree.net/forum/misc.php?action=faq&faqgroupid=19#29"), "small");
 			
 		if (info.rights.network)
-			html += CzfHtml.select("network", tr("Network"), info.network, this.getNetworks());
+			html += CzfHtml.select("network", tr("Network"), info.network, this.getNetworks(tr("(none)")));
 		if (info.rights.owner)
 			html += CzfHtml.edit("owner", tr("Owner"), info.owner.name);
 		html += '</p>';
@@ -251,9 +251,9 @@ var CzfNodeInfo =
 		return allowedStates;
 	}
 	,
-	getNetworks: function()
+	getNetworks: function(defaultText)
 	{
-		var networks = { "": tr("(none)") };
+		var networks = { "": defaultText };
 		
 		for (i in CzfConfig.networks)
 			networks[i] = CzfConfig.networks[i].name;

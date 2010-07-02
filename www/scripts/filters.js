@@ -12,6 +12,8 @@ var CzfFilters =
 		var params = { onchange: "CzfFilters.changed(this)" };
 		var html = "";
 		
+		html += CzfHtml.select("network", false, "", CzfNodeInfo.getNetworks(tr("All networks")), params);
+		
 		html += CzfHtml.checkbox("hideall", tr("Hide everything"), false, params);
 		html += CzfHtml.checkbox("hidelabels", tr("Hide labels"), false, params);
 		html += CzfHtml.checkbox("hidelinks", tr("Hide lines"), false, params);
@@ -79,18 +81,28 @@ var CzfFilters =
 		}
 	}
 	,
-	changed: function(box)
+	changed: function(field)
 	{
 		var state = CzfMain.getState();
 		
-		if (box.checked)
-			state[box.name] = 1;
-		else
-			delete state[box.name];
-		
-		if (box.name == "autofilter")
+		if (field.type == "checkbox")
 		{
-			if (box.checked)
+			if (field.checked)
+				state[field.name] = 1;
+			else
+				delete state[field.name];
+		}
+		else
+		{
+			if (field.value == "")
+				delete state[field.name];
+			else
+				state[field.name] = field.value;
+		}
+		
+		if (field.name == "autofilter")
+		{
+			if (field.checked)
 				this.updateAutoFilter(state.zoom);
 			else
 			{

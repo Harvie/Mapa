@@ -6,7 +6,7 @@ class Nodes
 	                                'url_photos', 'url_homepage', 'url_thread', 'visibility', 'address',
 	                                'people_count', 'people_hide', 'machine_count', 'machine_hide');
 	private static $cols_basic = array('id', 'name', 'type', 'status', 'lat', 'lng');
-	private static $filters = array('type', 'status');
+	private static $filters = array('type', 'status', 'network');
 	
 	private static $types = array(1, 9, 10, 11, 97, 98, 99, 0);
 	private static $types_user = array(1, 9, 10, 11);
