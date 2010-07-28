@@ -2,17 +2,17 @@
 
 class Nodes
 {
-	private static $columns = array('name', 'network', 'type', 'status', 'lat', 'lng', 'owner_id',
-	                                'url_photos', 'url_homepage', 'url_thread', 'visibility', 'address',
+	private static $columns = array('name', 'network', 'type', 'status', 'owner_id',
+	                                'url_photos', 'url_homepage', 'url_thread',
+	                                'visibility', 'address', 'node_secrecy', 'lat', 'lng',
 	                                'people_count', 'people_hide', 'machine_count', 'machine_hide');
+	
 	private static $cols_basic = array('id', 'name', 'type', 'status', 'lat', 'lng');
 	private static $filters = array('type', 'status', 'network');
-	
-	private static $types = array(1, 9, 10, 11, 97, 98, 99, 0);
-	private static $types_user = array(1, 9, 10, 11);
-	
-	private static $states = array(80, 79, 40, 1, 90);
- 	private static $states_user = array(80, 79);
+	                               //       Normal user          Mapper
+	private static $types          = array( array(1, 9, 10, 11), array(1, 9, 10, 11, 97, 98, 99, 0) );
+	private static $states         = array( array(80, 79),       array(80, 79, 40, 1, 90) );
+	private static $secrecy_levels = array( array(-100, 0),      array(-100, 0, 100) );
 	
 	public function insert($data)
 	{
@@ -53,11 +53,17 @@ class Nodes
 	{
 		$info = self::fetchByID($id, null);
 		
-		if ($info['people_hide'] && !User::canEdit($info))
-			$info['people_count'] = null;
+		if ($info['node_secrecy'] > User::getRights())
+			return false;
 		
-		if ($info['machine_hide'] && !User::canEdit($info))
-			$info['machine_count'] = null;
+		if (!User::canEdit($info))
+		{
+			if ($info['people_hide'])
+				$info['people_count'] = null;
+		
+			if ($info['machine_hide'])
+				$info['machine_count'] = null;
+		}
 		
 		return $info;
 	}
@@ -103,9 +109,11 @@ class Nodes
 	//Used also by class Links (only links to displayed nodes are shown)
 	public static function makeFilterSQL($tableAlias, $filters)
 	{
-		$sql = "";
+		$sql = "AND $tableAlias.node_secrecy <= " . intval(User::getRights());
+		
 		foreach (self::$filters as $column)
 			$sql .= Query::filtersToSQL($tableAlias, $column, $filters);
+		
 		return $sql;
 	}
 	
@@ -120,8 +128,9 @@ class Nodes
 		
 		$rights = array(
 			'edit' => $node ? User::canEdit($node) : User::isLogged(),
-			'types' => $mapper ? self::$types : self::$types_user,
-			'states' => $mapper ? self::$states : self::$states_user,
+			'types' => self::$types[intval($mapper)],
+			'states' => self::$states[intval($mapper)],
+			'secrecy_levels' => self::$secrecy_levels[intval($mapper)],
 			'network' => $mapper,
 			'owner' => $mapper,
 		);
@@ -152,6 +161,9 @@ class Nodes
 		
 		if (!in_array($node['type'], $rights['types']))
 			throw new Exception('Permission to set node type denied.');
+		
+		if (!in_array($node['node_secrecy'], $rights['secrecy_levels']))
+			throw new Exception('Permission to set node secrecy denied.');
 		
 		if ($orig === null)
 			$orig = array('network' => null, 'owner_id' => User::getID());

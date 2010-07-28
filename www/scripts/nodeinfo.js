@@ -3,8 +3,8 @@ var CzfNodeInfo =
 	info: null,
 	marker: null,
 	elementID: null,
-	newInfo: { id: 0, type: 1, status: 80 },
-	fields: [ "name", "network", "type", "status", "address",
+	newInfo: { id: 0, type: 1, status: 80, node_secrecy: -100 },
+	fields: [ "name", "network", "type", "status", "node_secrecy", "address",
 	          "visibility", "url_thread", "url_photos", "url_homepage",
 	          "people_count", "people_hide", "machine_count", "machine_hide" ],
 	
@@ -194,6 +194,7 @@ var CzfNodeInfo =
 			html += CzfHtml.div(CzfHtml.link(tr("How can I make the node active?"),
 			        "http://www.czfree.net/forum/misc.php?action=faq&faqgroupid=19#29"), "small");
 			
+		html += CzfHtml.select("node_secrecy", tr("Secrecy"), info.node_secrecy, this.getSecrecyLevels());
 		if (info.rights.network)
 			html += CzfHtml.select("network", tr("Network"), info.network, this.getNetworks(tr("(none)")));
 		if (info.rights.owner)
@@ -227,28 +228,29 @@ var CzfNodeInfo =
 		return Math.round(angle * 100000) / 100000;
 	}
 	,
+	getAllowedOptions: function(allOptions, allowedList)
+	{
+		var allowedOptions = new Object();
+		
+		for (i in allowedList)
+			allowedOptions[allowedList[i]] = allOptions[allowedList[i]];
+		
+		return allowedOptions;
+	}
+	,
 	getTypes: function()
 	{
-		var allowedTypes = new Object();
-		var allTypes = tr("nodeTypes");
-		var typeList = this.info.rights.types;
-		
-		for (i in typeList)
-			allowedTypes[typeList[i]] = allTypes[typeList[i]];
-		
-		return allowedTypes;
+		return this.getAllowedOptions(tr("nodeTypes"), this.info.rights.types);
 	}
 	,
 	getStates: function()
 	{
-		var allowedStates = new Object();
-		var allStates = tr("nodeStates");
-		var statusList = this.info.rights.states;
-		
-		for (i in statusList)
-			allowedStates[statusList[i]] = allStates[statusList[i]];
-		
-		return allowedStates;
+		return this.getAllowedOptions(tr("nodeStates"), this.info.rights.states);
+	}
+	,
+	getSecrecyLevels: function()
+	{
+		return this.getAllowedOptions(tr("secrecy"), this.info.rights.secrecy_levels);
 	}
 	,
 	getNetworks: function(defaultText)
