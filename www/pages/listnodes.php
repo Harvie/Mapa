@@ -2,10 +2,14 @@
 
 header('Content-Type: text/plain');
 
-$columns = array('id','lat','lng','status','owner_id','name');
-$select = Query::selectAll('nodes', $columns, 'id');
+$sql = "SELECT id,lat,lng,status,owner_id,name FROM nodes ".
+       "WHERE true " . User::makeSecrecyFilter('nodes') .
+       "ORDER BY id";
 
-foreach ($select->execute() as $node)
+$select = Query::prepare($sql);
+$select->execute();
+
+foreach ($select as $node)
 {
 	$node['id'] = '[' . $node['id'] . ']';
 	$node['owner_id'] = User::getNameByID($node['owner_id']);

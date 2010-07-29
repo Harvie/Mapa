@@ -123,6 +123,32 @@ class User
 		return false;
 	}
 	
+	public static function canSee($node)
+	{
+		if ($node['node_secrecy'] >= self::RIGHTS_MAPPER)
+			return self::canEdit($node);
+		else
+			return $node['node_secrecy'] <= self::getRights();
+	}
+	
+	public static function makeSecrecyFilter($tableAlias)
+	{
+		$sql = " AND $tableAlias.node_secrecy <= " . intval(self::getRights());
+		
+		if (self::isMapper() && !$_SESSION['mapperArea']['global'])
+		{
+			$north = floatval($_SESSION['mapperArea']['north']);
+		    $west = floatval($_SESSION['mapperArea']['west']);
+		    $south = floatval($_SESSION['mapperArea']['south']);
+		    $east = floatval($_SESSION['mapperArea']['east']);
+			$sql .= " AND ($tableAlias.node_secrecy < " . self::RIGHTS_MAPPER;
+			$sql .= "  OR ($north >= $tableAlias.lat AND $west <= $tableAlias.lng";
+			$sql .= "  AND $south <= $tableAlias.lat AND $east >= $tableAlias.lng))";
+		}
+		
+		return $sql;
+	}
+	
 	private static function getSingleVal($sql, $params)
 	{
 		$select = self::query($sql);

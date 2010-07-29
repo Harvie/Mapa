@@ -53,7 +53,7 @@ class Nodes
 	{
 		$info = self::fetchByID($id, null);
 		
-		if ($info['node_secrecy'] > User::getRights())
+		if (!User::canSee($info))
 			return false;
 		
 		if (!User::canEdit($info))
@@ -109,11 +109,9 @@ class Nodes
 	//Used also by class Links (only links to displayed nodes are shown)
 	public static function makeFilterSQL($tableAlias, $filters)
 	{
-		$sql = "AND $tableAlias.node_secrecy <= " . intval(User::getRights());
-		
+		$sql = User::makeSecrecyFilter($tableAlias);
 		foreach (self::$filters as $column)
 			$sql .= Query::filtersToSQL($tableAlias, $column, $filters);
-		
 		return $sql;
 	}
 	
