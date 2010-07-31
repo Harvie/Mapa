@@ -37,7 +37,7 @@ var CzfFilters =
 	{
 		var state = CzfMain.getState();
 		
-		if (state.autofilter)
+		if (state.autofilter == 1)
 		{
 			if (newZoom <= 16)
 			{
