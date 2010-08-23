@@ -125,7 +125,8 @@ var CzfHtml =
 		
 		for (i in options)
 		{
-			var attr = (i == value) ? { value: i, selected: "selected" } : { value: i };
+			var attr = { value: i, id: id + "_" + i };
+			if (i == value) attr.selected = "selected";
 			optHtml += this.elem("option", attr, options[i]);
 		}
 		

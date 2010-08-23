@@ -72,11 +72,18 @@ var CzfFilters =
 		for (i in this.filters.childNodes)
 		{
 			child = this.filters.childNodes[i];
+			
 			if (child.nodeName == "INPUT")
 			{
 				child.checked = (state[child.name] == 1);
 				if (this.autoFilter[child.name])
 					child.disabled = (state.autofilter == 1);
+			}
+			
+			if (child.nodeName == "SELECT")
+			{
+				var optionID = child.name + "_" + state[child.name];
+				document.getElementById(optionID).selected = true;
 			}
 		}
 	}
