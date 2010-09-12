@@ -80,9 +80,10 @@ var CzfFilters =
 					child.disabled = (state.autofilter == 1);
 			}
 			
-			if (child.nodeName == "SELECT" && state[child.name] != undefined)
+			if (child.nodeName == "SELECT")
 			{
-				var optionID = child.name + "_" + state[child.name];
+				var option = (state[child.name] !== undefined) ? state[child.name] : "";
+				var optionID = child.name + "_" + option;
 				document.getElementById(optionID).selected = true;
 			}
 		}
