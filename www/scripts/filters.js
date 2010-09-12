@@ -80,7 +80,7 @@ var CzfFilters =
 					child.disabled = (state.autofilter == 1);
 			}
 			
-			if (child.nodeName == "SELECT")
+			if (child.nodeName == "SELECT" && state[child.name] != undefined)
 			{
 				var optionID = child.name + "_" + state[child.name];
 				document.getElementById(optionID).selected = true;
