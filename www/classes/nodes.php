@@ -14,6 +14,13 @@ class Nodes
 	private static $states         = array( array(80, 79),       array(80, 79, 40, 1, 90) );
 	private static $secrecy_levels = array( array(-100, 0),      array(-100, 0, 100) );
 	
+	private static $statusTransitions = array(
+		array('from' => 40, 'to' => 79,   'months' => 6),  //In testing -> Under construction
+		array('from' => 79, 'to' => 80,   'months' => 6),  //Under construction -> In planning
+		array('from' => 80, 'to' => 90,   'months' => 6),  //In planning -> Obsolete
+		array('from' => 90, 'to' => null, 'months' => 12), //Obsolete -> Deleted
+	);
+	
 	public function insert($data)
 	{
 		self::checkRights($data);
@@ -118,6 +125,28 @@ class Nodes
 	public static function getBasicColumns()
 	{
 		return self::$cols_basic;
+	}
+	
+	public static function statusDecay()
+	{
+		$sql = 'SELECT id FROM nodes WHERE status = ? AND older_than(created_on, ?)'.
+		                                            ' AND older_than(changed_on, ?)';
+		$select = Query::prepare($sql);
+		
+		foreach (self::$statusTransitions as $transition)
+		{
+			$interval = "{$transition['months']} months";
+			$select->execute(array($transition['from'], $interval, $interval));
+			
+			foreach ($select as $row)
+				if ($transition['to'] !== null)
+				{
+					$row['status'] = $transition['to'];
+					History::update('nodes', $row, array('status'));
+				}
+				else
+					History::delete('nodes', $row);
+		}
 	}
 	
 	public static function getRights($node = null)

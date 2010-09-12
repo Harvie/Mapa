@@ -89,8 +89,8 @@ class History
 	{
 		return array(
 			'date' => substr($time, 0, strpos($time, ' ')),
-			'name' => User::getNameByID($userID),
-			'profile' => Config::$profilePrefix . $userID,
+			'name' => ($userID != 0) ? User::getNameByID($userID) : 'automat',
+			'profile' => ($userID != 0) ? Config::$profilePrefix.$userID : Config::$robotURL,
 		);
 	}
 	

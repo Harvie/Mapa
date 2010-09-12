@@ -172,3 +172,8 @@ CREATE INDEX links_points_idx ON links USING btree (lat1, lng1, lat2, lng2);
 CREATE OR REPLACE FUNCTION if(boolean,anyelement,anyelement) RETURNS anyelement AS $$
   SELECT CASE WHEN $1 THEN $2 ELSE $3 END;
 $$ LANGUAGE sql;
+
+
+CREATE OR REPLACE FUNCTION older_than(timestamp, interval) RETURNS boolean IMMUTABLE AS $$
+  SELECT $1 IS NULL OR NOW() - $1 > $2
+$$ LANGUAGE sql;

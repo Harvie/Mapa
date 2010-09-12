@@ -18,5 +18,6 @@ class Config
 	);
 	
 	public static $profilePrefix = "http://www.czfree.net/forum/member.php?action=getinfo&userid=";
+	public static $robotURL = "http://czfree.net/forum/showthread.php?postid=223095#post223095";
 	public static $mailFrom = "mapa@czfree.net";
 }
