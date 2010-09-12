@@ -67,8 +67,9 @@ class Query
 	
 	public static function makeNamedParams($columns)
 	{
-		$fn = create_function('$col', 'return "$col = :$col";');
-		return array_map($fn, $columns);
+		foreach ($columns as &$col)
+			$col = "$col = :$col";
+		return $columns;
 	}
 	
 	public static function filtersToSQL($table, $column, $filters)
