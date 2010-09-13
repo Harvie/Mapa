@@ -2,20 +2,28 @@
 
 class CzfMapRemote
 {
-	public static function getInfo($nodeID)
+	public function CzfMapRemote($url, $userID, $passMD5)
 	{
-		return self::remoteRequest('nodeinfo', array('id' => $nodeID), false);
+		$this->url = $url;
+		$this->userID = $userID;
+		$this->passMD5 = $passMD5;
 	}
 	
-	public static function submit($node)
+	public function getInfo($nodeID)
 	{
-		return self::remoteRequest('submit', $node, true);
+		return $this->remoteRequest('nodeinfo', array('id' => $nodeID), false);
 	}
 	
-	private static function remoteRequest($request, $data, $post)
+	public function submit($node)
 	{
-		$url = self::$url . "?request=" . $request;
-		$result = self::httpRequest($url, self::serialize($data), $post);
+		$result = $this->remoteRequest('submit', $node, true);
+		return $result['id'];
+	}
+	
+	private function remoteRequest($request, $data, $post)
+	{
+		$url = $this->url . "?request=" . $request;
+		$result = $this->curlRequest($url, self::serialize($data), $post);
 		
 		$json = json_decode($result, true);
 		if (isset($json['error']))
@@ -24,12 +32,15 @@ class CzfMapRemote
 		return $json;
 	}
 	
-	private static function httpRequest($url, $query, $post)
+	private function curlRequest($url, $query, $post)
 	{
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_HEADER, false);
 		curl_setopt($curl, CURLOPT_FAILONERROR, true);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		
+		$cookies = "bbuserid={$this->userID}; bbpassword={$this->passMD5}";
+		curl_setopt($curl, CURLOPT_COOKIE, $cookies);
 		
 		if ($post)
 			curl_setopt($curl, CURLOPT_POSTFIELDS, $query);
@@ -50,11 +61,6 @@ class CzfMapRemote
 		
 	}
 	
-	private static function requestURL($request, $data = array())
-	{
-		return self::$url . "?request=" . $request . self::serialize($data);
-	}
-	
 	private static function serialize($data, $prefix = null)
 	{
 		$query = '';
@@ -72,14 +78,18 @@ class CzfMapRemote
 		return $query;
 	}
 	
-	private static $url = "http://mapa.czfree.net/devel/";
+	private $url;
+	private $userID;
+	private $passMD5;
 }
 
 class CzfMapRemoteException extends Exception {}
 
 try {
-	$info = CzfMapRemote::getInfo(596);
-	print_r(CzfMapRemote::submit($info));
+	$remote = new CzfMapRemote("http://mapa.czfree.net/devel/", 0, '');
+	$info = $remote->getInfo(596);
+	$info['name'] = "renamed";
+	echo $remote->submit($info) . "\n";
 }
 catch (CzfMapRemoteException $e) {
 	echo "ERROR: " . $e->getMessage() . "\n";
