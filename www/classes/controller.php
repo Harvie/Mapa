@@ -13,7 +13,7 @@ class Controller
 	
 	public static function fail($message)
 	{	//Output correct JSON even in case of failure
-		die('{ error: "'.self::escape($message).'" }');
+		self::writeJSON(array('error' => $message));
 	}
 	
 	private static function render()
@@ -59,7 +59,7 @@ class Controller
 			{
 				$output = "{\n";
 				foreach ($data as $var => $value)
-					$output .= "$indent\t$var: " . self::recursiveJSON($value, "$indent\t") . ",\n";
+					$output .= "$indent\t\"$var\": " . self::recursiveJSON($value, "$indent\t") . ",\n";
 				if (strlen($output) > 2) //Remove last comma - hack for IE
 					$output[strlen($output) - 2] = ' ';
 				$output .= $indent."}";
