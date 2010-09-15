@@ -17,6 +17,11 @@ class CzfMapRemote
 		return new CzfMapNode($this, $this->userID, @$info);
 	}
 	
+	public function search($query)
+	{
+		return $this->remoteRequest('search', array('query' => $query), false);
+	}
+	
 	public function submit($node)
 	{
 		$result = $this->remoteRequest('submit', $node, true);
@@ -313,11 +318,15 @@ try {
 	$node->lat = 50.00576;
 	$node->lng = 14.40937;
 	
-	$link1 = $node->addLink(596);
+	$search1 = $remote->search('p12.Javor');
+	$javorID = $search1[0]['id'];
+	$link1 = $node->addLink($javorID);
 	$link1->media = CzfMapLink::MEDIA_2GHZ;
 	$link1->active = 0;
 	
-	$link2 = $node->addLink(17595);
+	$search2 = $remote->search('NFX');
+	$nfxID = $search2[0]['id'];
+	$link2 = $node->addLink($nfxID);
 	$link2->media = CzfMapLink::MEDIA_FIBER;
 	$link2->active = 0;
 	
@@ -326,9 +335,9 @@ try {
 	$node = $remote->getNode($node->id);
 	$node->name = 'API test renamed';
 	$node->status = CzfMapNode::STATUS_CONSTRUCTION;
-	$link = $node->links[596];
+	$link = $node->links[$javorID];
 	$link->media = CzfMapLink::MEDIA_5GHZ;
-	$node->removeLink(17595);
+	$node->removeLink($nfxID);
 	$node->save();
 	
 	$node->delete();
