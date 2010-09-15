@@ -1,7 +1,7 @@
 <?php
 
 class Nodes
-{
+{                                   //'lat' and 'lng' must be first!
 	private static $columns = array('lat', 'lng', 'name', 'network', 'type', 'status',
 	                                'visibility', 'address', 'node_secrecy', 'owner_id',
 	                                'url_photos', 'url_homepage', 'url_thread',

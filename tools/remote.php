@@ -91,9 +91,12 @@ class CzfMapRemote
 
 class CzfMapObject
 {
-	public function __construct($defaults, $prop = null)
+	public function __construct($defaults, &$prop)
 	{
-		$this->prop = is_array($prop) ? $prop : $defaults;
+		if (!is_array($prop))
+			$prop = $defaults; //No ref!
+		
+		$this->prop =& $prop;
 	}
 	
 	public function __get($var)
@@ -125,6 +128,22 @@ class CzfMapObject
 
 class CzfMapNode extends CzfMapObject
 {
+	const TYPE_UNKNOWN = 0;
+	const TYPE_CLIENT = 1;
+	const TYPE_AP = 9;
+	const TYPE_OPENAP = 10;
+	const TYPE_ROUTER = 11;
+	const TYPE_HIDDEN = 97;
+	const TYPE_INFOPOINT = 98;
+	const TYPE_NONCZF = 99;
+	
+	const STATUS_ACTIVE = 1;
+	const STATUS_DOWN = 10;
+	const STATUS_TESTING = 40;
+	const STATUS_CONSTRUCTION = 79;
+	const STATUS_PLANNING = 80;
+	const STATUS_OBSOLETE = 90;
+	
 	public function __construct($remote, $owner_id, $prop = null)
 	{
 		parent::__construct(self::$defaults, $prop);
@@ -133,6 +152,15 @@ class CzfMapNode extends CzfMapObject
 			$this->owner_id = $owner_id;
 		
 		$this->remote = $remote;
+		$this->makeLinks();
+	}
+	
+	public function __get($var)
+	{
+		if ($var == 'links')
+			return $this->linkobjs;
+		
+		return parent::__get($var);
 	}
 	
 	public function __set($var, $value)
@@ -161,6 +189,64 @@ class CzfMapNode extends CzfMapObject
 		unset($this->prop['deleteNode']);
 	}
 	
+	public function addLink($nodeID)
+	{
+		$nodeID = intval($nodeID);
+		
+		if ($nodeID <= 0)
+			throw new CzfMapRemoteException("Invalid link endpoint ID!");
+		
+		if (isset($this->linkobjs[$nodeID]))
+			throw new CzfMapRemoteException("Link to node $nodeID already exists!");
+		
+		if ($nodeID == $this->id)
+			throw new CzfMapRemoteException("Node can't link to itself!");
+		
+		$link =& $this->prop['links'][$nodeID];
+		$linkobj = new CzfMapLink($nodeID, $link);
+		$this->linkobjs[$nodeID] = $linkobj;
+		
+		if (isset($link['remove']))
+			unset($link['remove']);
+		else
+			$link['insert'] = true;
+		
+		return $linkobj;
+	}
+	
+	public function removeLink($nodeID)
+	{
+		if (!isset($this->links[$nodeID]))
+			throw new CzfMapRemoteException("Link to node $nodeID does not exist!");
+		
+		$link =& $this->prop['links'][$nodeID];
+		
+		if (isset($link['insert']))
+			unset($this->prop['links'][$nodeID]);
+		else
+		{
+			$link['remove'] = true;
+			unset($link['update']);
+		}
+		
+		unset($this->linkobjs[$nodeID]);
+	}
+	
+	
+	private function makeLinks()
+	{
+		$links = array();
+		$this->linkobjs = array();
+		
+		foreach ($this->prop['links'] as &$link)
+		{
+			$links[$link['id']] =& $link;
+			$this->linkobjs[$link['id']] = new CzfMapLink($this->id, $link);
+		}
+		
+		$this->prop['links'] = $links;
+	}
+	
 	private static $defaults = array (
 		'id' => 0, 'name' => null, 'network' => null, 'type' => 1,
 		'status' => 80, 'owner_id' => null, 'node_secrecy' => -100,
@@ -168,12 +254,50 @@ class CzfMapNode extends CzfMapObject
 		'visibility' => null, 'address' => null, 'node_secrecy' => -100,
 		'people_count' => null, 'people_hide' => 0,
 		'machine_count' => null, 'machine_hide' => 0,
-		'lat' => null, 'lng' => null,
+		'lat' => null, 'lng' => null, 'links' => array(),
 	);
 	
 	private static $required = array('name', 'address', 'lat', 'lng');
 	
 	private $remote;
+	private $linkobjs;
+}
+
+class CzfMapLink extends CzfMapObject
+{
+	const MEDIA_UNKNOWN = 0;
+	const MEDIA_2GHZ = 1;
+	const MEDIA_FSO = 2;
+	const MEDIA_UTP = 3;
+	const MEDIA_FIBER = 4;
+	const MEDIA_VPN = 5;
+	const MEDIA_FSOWIFI = 6;
+	const MEDIA_5GHZ = 7;
+	const MEDIA_10GHZ = 8;
+	const MEDIA_LICENSED = 9;
+	const MEDIA_60GHZ = 10;
+	const MEDIA_LEASED = 11;
+	const MEDIA_OTHER = 99;
+	
+	public function __construct($nodeID, &$prop)
+	{
+		parent::__construct(self::$defaults, $prop);
+		if (!isset($this->prop['id']))
+			$this->prop['id'] = $nodeID;
+	}
+	
+	public function __set($var, $value)
+	{
+		parent::__set($var, $value);
+		
+		if (!isset($this->prop['insert']))
+			$this->prop['update'] = true;
+	}
+	
+	private static $defaults = array (
+		'media' => 0, 'active' => 1, 'backbone' => 0, 'secrecy' => -100,
+		'nominal_speed' => null, 'real_speed' => null, 'czf_speed' => null
+	);
 }
 
 class CzfMapRemoteException extends Exception {}
@@ -183,15 +307,28 @@ try {
 	$remote = new CzfMapRemote("http://mapa.czfree.net/devel/", 0, '');
 	
 	$node = $remote->getNode();
+	$node->type = CzfMapNode::TYPE_AP;
 	$node->name = 'API test';
 	$node->address = 'test';
 	$node->lat = 50.00576;
 	$node->lng = 14.40937;
+	
+	$link1 = $node->addLink(596);
+	$link1->media = CzfMapLink::MEDIA_2GHZ;
+	$link1->active = 0;
+	
+	$link2 = $node->addLink(17595);
+	$link2->media = CzfMapLink::MEDIA_FIBER;
+	$link2->active = 0;
+	
 	$node->save();
 	
 	$node = $remote->getNode($node->id);
-	$node->name = 'API test rename';
-	$node->lng = 14.40953;
+	$node->name = 'API test renamed';
+	$node->status = CzfMapNode::STATUS_CONSTRUCTION;
+	$link = $node->links[596];
+	$link->media = CzfMapLink::MEDIA_5GHZ;
+	$node->removeLink(17595);
 	$node->save();
 	
 	$node->delete();
