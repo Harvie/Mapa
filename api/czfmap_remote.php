@@ -271,6 +271,9 @@ class CzfMapNode extends CzfMapObject
 	/**
 	 * \short Removes the node from the map.
 	 * \warning The node is deleted immediately, don't call save() afterwards!
+	 * \warning Don't try to synchronize the map with your IS by deleting
+	 *          all nodes and recreating them, map history would grow
+	 *          rapidly and your access would be revoked!
 	 */
 	public function delete()
 	{

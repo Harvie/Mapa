@@ -46,6 +46,11 @@ try {
 	
 	//Delete the node completely
 	$node->delete();
+	
+	/* Warning: Don't try to synchronize the map with your IS by deleting
+	 *          all nodes and recreating them, map history would grow
+	 *          rapidly and your access would be revoked!
+	 */
 }
 catch (CzfMapRemoteException $e) {
 	echo "ERROR: " . $e->getMessage() . "\n";
