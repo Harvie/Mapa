@@ -135,7 +135,7 @@ CREATE TABLE networks (
 
 CREATE TABLE notify (
     user_id int NOT NULL,
-    node_id int NOT NULL REFERENCES nodes(id),
+    node_id int NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
     radius int NOT NULL,
     email text NOT NULL,
     PRIMARY KEY (user_id, node_id)
