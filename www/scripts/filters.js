@@ -12,7 +12,7 @@ var CzfFilters =
 		var params = { onchange: "CzfFilters.changed(this)" };
 		var html = "";
 		
-		html += CzfHtml.select("network", false, "", CzfNodeInfo.getNetworks(tr("All networks")), params);
+		html += CzfHtml.select("netfilter", false, "", CzfNodeInfo.getNetworks(tr("All networks")), params);
 		
 		html += CzfHtml.checkbox("hideall", tr("Hide everything"), false, params);
 		html += CzfHtml.checkbox("hidelabels", tr("Hide labels"), false, params);
