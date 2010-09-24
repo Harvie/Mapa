@@ -195,10 +195,16 @@ var CzfNodeInfo =
 			        "http://www.czfree.net/forum/misc.php?action=faq&faqgroupid=19#29"), "small");
 			
 		html += CzfHtml.select("node_secrecy", tr("Secrecy"), info.node_secrecy, this.getSecrecyLevels());
+		
 		if (info.rights.network)
-			html += CzfHtml.select("network", tr("Network"), info.network, this.getNetworks(tr("(none)")));
+		{
+			var network = info.network ? info.network : "";
+			html += CzfHtml.select("network", tr("Network"), network, this.getNetworks(tr("(none)")));
+		}
+		
 		if (info.rights.owner)
 			html += CzfHtml.edit("owner", tr("Owner"), info.owner.name);
+		
 		html += '</p>';
 		
 		html += CzfHtml.longEdit("address", tr("Address"), info.address, {rows:2});
