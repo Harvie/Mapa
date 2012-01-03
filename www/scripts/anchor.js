@@ -21,6 +21,7 @@ var CzfAnchor =
 		
 		document.location.hash = hash;
 		this.lastHash = "#" + hash;
+		CzfMain.postMessage("mapURL", [ hash ]);
 	}
 	,
 	check: function()
