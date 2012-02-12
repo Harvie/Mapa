@@ -39,7 +39,7 @@ class Query
 		$sql = 'SELECT ';
 		$sql .= $columns ? implode(',',$columns) : '*';
 		$sql .= " FROM $table ORDER BY $order";
-		return new Query($sql, $keys, true);
+		return new Query($sql, array(), true);
 	}
 	
 	public static function insert($table, $columns)
@@ -77,8 +77,8 @@ class Query
 		if (!is_array($filters))
 			return "";
 		
-		$include = self::makeInClause($filters["${column}_include"]);
-		$exclude = self::makeInClause($filters["${column}_exclude"]);
+		$include = self::makeInClause(@$filters["${column}_include"]);
+		$exclude = self::makeInClause(@$filters["${column}_exclude"]);
 		
 		$sql = "";
 		
@@ -96,7 +96,7 @@ class Query
 		if (!is_array($list))
 			return false;
 		
-		$sanitized = array_map(intval, $list);
+		$sanitized = array_map('intval', $list);
 		$joined = implode(",", $sanitized);
 		return "IN($joined)";
 	}
