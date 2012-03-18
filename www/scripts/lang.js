@@ -7,7 +7,7 @@ var CzfLang =
 			nodeTypes:   { 0: "Unknown", 1: "Client", 9: "Full AP", 10: "Street access AP",
 			               11: "Router", 97: "Hidden", 98: "InfoPoint", 99: "Non-CZF" },
 			nodeStates:  { 1: "Active", 10: "Down", 40: "In testing", 79: "Under construction", 80: "In planning", 90: "Obsolete" },
-			linkMedia:   { 0: "Unknown", 1: "2.4 GHz", 7: "5 GHz", 8: "10 GHz", 3: "UTP", 4: "Fiber", 2: "FSO",
+			linkMedia:   { 0: "Unknown", 1: "2.4 GHz", 7: "5 GHz", 12: "5 GHz MIMO", 8: "10 GHz", 3: "UTP", 4: "Fiber", 2: "FSO",
 			               6: "FSO + WiFi", 5: "VPN", 9: "Licensed", 10: "60 GHz+", 11: "Leased", 99: "Other" },
 			secrecy:     { "-100": "None", 0: "Registered", 100: "Mapper" },
 			
@@ -24,6 +24,7 @@ var CzfLang =
 				9: "Wireless link in licensed band",
 				10: "Wireless link in 60 GHz or higher band",
 				11: "Leased optical line",
+				12: "Dual polarization Wireless link in 5 GHz band",
 				99: "Other type of link"
 			},
 			
@@ -120,7 +121,7 @@ var CzfLang =
 			nodeTypes:   { 0: "Neznámý", 1: "Klient", 9: "Přístupový bod", 10: "Otevřený př. bod",
 			               11: "Router", 97: "Skrytý", 98: "InfoPoint", 99: "Non-CZF" },
 			nodeStates:  { 1: "Aktivní", 10: "Nefunkční", 40: "Zkušební", 79: "Ve stavbě", 80: "Plánovaný", 90: "Zastaralý" },
-			linkMedia:   { 0: "Neznámý", 1: "2.4 GHz", 7: "5 GHz", 8: "10 GHz", 3: "UTP", 4: "Vlákno", 2: "FSO",
+			linkMedia:   { 0: "Neznámý", 1: "2.4 GHz", 7: "5 GHz", 12: "5 GHz MIMO", 8: "10 GHz", 3: "UTP", 4: "Vlákno", 2: "FSO",
 			               6: "FSO + WiFi", 5: "VPN", 9: "Licencovaný", 10: "60 GHz+", 11: "Pronajatý", 99: "Jiný" },
 			secrecy:     { "-100": "Žádné", 0: "Přihlášení", 100: "Mappeři" },
 			
@@ -137,6 +138,7 @@ var CzfLang =
 				9: "Bezdrátový spoj v licenčním pásmu",
 				10: "Bezdrátový spoj v 60GHz a vyšším pásmu",
 				11: "Pronajatý optický spoj",
+				12: "Bezdrátový spoj v pásmu 5 GHz na dvou polarizacích",
 				99: "Jiný typ spoje"
 			},
 			

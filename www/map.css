@@ -23,7 +23,7 @@ h1 {
 }
 
 #map { 
-	margin-right: 13.3em;
+	margin-right: 14.3em;
 }
 
 #userinfo {
@@ -36,7 +36,7 @@ h1 {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width: 13em;
+	width: 14em;
 	padding: 0.1em;
 	height: 100%;
 	overflow: auto;

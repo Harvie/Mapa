@@ -22,7 +22,7 @@ try {
 		$node['id'] = Nodes::insert($node);
 	else
 	{
-		if ($node['deleteNode'])
+		if (isset($node['deleteNode']))
 		{
 			Nodes::delete($node);
 			$node['id'] = 0;
