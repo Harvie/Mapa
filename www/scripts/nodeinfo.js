@@ -30,6 +30,7 @@ var CzfNodeInfo =
 	updateInfo: function()
 	{
 		var element = document.getElementById(this.elementID);
+		if (!element) return;
 		
 		// The form stays in DOM even after it's replaced
 		if (document.nodeform)
@@ -64,6 +65,7 @@ var CzfNodeInfo =
 		
 		this.copyFormData();
 		CzfInfo.updateInfo();
+		CzfMain.postMessage("markerMoved", [ this.info.lat, this.info.lng ]);
 	}
 	,
 	copyFormData: function()

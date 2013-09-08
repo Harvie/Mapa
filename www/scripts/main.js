@@ -144,11 +144,15 @@ var CzfMain =
 		if (this.state.goto)
 			delete this.state.goto;
 		
+		var newNodeMarker = !!this.state.newnode;
+		if (this.state.newnode)
+			delete this.state.newnode;
+		
 		if (this.state.node)
 			this.setNode(this.state.node, showOnMap);
 		
 		if (this.state.geolocate)
-			CzfSearch.remoteAddressSearch(this.state.geolocate, showOnMap);
+			CzfSearch.remoteAddressSearch(this.state.geolocate, showOnMap, newNodeMarker);
 		
 		CzfFilters.updateControls(this.state);
 		CzfMap.setPosition(this.state);

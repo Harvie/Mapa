@@ -23,6 +23,7 @@ var CzfLinkInfo =
 	updateInfo: function()
 	{
 		var element = document.getElementById(this.elementID);
+		if (!element) return;
 		
 		if (this.info && this.info.links)
 			element.innerHTML = this.createInfo(this.info);

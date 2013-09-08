@@ -9,13 +9,13 @@ var CzfInfo =
 	
 	initialize: function(element)
 	{
-		if (!element) return;
 		this.element = element;
 		
 		CzfNodeInfo.initialize("nodeinfo");
 		CzfLinkInfo.initialize("linkinfo");
 		
-		this.updateInfo();
+		if (element)
+			this.updateInfo();
 	}
 	,
 	setNode: function(nodeid, showOnMap)
@@ -40,10 +40,9 @@ var CzfInfo =
 	setInfo: function(newInfo)
 	{
 		this.info = newInfo;
+		this.updateInfo();
 		
-		if (this.element)
-			this.updateInfo();
-		else
+		if (!this.element) //Embedded map
 			CzfMain.postMessage("nodeSelected", [ this.info.id, this.info.name ]);
 		
 		if (this.showOnMap)
@@ -55,10 +54,12 @@ var CzfInfo =
 	,
 	updateInfo: function()
 	{
-		this.element.innerHTML = this.createHTML();
-		
-		if (this.info && this.info.editing)
-			this.showTab(this.info.actTab);
+		if (this.element)
+		{
+			this.element.innerHTML = this.createHTML();
+			if (this.info && this.info.editing)
+				this.showTab(this.info.actTab);
+		}
 		
 		CzfNodeInfo.setInfo(this.info);
 		CzfLinkInfo.setInfo(this.info);

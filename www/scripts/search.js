@@ -9,6 +9,7 @@ var CzfSearch =
 	nameSelect: null,
 	currentAddress: null,
 	gotoResult: true,
+	newNodeMarker: false,
 	
 	initialize: function(element)
 	{
@@ -49,11 +50,12 @@ var CzfSearch =
 		return false;
 	}
 	,
-	remoteAddressSearch: function(encoded, goto)
+	remoteAddressSearch: function(encoded, goto, newnode)
 	{
 		var address = this.decodeAddress(encoded);
 		this.currentAddress = address;
 		this.gotoResult = goto;
+		this.newNodeMarker = newnode;
 		
 		if (this.addressField)
 			this.addressField.value = address;
@@ -82,8 +84,16 @@ var CzfSearch =
 		if (this.gotoResult)
 			CzfMain.setPos(latlng.lat(), latlng.lng());
 		
-		this.marker.setLatLng(latlng);
-		this.marker.show();
+		if (this.newNodeMarker)
+		{
+			CzfInfo.addNode();
+			CzfMain.postMessage("markerMoved", [ latlng.lat(), latlng.lng() ]);
+		}
+		else
+		{
+			this.marker.setLatLng(latlng);
+			this.marker.show();
+		}
 	}
 	,
 	nodeSearch: function()
