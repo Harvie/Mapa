@@ -245,7 +245,10 @@ var CzfInfo =
 	,
 	userLink: function(userInfo)
 	{
-		return CzfHtml.link(userInfo.name, userInfo.profile)
+		if (userInfo.profile)
+			return CzfHtml.link(userInfo.name, userInfo.profile)
+		else
+			return tr(userInfo.name);
 	}
 	,
 	showNeighb: function()

@@ -83,6 +83,7 @@ var CzfLang =
 			"Thread" : "Diskuse",
 			"Type" : "Typ",
 			"Owner" : "Majitel",
+			"(deleted)" : "(smazaný)",
 			"Visibility description" : "Viditelnost z bodu",
 			"Node ID" : "Číslo bodu",
 			"People count" : "Počet lidí",
