@@ -6,48 +6,69 @@ var CzfMap =
 	              99: "#777733" },
 	map: null,
 	nodes: null,
-	icons: new Object(),
-	markers: new Array(),
+	icons: {},
+	overlays: [],
 	
 	initialize: function(element, embedded)
 	{
-		this.map = new GMap2(element);
+		var options = {
+			center: new google.maps.LatLng(CzfMain.defaults.lat, CzfMain.defaults.lng),
+			zoom: CzfMain.defaults.zoom,
+			mapTypeId: google.maps.MapTypeId.SATELLITE,
+			disableDefaultUI: true };
 		
 		if (!embedded)
 		{
-			this.map.addControl(new GLargeMapControl());
-			this.map.addControl(new GMapTypeControl());
-			this.map.addControl(new GOverviewMapControl());
-			this.map.addControl(new GScaleControl());
+			options.panControl = true;
+			options.zoomControl = true;
+			options.mapTypeControl = true;
+			options.overviewMapControl = true;
+			options.scaleControl = true;
 		}
 		
-		this.map.enableScrollWheelZoom();
-		this.map.enableDoubleClickZoom();
-		
+		this.map = new google.maps.Map(element, options);
+		this.drawMapperRect();
 		this.loadIcons();
 		
-		GEvent.bind(this.map, "moveend", this, this.moved);
-		GEvent.bind(this.map, "resize", this, this.moved);
-		GEvent.bind(this.map, "zoomend", this, this.zoomed);
-		GEvent.bind(this.map, "click", this, this.clicked);
-		GEvent.bind(this.map, "maptypechanged", this, this.typeChanged);
-		GEvent.bind(this.map, "singlerightclick", this, this.rightClick);
+		this.bindEvent("idle", this.moved);
+		this.bindEvent("zoom_changed", this.zoomed);
+		this.bindEvent("maptypeid_changed", this.typeChanged);
+	}
+	,
+	bindEvent: function(eventName, eventHandler)
+	{
+		google.maps.event.addListener(this.map, eventName,
+		                              CzfMain.callback(this, eventHandler));
 	}
 	,
 	setPosition: function(state)
 	{
-		switch (state.type)
-		{	//The API has conversion to string, but not the other way around
-			case "m": this.map.setMapType(G_NORMAL_MAP); break;
-			case "h": this.map.setMapType(G_HYBRID_MAP); break;
-			default: this.map.setMapType(G_SATELLITE_MAP); break;
-		}
-		
 		var lat = parseFloat(state.lat);
 		var lng = parseFloat(state.lng);
 		var zoom = parseInt(state.zoom);
 		
-		this.map.setCenter(new GLatLng(lat, lng), zoom);
+		var type = google.maps.MapTypeId.SATELLITE;
+		switch (state.type)
+		{
+			case "m":
+			case "roadmap":
+				type = google.maps.MapTypeId.ROADMAP;
+				break;
+			
+			case "h":
+			case "hybrid":
+				type = google.maps.MapTypeId.HYBRID;
+				break;
+			
+			case "t":
+			case "terrain":
+				type = google.maps.MapTypeId.TERRAIN;
+				break;
+		}
+		
+		this.map.setCenter(new google.maps.LatLng(lat, lng));
+		this.map.setZoom(zoom);
+		this.map.setMapTypeId(type);
 	}
 	,
 	moved: function()
@@ -59,37 +80,32 @@ var CzfMap =
 		CzfMain.setState(state);
 		
 		if (state.hideall)
-			this.drawBasic();
+			this.clearMap();
 		else
 			this.loadData(state);
 	}
 	,
-	zoomed: function(oldZoom, newZoom)
+	zoomed: function()
 	{
-		CzfFilters.updateAutoFilter(newZoom);
+		CzfFilters.updateAutoFilter(this.map.getZoom());
 	}
 	,
 	typeChanged: function()
 	{
 		var state = CzfMain.getState();
-		state.type = this.map.getCurrentMapType().getUrlArg();
+		state.type = this.map.getMapTypeId();
 		CzfMain.setState(state);
 	}
 	,
-	clicked: function(overlay, point)
+	nodeClick: function()
 	{
-		// Hack for Opera (no right click support)
-		if (window.event && window.event.shiftKey)
-			return this.rightClick(point, null, overlay);
-		
-		if (overlay && overlay.czfNode)
-			CzfMain.setNode(overlay.czfNode.id);
+		CzfMain.setNode(this.czfNode.id);
 	}
 	,
-	rightClick: function(point, src, overlay)
+	nodeRightClick: function()
 	{
-		if (overlay && overlay.czfNode)
-			CzfLinkInfo.rightClick(overlay.czfNode);
+		CzfLinkInfo.rightClick(this.czfNode);
+		return false;
 	}
 	,
 	getLinkColor: function(type)
@@ -107,10 +123,10 @@ var CzfMap =
 		for (t in tr("nodeTypes"))
 			for (s in tr("nodeStates"))
 			{
-				var icon = new GIcon();
-				icon.image = this.getNodeImg(t,s);
-				icon.iconSize = new GSize(15,15);
-				icon.iconAnchor = new GPoint(7,7);
+				var icon = {
+					url: this.getNodeImg(t,s),
+					size: new google.maps.Size(15,15),
+					anchor: new google.maps.Point(7,7) };
 				
 				var iconindex = parseInt(t) * 100 + parseInt(s);
 				this.icons[iconindex] = icon;
@@ -138,100 +154,106 @@ var CzfMap =
 		if (state.bbonly)    urlParams.links.backbone_include = [1];
 		if (state.actlink)   urlParams.links.active_include = [1];
 		if (!state.vpn)      urlParams.links.media_exclude = [5,11];
-
-		CzfAjax.get("data", urlParams, GEvent.callback(this, this.readData));
+		
+		CzfAjax.get("data", urlParams, CzfMain.callback(this, this.readData));
 	}
 	,
 	readData: function(jsonData)
 	{
 		var state = CzfMain.getState();
-		this.nodes = jsonData.nodes;
-		this.drawBasic();
-		
-		for (i in jsonData.nodes)
+		this.clearMap();
+		this.drawNodes(jsonData.nodes, state.hidelabels);
+		if (!state.hidelinks)
+			this.drawLinks(jsonData.links, state.hidelabels);
+	}
+	,
+	clearMap: function()
+	{
+		while(this.overlays[0])
+			this.overlays.pop().setMap(null);
+	}
+	,
+	drawNodes: function(nodes, hidelabels)
+	{
+		for (i in nodes)
 		{
-			var node = jsonData.nodes[i];
-			var latlng = new GLatLng(node.lat, node.lng);
+			var node = nodes[i];
+			var latlng = new google.maps.LatLng(node.lat, node.lng);
 			var iconindex = node.type * 100 + node.status;
-			var options = { title: node.name,
+			var zIndex = 2 * (node.status == 1) + (node.type >= 9 && node.type <= 11);
+			var options = { map: this.map,
+			                title: "" + node.name,
+			                position: latlng,
 			                icon: this.icons[iconindex],
-			                zIndexProcess: this.zIndexProcess };
+			                zIndex: zIndex };
 			
-			if (state.hidelabels || node.type == 97)
-				var marker = new GMarker(latlng, options)
-			else
-				var marker = new CzfMarker(latlng, options);
-			
+			var marker = new google.maps.Marker(options);
 			marker.czfNode = node;
-			this.map.addOverlay(marker);
+			google.maps.event.addListener(marker, "click", this.nodeClick);
+			google.maps.event.addListener(marker, "rightclick", this.nodeRightClick);
+			this.overlays.push(marker);
+			
+			if (!hidelabels && node.type != 97)
+			{
+				var label = new CzfLabel(marker);
+				this.overlays.push(label);
+			}
 		}
-		
-		if (state.hidelinks)
-			return;
-		
-		for (i in jsonData.links)
+	}
+	,
+	drawLinks: function(links)
+	{
+		for (i in links)
 		{
-			var link = jsonData.links[i];
-			var latlng1 = new GLatLng(link.lat1, link.lng1);
-			var latlng2 = new GLatLng(link.lat2, link.lng2);
+			var link = links[i];
+			var latlng1 = new google.maps.LatLng(link.lat1, link.lng1);
+			var latlng2 = new google.maps.LatLng(link.lat2, link.lng2);
 			
-			var linePoints = [ latlng1, latlng2 ];
-			var color = this.mediaColors[link.media];
-			var width = link.backbone ? 3 : 1;
-			var opacity = link.active ? 1 : 0.4;
+			var options = {
+				map: this.map,
+				path: [ latlng1, latlng2 ],
+				strokeColor: "#000000",
+				strokeWeight: link.backbone ? 5 : 3,
+				strokeOpacity: link.active ? 1 : 0.4,
+				clickable: false
+			};
+			this.overlays.push(new google.maps.Polyline(options));
 			
-			this.map.addOverlay(new GPolyline(linePoints, "#000000", width + 2, opacity));
-			this.map.addOverlay(new GPolyline(linePoints, color, width, opacity));
+			options.strokeColor = this.mediaColors[link.media];
+			options.strokeWeight -= 2;
+			this.overlays.push(new google.maps.Polyline(options));
 		}
 	}
 	,
-	zIndexProcess: function(marker)
+	drawMapperRect: function()
 	{
-		if (marker.czfNode === undefined)
-			return 0;
-		
-		var status = marker.czfNode.status;
-		var type = marker.czfNode.type;
-		
-		//Put active nodes and access points in front
-		return 2 * (status == 1) + (type >= 9 && type <= 11);
-	}
-	,
-	drawBasic: function()
-	{
-		this.map.clearOverlays();
-		
 		if (CzfConfig.mapperArea && !CzfConfig.mapperArea.global)
 		{
 			var area = CzfConfig.mapperArea;
 			var corners = [
-				new GLatLng(area.north, area.west),
-				new GLatLng(area.north, area.east),
-				new GLatLng(area.south, area.east),
-				new GLatLng(area.south, area.west),
-				new GLatLng(area.north, area.west)
+				new google.maps.LatLng(area.north, area.west),
+				new google.maps.LatLng(area.north, area.east),
+				new google.maps.LatLng(area.south, area.east),
+				new google.maps.LatLng(area.south, area.west),
+				new google.maps.LatLng(area.north, area.west)
 			];
 		
-			var rect = new GPolygon(corners, "#FF0000", 1, 1, 0, 0);
-			this.map.addOverlay(rect);
-		}
-		
-		for (i in this.markers)
-		{	//Bug workaround: hidden marker is shown
-			var marker = this.markers[i];
-			var isHidden = marker.isHidden();
-			this.map.addOverlay(marker);
-			if (isHidden) marker.hide();
+			var options = {
+				map: this.map,
+				paths: corners,
+				strokeColor: "#FF0000",
+				strokeOpacity: 1,
+				strokeWeight : 1,
+				fillOpacity: 0 };
+			new google.maps.Polygon(options);
 		}
 	}
 	,
 	createMarker: function(options)
 	{
-		var pos = new GLatLng(0,0);
-		var marker = new GMarker(pos, options);
-		marker.hide();
-		
-		this.markers.push(marker);
+		var pos = new google.maps.LatLng(0,0);
+		var marker = new google.maps.Marker({ position: pos, map: this.map });
+		marker.setVisible(false);
 		return marker;
 	}
 	,

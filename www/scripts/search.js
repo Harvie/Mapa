@@ -13,11 +13,10 @@ var CzfSearch =
 	
 	initialize: function(element)
 	{
-		this.geocoder = new GClientGeocoder();
+		this.geocoder = new google.maps.Geocoder();
 		
-		var icon = new GIcon(G_DEFAULT_ICON);
-		icon.image = "images/marker-cyan.png";
-		this.marker = CzfMap.createMarker({icon: icon});
+		this.marker = CzfMap.createMarker();
+		this.marker.setIcon({url: "images/marker-cyan.png"});
 		
 		if (!element) return;
 		
@@ -35,7 +34,7 @@ var CzfSearch =
 	,
 	addressChanged: function()
 	{
-		this.marker.hide();
+		this.marker.setVisible(false);
 	}
 	,
 	addressSearch: function()
@@ -65,20 +64,21 @@ var CzfSearch =
 	,
 	runAddressSearch: function(address)
 	{
-		this.geocoder.getLatLng(address, GEvent.callback(this, this.addressDone));
+		this.geocoder.geocode({address: address}, CzfMain.callback(this, this.addressDone));
 	}
 	,
-	addressDone: function(latlng)
+	addressDone: function(results)
 	{
 		if (this.addressField)
 		{
 			this.addressField.disabled = false;
-			this.addressField.className = latlng ? "normal" : "error";
+			this.addressField.className = results[0] ? "normal" : "error";
 		}
 		
-		if (latlng == null)
+		if (!results[0])
 			return;
 		
+		var latlng = results[0].geometry.location;
 		CzfMain.setGeolocate(this.encodeAddress(this.currentAddress));
 		
 		if (this.gotoResult)
@@ -91,8 +91,8 @@ var CzfSearch =
 		}
 		else
 		{
-			this.marker.setLatLng(latlng);
-			this.marker.show();
+			this.marker.setPosition(latlng);
+			this.marker.setVisible(true);
 		}
 	}
 	,
@@ -101,7 +101,7 @@ var CzfSearch =
 		this.nameField.disabled = true;
 		
 		var params = { query: this.nameField.value };
-		CzfAjax.get("search", params, GEvent.callback(this, this.nodeDone));
+		CzfAjax.get("search", params, CzfMain.callback(this, this.nodeDone));
 		return false;
 	}
 	,
@@ -119,7 +119,7 @@ var CzfSearch =
 		this.nameField.className = "normal";
 		
 		select = document.createElement("SELECT");
-		select.onchange = GEvent.callback(this, this.nodeChange);
+		select.onchange = CzfMain.callback(this, this.nodeChange);
 		select.options.add(new Option(tr("(new search)"), -2))
 		
 		if (this.results.length > 1)

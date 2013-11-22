@@ -14,8 +14,7 @@ $config = array(
 );
 
 $jsFiles = glob("scripts/*.js");
-$gMapURL = ($_SERVER['HTTPS'] ? 'https://' : 'http://') .
-           'maps.google.com/maps?file=api&v=2&key=' . Config::$gMapKey;
+$gMapURL = '//maps.googleapis.com/maps/api/js?v=3&libraries=geometry&sensor=false&key=' . Config::$gMapKey;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -28,11 +27,13 @@ $gMapURL = ($_SERVER['HTTPS'] ? 'https://' : 'http://') .
     <script type="text/javascript" src="<?=$file?>"></script>
 <? endforeach ?>
     <script type="text/javascript">
-    	var CzfConfig = <?= self::recursiveJSON($config, "    	") ?> 
+    	var CzfConfig = <?= self::recursiveJSON($config, "    	") ?>;
+    	google.maps.event.addDomListener(window, "load",
+    		function() { CzfMain.start("map", "panel"); } );
     </script>
   </head>
   
-  <body onload="CzfMain.start('map','panel')" onunload="CzfMain.stop()">
+  <body>
 <? if (isset($_GET['embedded'])): ?>
     <div id="map" style="margin: 0"></div>
 <? else: ?>

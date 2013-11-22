@@ -34,7 +34,7 @@ var CzfInfo =
 			return;
 		}
 		
-		CzfAjax.get("nodeinfo", { id: nodeid }, GEvent.callback(this, this.setInfo));
+		CzfAjax.get("nodeinfo", { id: nodeid }, CzfMain.callback(this, this.setInfo));
 	}
 	,
 	setInfo: function(newInfo)
@@ -118,7 +118,7 @@ var CzfInfo =
 	,
 	submit: function()
 	{
-		CzfAjax.post("submit", this.info, GEvent.callback(this, this.saveDone));
+		CzfAjax.post("submit", this.info, CzfMain.callback(this, this.saveDone));
 	}
 	,
 	saveDone: function(result)

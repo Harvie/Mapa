@@ -58,9 +58,9 @@ var CzfNeighb =
 	,
 	distance: function(node1, node2)
 	{
-		var latlng1 = new GLatLng(node1.lat, node1.lng);
-		var latlng2 = new GLatLng(node2.lat, node2.lng);
-		return latlng1.distanceFrom(latlng2);
+		var latlng1 = new google.maps.LatLng(node1.lat, node1.lng);
+		var latlng2 = new google.maps.LatLng(node2.lat, node2.lng);
+		return google.maps.geometry.spherical.computeDistanceBetween(latlng1, latlng2);
 	}
 	,
 	formatDist: function(meters)

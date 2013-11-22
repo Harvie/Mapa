@@ -178,6 +178,7 @@ h1 {
 }
 
 .label {
+	position: absolute;
 	background-color: black;
 	color: white;
 	padding-left: 2px;

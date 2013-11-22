@@ -5,12 +5,6 @@ var CzfMain =
 	
 	start: function(mapID, panelID)
 	{
-		if (!GBrowserIsCompatible())
-		{
-			alert("Please upgrade your browser.");
-			return;
-		}
-		
 		var map = document.getElementById(mapID);
 		var panel = document.getElementById(panelID);
 		
@@ -18,13 +12,8 @@ var CzfMain =
 		CzfMap.initialize(map, !panel);
 		this.initPanel(panel);
 		
-		var callback = GEvent.callback(this, this.anchorChanged);
+		var callback = CzfMain.callback(this, this.anchorChanged);
 		CzfAnchor.initialize(callback, this.defaults);
-	}
-	,
-	stop: function()
-	{
-		GUnload();
 	}
 	,
 	initPanel: function(element)
@@ -193,5 +182,10 @@ var CzfMain =
 			copy[i] = obj[i];
 		
 		return copy;
+	}
+	,
+	callback: function(object, method)
+	{
+		return function() { method.apply(object, arguments); };
 	}
 }
