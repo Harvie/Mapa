@@ -223,6 +223,8 @@ var CzfMap =
 	,
 	drawLinks: function(links)
 	{
+		var zIndex = -1000000;
+		
 		for (i in links)
 		{
 			var link = links[i];
@@ -235,12 +237,14 @@ var CzfMap =
 				strokeColor: "#000000",
 				strokeWeight: link.backbone ? 5 : 3,
 				strokeOpacity: link.active ? 1 : 0.4,
+				zIndex: zIndex++,
 				clickable: false
 			};
 			this.overlays.push(new google.maps.Polyline(options));
 			
 			options.strokeColor = this.mediaColors[link.media];
 			options.strokeWeight -= 2;
+			options.zIndex = zIndex++;
 			this.overlays.push(new google.maps.Polyline(options));
 		}
 	}
