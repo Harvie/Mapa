@@ -1,7 +1,7 @@
 var CzfMain =
 {
 	state: null,
-	defaults: { lat: 50.087803, lng: 14.406481, zoom: 15, autofilter: 1, type: "k" },
+	defaults: { lat: 50.087803, lng: 14.406481, zoom: 15, tilt: 0, heading: 0, autofilter: 1, type: "satellite" },
 	
 	start: function(mapID, panelID)
 	{

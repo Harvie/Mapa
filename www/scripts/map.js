@@ -1,5 +1,6 @@
 var CzfMap =
 {
+	min45DegreesZoom: 18,
 	mediaColors: { 0: "#000000",  1: "#00CC00",  2: "#BB0000",  3: "#66CCFF", 4: "#AA22AA",
 	               5: "#00FFFF",  6: "#FF4444",  7: "#888888",  8: "#FFFFFF", 9: "#FF8800",
 	              10: "#FFFF00", 11: "#0000FF", 12: "#CCCCCC", 13: "#FF9999", 14: "#88FF00",
@@ -33,6 +34,8 @@ var CzfMap =
 		this.bindEvent("idle", this.moved);
 		this.bindEvent("zoom_changed", this.zoomed);
 		this.bindEvent("maptypeid_changed", this.typeChanged);
+		this.bindEvent("tilt_changed", this.tiltChanged);
+		this.bindEvent("heading_changed", this.tiltChanged);
 	}
 	,
 	bindEvent: function(eventName, eventHandler)
@@ -46,6 +49,8 @@ var CzfMap =
 		var lat = parseFloat(state.lat);
 		var lng = parseFloat(state.lng);
 		var zoom = parseInt(state.zoom);
+		var tilt = parseInt(state.tilt);
+		var heading = parseInt(state.heading);
 		
 		var type = google.maps.MapTypeId.SATELLITE;
 		switch (state.type)
@@ -69,6 +74,8 @@ var CzfMap =
 		this.map.setCenter(new google.maps.LatLng(lat, lng));
 		this.map.setZoom(zoom);
 		this.map.setMapTypeId(type);
+		this.map.setTilt(tilt);
+		this.map.setHeading(heading);
 	}
 	,
 	moved: function()
@@ -94,6 +101,19 @@ var CzfMap =
 	{
 		var state = CzfMain.getState();
 		state.type = this.map.getMapTypeId();
+		CzfMain.setState(state);
+	}
+	,
+	tiltChanged: function()
+	{
+		if ((this.map.getZoom() < this.min45DegreesZoom) ||
+		    ((this.map.getMapTypeId() != google.maps.MapTypeId.SATELLITE) &&
+		     (this.map.getMapTypeId() != google.maps.MapTypeId.HYBRID)) )
+			return;
+		
+		var state = CzfMain.getState();
+		state.tilt = this.map.getTilt();
+		state.heading = this.map.getHeading();
 		CzfMain.setState(state);
 	}
 	,
