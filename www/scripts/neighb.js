@@ -63,6 +63,15 @@ var CzfNeighb =
 		return google.maps.geometry.spherical.computeDistanceBetween(latlng1, latlng2);
 	}
 	,
+	heading: function(node1, node2)
+	{
+		var latlng1 = new google.maps.LatLng(node1.lat, node1.lng);
+		var latlng2 = new google.maps.LatLng(node2.lat, node2.lng);
+		var heading = google.maps.geometry.spherical.computeHeading(latlng1, latlng2);
+		if (heading < 0) heading += 360;
+		return heading;
+	}
+	,
 	formatDist: function(meters)
 	{
 		str = Math.round(meters).toString();

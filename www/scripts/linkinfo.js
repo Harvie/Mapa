@@ -222,8 +222,9 @@ var CzfLinkInfo =
 	showDistance: function(node)
 	{
 		var dist = CzfNeighb.formatDist(CzfNeighb.distance(this.info, node));
-		alert(CzfLang.format("Distance from node '%s' to node '%s' is %s.",
-		                     this.info.name, node.name, dist));
+		var heading = Math.round(CzfNeighb.heading(this.info, node));
+		alert(CzfLang.format("Distance from node '%s' to node '%s' is %s, bearing is %s°.",
+		                     this.info.name, node.name, dist, heading));
 	}
 	,
 	addLink: function(node)

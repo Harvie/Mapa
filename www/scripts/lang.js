@@ -117,7 +117,7 @@ var CzfLang =
 			"CZFree Node Monitor" : "Mapa sítě CZFree",
 			"User" : "Uživatel",
 			"not logged in": "nepřihlášen",
-			"Distance from node '%s' to node '%s' is %s.": "Vzdálenost bodu '%s' od bodu '%s' je %s.",
+			"Distance from node '%s' to node '%s' is %s, bearing is %s°.": "Vzdálenost bodu '%s' od bodu '%s' je %s s azimutem %s°.",
 			"Left click on a node on the map to display information." : "Klikněte levým tlačítkem na bod na mapě pro zobrazení informací.",
 			
 			nodeTypes:   { 0: "Neznámý", 1: "Klient", 9: "Přístupový bod", 10: "Otevřený př. bod",
