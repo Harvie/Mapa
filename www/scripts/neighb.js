@@ -56,17 +56,20 @@ var CzfNeighb =
 		return imgHtml + CzfHtml.click(nodeName, action);
 	}
 	,
-	distance: function(node1, node2)
+	nodeLatLng: function(node)
 	{
-		var latlng1 = new google.maps.LatLng(node1.lat, node1.lng);
-		var latlng2 = new google.maps.LatLng(node2.lat, node2.lng);
+		return new google.maps.LatLng(node.lat, node.lng);
+	}
+	,
+	distance: function(node, latlng2)
+	{
+		var latlng1 = this.nodeLatLng(node);
 		return google.maps.geometry.spherical.computeDistanceBetween(latlng1, latlng2);
 	}
 	,
-	heading: function(node1, node2)
+	heading: function(node, latlng2)
 	{
-		var latlng1 = new google.maps.LatLng(node1.lat, node1.lng);
-		var latlng2 = new google.maps.LatLng(node2.lat, node2.lng);
+		var latlng1 = this.nodeLatLng(node);
 		var heading = google.maps.geometry.spherical.computeHeading(latlng1, latlng2);
 		if (heading < 0) heading += 360;
 		return heading;
@@ -92,7 +95,8 @@ var CzfNeighb =
 	,
 	calcDistances: function(nodes, fromNode)
 	{
+		var latlng2 = this.nodeLatLng(fromNode);
 		for (i in nodes)
-			nodes[i].dist = this.distance(nodes[i], fromNode);
+			nodes[i].dist = this.distance(nodes[i], latlng2);
 	}
 }

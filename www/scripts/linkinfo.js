@@ -208,7 +208,13 @@ var CzfLinkInfo =
 				form[fields[i]].value = CzfHtml.nullFix(this.opened[fields[i]]);
 	}
 	,
-	rightClick: function(node)
+	rightClick: function(latlng)
+	{
+		if (this.info)
+			this.showDistance(latlng);
+	}
+	,
+	nodeRightClick: function(node)
 	{
 		if (!this.info)
 			return;
@@ -216,15 +222,20 @@ var CzfLinkInfo =
 		if (this.info.editing)
 			this.addLink(node);
 		else
-			this.showDistance(node);
+			this.showDistance(CzfNeighb.nodeLatLng(node), node.name);
 	}
 	,
-	showDistance: function(node)
+	showDistance: function(latlng2, name)
 	{
-		var dist = CzfNeighb.formatDist(CzfNeighb.distance(this.info, node));
-		var heading = Math.round(CzfNeighb.heading(this.info, node));
-		alert(CzfLang.format("Distance from node '%s' to node '%s' is %s, bearing is %s°.",
-		                     this.info.name, node.name, dist, heading));
+		var distance = CzfNeighb.formatDist(CzfNeighb.distance(this.info, latlng2));
+		var heading = Math.round(CzfNeighb.heading(this.info, latlng2));
+		
+		if (name)
+			alert(CzfLang.format("Distance from node '%s' to node '%s' is %s, bearing is %s°.",
+			                     this.info.name, name, distance, heading));
+		else
+			alert(CzfLang.format("Distance from node '%s' to clicked point is %s, bearing is %s°.",
+			                     this.info.name, distance, heading));
 	}
 	,
 	addLink: function(node)

@@ -36,6 +36,7 @@ var CzfMap =
 		this.bindEvent("maptypeid_changed", this.typeChanged);
 		this.bindEvent("tilt_changed", this.tiltChanged);
 		this.bindEvent("heading_changed", this.tiltChanged);
+		this.bindEvent("rightclick", this.rightClick);
 	}
 	,
 	bindEvent: function(eventName, eventHandler)
@@ -124,8 +125,13 @@ var CzfMap =
 	,
 	nodeRightClick: function()
 	{
-		CzfLinkInfo.rightClick(this.czfNode);
+		CzfLinkInfo.nodeRightClick(this.czfNode);
 		return false;
+	}
+	,
+	rightClick: function(event)
+	{
+		CzfLinkInfo.rightClick(event.latLng);
 	}
 	,
 	getLinkColor: function(type)
@@ -185,6 +191,7 @@ var CzfMap =
 		this.drawNodes(jsonData.nodes, state.hidelabels);
 		if (!state.hidelinks)
 			this.drawLinks(jsonData.links, state.hidelabels);
+		this.nodes = jsonData.nodes;
 	}
 	,
 	clearMap: function()
@@ -269,7 +276,9 @@ var CzfMap =
 				strokeOpacity: 1,
 				strokeWeight : 1,
 				fillOpacity: 0 };
-			new google.maps.Polygon(options);
+			
+			var rect = new google.maps.Polygon(options);
+			google.maps.event.addListener(rect, "rightclick", this.rightClick);
 		}
 	}
 	,
