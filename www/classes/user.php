@@ -52,7 +52,7 @@ class User
 	
 	private static function loadUserInfo($id)
 	{
-		return array(0,'harvie','test');
+		return array(23,'harvie','test');
 		$select = self::query('SELECT userid, username, password FROM user WHERE userid = ?');
 		$select->execute(array($id));
 		return $select->fetch();
@@ -79,7 +79,7 @@ class User
 	
 	public static function getID()
 	{
-		return 0;
+		return 23;
 		return $_SESSION['userID'];
 	}
 
@@ -181,7 +181,7 @@ class User
 	
 	public static function getIDByName($name)
 	{
-		return 0;
+		return 23;
 		$name = self::convertName($name, true);
 		return self::getSingleVal('SELECT userid FROM user WHERE username = ?', array($name));
 	}
@@ -189,7 +189,6 @@ class User
 	public static function getContactInfo($id)
 	{
 		return array('harvie',23,true,true);
-		//return array(0=>array('harvie',23,true,true));
 		$select = self::query('SELECT username,icq,receiveemail,receivepm FROM user WHERE userid = ?');
 		$select->execute(array($id));
 		return $select->fetch();
