@@ -4,7 +4,7 @@ class Query
 {
 	public static function initialize()
 	{
-		self::$db = new PDO(Config::$mapDB['dsn']);
+		self::$db = new PDO(Config::$mapDB['dsn'], Config::$mapDB['user'], Config::$mapDB['pass']);
 		self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 	

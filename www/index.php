@@ -14,8 +14,10 @@ try {
 		User::initialize();
 		Controller::run();
 	} catch (PDOException $e) {
-		Controller::fail($e->errorInfo[2]);
+		print_r($e);
+		Controller::fail($e->errorInfo[2].'prvni');
 	}
 } catch (Exception $e) {
-	Controller::fail($e->getMessage());
+	print_r($e);
+	Controller::fail($e->getMessage().'druhy');
 }
