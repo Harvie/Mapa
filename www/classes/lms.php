@@ -65,4 +65,21 @@ class LMS_Auth {
 
 		return($lA['name']);
   }
+
+  function get_id_by_username($name) {
+		$LMS_CONFIG = (array)parse_ini_file('/etc/lms/lms.ini', true);
+
+		$dblink = @mysql_connect($LMS_CONFIG['database']['host'], $LMS_CONFIG['database']['user'], $LMS_CONFIG['database']['password']);
+		mysql_select_db($LMS_CONFIG['database']['database'], $dblink);
+
+		mysql_query("SET NAMES utf8");
+
+		$lQ = mysql_query("SELECT id FROM users WHERE name='".$name."' AND deleted=0");
+		$lA = mysql_fetch_array($lQ, MYSQL_ASSOC);
+		@mysql_close($dblink);
+
+		if(!is_array($lA)) return "USER($name)";
+
+		return($lA['id']);
+  }
 }

@@ -7,14 +7,14 @@ class User
 	const RIGHTS_MAPPER = 100;
 
 	private static $db = null;
-	private static $http_auth = null;
+	private static $auth_backend = null;
 
 	public static function initialize()
 	{
 		require_once('lms.php');
 		require_once('HTTP_Auth.class.php');
-		self::$http_auth = new LMS_Auth();
-		new HTTP_Auth('mapa', true, array(self::$http_auth,'check_auth'));
+		self::$auth_backend = new LMS_Auth();
+		new HTTP_Auth('mapa', true, array(self::$auth_backend,'check_auth'));
 
 		session_name('CzfMap');
 		session_start();
@@ -58,7 +58,7 @@ class User
 
 	private static function loadUserInfo($id)
 	{
-		return array(23,'harvie','test');
+		return array(23,'harvie','test'); //TODO
 		$select = self::query('SELECT userid, username, password FROM user WHERE userid = ?');
 		$select->execute(array($id));
 		return $select->fetch();
@@ -85,43 +85,43 @@ class User
 
 	public static function getID()
 	{
-		return 23;
+		return 23; //TODO
 		return $_SESSION['userID'];
 	}
 
 	public static function getName()
 	{
-		return 'harvie';
+		return 'harvie'; //TODO
 		return $_SESSION['userName'];
 	}
 
 	public static function getRights()
 	{
-		return self::RIGHTS_MAPPER;
+		return self::RIGHTS_MAPPER; //TODO
 		return $_SESSION['userRights'];
 	}
 
 	public static function isMapper()
 	{
-		return true;
+		return true; //TODO
 		return $_SESSION['userRights'] >= self::RIGHTS_MAPPER;
 	}
 
 	public static function isLogged()
 	{
-		return true;
+		return true; //TODO
 		return $_SESSION['userRights'] >= self::RIGHTS_USER;
 	}
 
 	public static function getMapperArea()
 	{
-		return array('global' => true);
+		return array('global' => true); //TODO
 		return $_SESSION['mapperArea'];
 	}
 
 	public static function canEdit($node)
 	{
-		return true;
+		return true; //TODO
 
 		if ($node['owner_id'] == $_SESSION['userID'])
 			return true;
@@ -143,7 +143,7 @@ class User
 
 	public static function canSee($node)
 	{
-		return  true;
+		return  true; //TODO
 
 		if ($node['node_secrecy'] >= self::RIGHTS_MAPPER)
 			return self::canEdit($node);
@@ -153,7 +153,7 @@ class User
 
 	public static function makeSecrecyFilter($tableAlias)
 	{
-		return ' AND 1=1 ';
+		return ' AND 1=1 '; //TODO
 		$sql = " AND $tableAlias.node_secrecy <= " . intval(self::getRights());
 
 		if (self::isMapper() && !$_SESSION['mapperArea']['global'])
@@ -180,21 +180,21 @@ class User
 
 	public static function getNameByID($id)
 	{
-		return 'harvie';
+		return 'harvie'; //TODO
 		$name = self::getSingleVal('SELECT username FROM user WHERE userid = ?', array($id));
 		return ($name !== false) ? self::convertName($name) : false;
 	}
 
 	public static function getIDByName($name)
 	{
-		return 23;
+		return 23; //TODO
 		$name = self::convertName($name, true);
 		return self::getSingleVal('SELECT userid FROM user WHERE username = ?', array($name));
 	}
 
 	public static function getContactInfo($id)
 	{
-		return array('harvie',23,true,true);
+		return array('harvie',23,true,true); //TODO
 		$select = self::query('SELECT username,icq,receiveemail,receivepm FROM user WHERE userid = ?');
 		$select->execute(array($id));
 		return $select->fetch();
