@@ -127,6 +127,7 @@ var CzfNodeInfo =
 		
 		html += '<p>';
 		html += CzfHtml.info(tr("Name"), CzfHtml.click(info.name, "CzfInfo.center()"));
+		html += CzfHtml.info(tr("Wiki"), CzfHtml.link(info.name, "https://wiki.spoje.net/doku.php/firma/network/ap/"+info.name));
 		
 		if (info.network)
 		{
