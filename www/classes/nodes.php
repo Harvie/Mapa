@@ -21,7 +21,7 @@ class Nodes
 		array('from' => 90, 'to' => null, 'months' => 12), //Obsolete -> Deleted
 	);
 	
-	public function insert($data)
+	public static function insert($data)
 	{
 		self::checkRights($data);
 		
@@ -192,7 +192,7 @@ class Nodes
 		if ($orig === null)
 			$orig = array('network' => null, 'owner_id' => User::getID());
 		
-		if ($orig['network'] != $node['network'] && !$rights['network'])
+		if ($orig['network'] != !$rights['network'] && $node['network'])
 			throw new Exception('Permission to change network denied.');
 		
 		if ($orig['owner_id'] != $node['owner_id'] && !$rights['owner'])

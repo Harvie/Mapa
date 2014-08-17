@@ -58,7 +58,9 @@ class User
 
 	private static function loadUserInfo($id)
 	{
-		return array(23,'harvie','test'); //TODO
+		$name=self::$auth_backend->get_username_by_id($id);
+		return array($id,$name,'test'.$name.'23'); //TODO!
+
 		$select = self::query('SELECT userid, username, password FROM user WHERE userid = ?');
 		$select->execute(array($id));
 		return $select->fetch();
@@ -85,13 +87,15 @@ class User
 
 	public static function getID()
 	{
-		return 23; //TODO
+		return self::$auth_backend->get_id_by_username(self::getName());
+		return 23; //TODO!
 		return $_SESSION['userID'];
 	}
 
 	public static function getName()
 	{
-		return 'harvie'; //TODO
+		return $_SERVER['PHP_AUTH_USER']; //TODO HACK?
+		return 'harvie'; //TODO!
 		return $_SESSION['userName'];
 	}
 
@@ -180,14 +184,18 @@ class User
 
 	public static function getNameByID($id)
 	{
-		return 'harvie'; //TODO
+		return self::$auth_backend->get_username_by_id($id);
+		return 'harvie'; //TODO!
+
 		$name = self::getSingleVal('SELECT username FROM user WHERE userid = ?', array($id));
 		return ($name !== false) ? self::convertName($name) : false;
 	}
 
 	public static function getIDByName($name)
 	{
-		return 23; //TODO
+		return self::$auth_backend->get_id_by_username($name);
+		return 23; //TODO!
+
 		$name = self::convertName($name, true);
 		return self::getSingleVal('SELECT userid FROM user WHERE username = ?', array($name));
 	}

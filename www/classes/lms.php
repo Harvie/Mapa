@@ -42,7 +42,8 @@ class LMS_Auth {
 
 		if(crypt($pass, $lA['passwd']) != $lA['passwd']) return false;
 
-		$this->user['name'] = $lA['name'];
+		//$this->user['name'] = $lA['name'];
+		$this->user['name'] = $user;
 		$this->user['id'] = $lA['id'];
 		$this->user['gid'] = 0; //TODO: rights
 		return true;
@@ -57,13 +58,13 @@ class LMS_Auth {
 
 		mysql_query("SET NAMES utf8");
 
-		$lQ = mysql_query("SELECT name FROM users WHERE id='".$id."' AND deleted=0");
+		$lQ = mysql_query("SELECT login, name FROM users WHERE id='".$id."' AND deleted=0");
 		$lA = mysql_fetch_array($lQ, MYSQL_ASSOC);
 		@mysql_close($dblink);
 
-		if(!is_array($lA)) return "USER($id)";
+		if(!is_array($lA)) return "USERN($id)";
 
-		return($lA['name']);
+		return($lA['login']);
   }
 
   function get_id_by_username($name) {
@@ -74,11 +75,11 @@ class LMS_Auth {
 
 		mysql_query("SET NAMES utf8");
 
-		$lQ = mysql_query("SELECT id FROM users WHERE name='".$name."' AND deleted=0");
+		$lQ = mysql_query("SELECT id, name FROM users WHERE login='".$name."' AND deleted=0");
 		$lA = mysql_fetch_array($lQ, MYSQL_ASSOC);
 		@mysql_close($dblink);
 
-		if(!is_array($lA)) return "USER($name)";
+		if(!is_array($lA)) return "USERID($name)";
 
 		return($lA['id']);
   }
