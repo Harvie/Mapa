@@ -1,9 +1,9 @@
 var CzfMap =
 {
 	mediaColors: { 0: "#000000",  1: "#008800",  7: "#888888", 12: "#CCCCCC", 8: "#FFFFFF", 
-                       13: "#FF9999", 14: "#88FF00", 10: "#FFFF00", 2: "#BB0000", 6: "#FF4444",
+                       13: "#FF9999", 14: "#88FF00", 10: "#FFFF00", 2: "#AA0000", 6: "#FF2222",
                        3: "#66CCFF", 4: "#AA22AA", 9: "#FFBB00", 11: "#0000FF", 5: "#00FFFF",    
-                       98: "#ff7f27", 99: "#777733" },
+                       97: "#C88FE7", 98: "#ff7f27", 99: "#777733" },
 	map: null,
 	nodes: null,
 	icons: new Object(),
@@ -130,6 +130,7 @@ var CzfMap =
 		urlParams.nodes = new Object();
 		if (state.aponly)    urlParams.nodes.type_include = [9,10,11];
 		if (state.actnode)   urlParams.nodes.status_include = [1];
+		if (state.testnode)   urlParams.nodes.status_include = [40,79,80];
 		if (!state.obsolete) urlParams.nodes.status_exclude = [90];
 		if (!state.alien)    urlParams.nodes.type_exclude = [99];
 		if (state.netfilter) urlParams.nodes.network_include = [state.netfilter];

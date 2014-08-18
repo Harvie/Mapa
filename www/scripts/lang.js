@@ -4,13 +4,13 @@ var CzfLang =
 	
 	translations: {
 		en: {
-			nodeTypes:   { 0: "Unknown", 1: "Client", 9: "Full AP", 10: "Street access AP",
+			nodeTypes:   { 0: "Unknown", 1: "Client", 9: "Switch", 10: "Full AP",
 			               11: "Router", 97: "Hidden", 98: "InfoPoint", 99: "Non-CZF" },
 			nodeStates:  { 1: "Active", 10: "Down", 40: "In testing",
 			               79: "Under construction", 80: "In planning", 90: "Obsolete" },
 			linkMedia:   { 0: "Unknown", 1: "2.4 GHz", 7: "5 GHz", 12: "5 GHz MIMO", 8: "10 GHz", 98: "10 GHz over 100 Mbps", 
-			               3: "UTP", 4: "Fiber", 2: "FSO", 6: "FSO + WiFi", 5: "VPN", 9: "Licensed",
-			               13: "17 GHz", 14: "24 GHz", 10: "60 GHz+", 11: "Leased", 99: "Other" },
+				      13: "17 GHz", 14: "24 GHz", 10: "60 GHz+", 2: "FSO", 6: "FSO 1Gbps", 3: "UTP", 4: "Fiber", 97: "HDPE",
+			               9: "Licensed", 11: "Leased", 5: "VPN", 9: "Licensed", 99: "Other" },
 			secrecy:     { "-100": "None", 0: "Registered", 100: "Mapper" },
 
                  mediaInfo: {
@@ -123,13 +123,13 @@ var CzfLang =
 			"Distance from node '%s' to clicked point is %s, bearing is %s°." : "Vzdálenost bodu '%s' od místa kliknutí je %s s azimutem %s°.",
 			"Left click on a node on the map to display information." : "Klikněte levým tlačítkem na bod na mapě pro zobrazení informací.",
 			
-			nodeTypes:   { 0: "Neznámý", 1: "Klient", 9: "Přístupový bod", 10: "Otevřený př. bod",
+			nodeTypes:   { 0: "Neznámý", 1: "Klient", 9: "Switch", 10: "Přístupový bod",
 			               11: "Router", 97: "Skrytý", 98: "InfoPoint", 99: "Non-CZF" },
 			nodeStates:  { 1: "Aktivní", 10: "Nefunkční", 40: "Zkušební",
 			               79: "Ve stavbě", 80: "Plánovaný", 90: "Zastaralý" },
 			linkMedia:   { 0: "Neznámý", 1: "2.4 GHz", 7: "5 GHz", 12: "5 GHz MIMO", 8: "10 GHz", 98: "10 GHz over 100 Mbps",
-			               3: "UTP", 4: "Vlákno", 2: "FSO", 6: "FSO + WiFi", 5: "VPN", 9: "Licencovaný",
-			               13: "17 GHz", 14: "24 GHz", 10: "60 GHz+", 11: "Pronajatý", 99: "Other" },
+				      13: "17 GHz", 14: "24 GHz", 10: "60 GHz+", 2: "FSO", 6: "FSO 1Gbps", 3: "UTP", 4: "Optika", 97: "Chránička",
+			               9: "Licencovaný", 11: "Pronajatý",  5: "VPN", 99: "Other" },
 			secrecy:     { "-100": "Žádné", 0: "Přihlášení", 100: "Mappeři" },
 			
 			mediaInfo: {

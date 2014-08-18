@@ -21,6 +21,7 @@ var CzfFilters =
 		
 		html += tr("Node filter") + ":<br/>";
 		html += CzfHtml.checkbox("actnode", tr("Only active"), false, params);
+		html += CzfHtml.checkbox("testnode", tr("Only test, construction"), false, params);
 		html += CzfHtml.checkbox("aponly", tr("Only AP"), false, params);
 		html += CzfHtml.checkbox("obsolete", tr("Show obsolete"), false, params);
 		html += CzfHtml.checkbox("alien", tr("Show non-czfree"), false, params);
