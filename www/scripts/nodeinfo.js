@@ -163,7 +163,7 @@ var CzfNodeInfo =
 		
 		html += '<p>';
 		if (info.url_thread)
-			html += CzfHtml.link(tr("Thread"), info.url_thread) + " ";
+			html += CzfHtml.link(tr("LMS"), "https://hermes.spoje.net/?m=customerinfo&id=" + info.url_thread) + " ";
 		if (info.url_photos)
 			html += CzfHtml.link(tr("Photos"), info.url_photos) + " ";
 		if (info.url_homepage)
@@ -211,7 +211,7 @@ var CzfNodeInfo =
 		html += CzfHtml.longEdit("visibility", tr("Visibility description"), info.visibility, {rows:4});
 		
 		html += '<p>';
-		html += CzfHtml.edit("url_thread", tr("Thread"), info.url_thread);
+		html += CzfHtml.edit("url_thread", tr("LMS"), info.url_thread);
 		html += CzfHtml.edit("url_photos", tr("Photos"), info.url_photos);
 		html += CzfHtml.edit("url_homepage", tr("Homepage"), info.url_homepage);
 		html += CzfHtml.edit("people_count", tr("People count"), info.people_count, {size:3, max:4});

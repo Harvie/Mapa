@@ -29,7 +29,7 @@ var CzfMain =
 	,
 	initPanel: function(element)
 	{
-		document.title = tr("CZFree Node Monitor");
+		document.title = tr("SPOJE.NET Node Monitor");
 		
 		if (element)
 		{
@@ -37,7 +37,7 @@ var CzfMain =
 			html += "<h1>" + document.title + "</h1>";
 			
 			html += '<div class="subtitle">';
-			html += CzfHtml.link(tr("Old map"), "/old/");
+			html += CzfHtml.link(tr("CZF Mapa"), "http://mapa.czfree.net");
 			if (CzfConfig.nodeRights.edit)
 				html += " " + CzfHtml.click(tr("New node"), "CzfInfo.addNode()");
 			html += '</div>';
