@@ -1,0 +1,29 @@
+<?php
+
+class Config
+{
+        public static $gmapKeys = array(
+                "mapa.example.cz" => "abced",
+        );
+
+        public static $usersDB = array(
+                'dsn'   => 'mysql:dbname=lms',
+                'user'  => 'sql',
+                'pass'  => 'sql',
+                'init' => 'SET NAMES utf8',
+        );
+
+        public static $mapDB = array(
+                'dsn'   => 'pgsql:dbname=czfmapa',
+                'user'  => 'mapa',
+                'pass'  => 'mapa',
+                'init' => 'SET NAMES utf8',
+        );
+
+        public static $profilePrefix = "http://www.czfree.net/forum/member.php?action=getinfo&userid=";
+        public static $robotURL = "http://czfree.net/forum/showthread.php?postid=223095#post223095";
+        public static $mailFrom = "mapa@czfree.net";
+
+        public static $languages = array("cs", "en-us", "en");
+}
+
