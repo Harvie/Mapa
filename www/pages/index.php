@@ -5,7 +5,8 @@ $networks = Query::selectAll("networks", null, "name");
 $networks->execute();
 
 $config = array(
-	'languages' => self::getLanguages(),
+//	'languages' => self::getLanguages(),
+	'languages' => Config::$languages,
 	'user' => array('id' => User::getID(), 'name' => User::getName()),
 	'nodeRights' => Nodes::getRights(),
 	'linkRights' => Links::getRights(),

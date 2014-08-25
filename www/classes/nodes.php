@@ -11,7 +11,7 @@ class Nodes
 	private static $filters = array('type', 'status', 'network');
 	                               //       Normal user          Mapper
 	private static $types          = array( array(1, 9, 10, 11), array(1, 9, 10, 11, 97, 98, 99, 0) );
-	private static $states         = array( array(80, 79),       array(80, 79, 40, 1, 90) );
+	private static $states         = array( array(80, 79),       array(80, 79, 40, 10, 1, 90) );
 	private static $secrecy_levels = array( array(-100, 0),      array(-100, 0, 100) );
 	
 	private static $statusTransitions = array(

@@ -21,7 +21,10 @@ var CzfFilters =
 		
 		html += tr("Node filter") + ":<br/>";
 		html += CzfHtml.checkbox("actnode", tr("Only active"), false, params);
-		html += CzfHtml.checkbox("testnode", tr("Only test, construction"), false, params);
+		html += CzfHtml.checkbox("testnode", tr("Only non-active node"), false, params);
+		html += CzfHtml.checkbox("onlynonagr", tr("Only node without agreement"), false, params);
+		html += CzfHtml.checkbox("onlyinplan", tr("Only node in planning"), false, params);
+		html += CzfHtml.checkbox("onlyconstruct", tr("Only node under construct"), false, params);
 		html += CzfHtml.checkbox("aponly", tr("Only AP"), false, params);
 		html += CzfHtml.checkbox("obsolete", tr("Show obsolete"), false, params);
 		html += CzfHtml.checkbox("alien", tr("Show non-czfree"), false, params);

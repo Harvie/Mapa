@@ -182,7 +182,8 @@ var CzfInfo =
 			if (this.info && this.info.rights.edit)
 			{
 				html += CzfHtml.button("edit", tr("Edit"), "CzfInfo.editNode()");
-				html += CzfHtml.button("edit", tr("Delete"), "CzfInfo.deleteNode()");
+//	mazani bodu docasne zakazano
+//				html += CzfHtml.button("edit", tr("Delete"), "CzfInfo.deleteNode()");
 			}
 			
 			if (!this.info)
