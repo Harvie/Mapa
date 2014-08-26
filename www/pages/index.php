@@ -23,7 +23,7 @@ $gmapKey = Config::$gmapKeys[$_SERVER['SERVER_NAME']];
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <title>CZFree Node Monitor</title>
     <link rel="stylesheet" type="text/css" href="map.css" />
-    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<?=$gmapKey?>" type="text/javascript"></script>
+    <script src="https://maps.google.com/maps?file=api&amp;v=2&amp;key=<?=$gmapKey?>" type="text/javascript"></script>
 <? foreach ($jsFiles as $file): ?>
     <script type="text/javascript" src="<?=$file?>"></script>
 <? endforeach ?>
