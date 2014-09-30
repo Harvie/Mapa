@@ -69,9 +69,8 @@ var CzfLinkInfo =
 		
 		var shortName = tr("linkMedia")[l.media].replace(/ GHz/, "G").replace(/ MIMO/, "M");
 		var media = CzfHtml.expl(tr("mediaInfo")[l.media], shortName);
-		html += CzfHtml.div(media + ' - ' + CzfNeighb.formatDist(l.dist), "linkinfo");
+		html += CzfHtml.div(media + ' - ' + CzfHtml.link(CzfNeighb.formatDist(l.dist),l.heightp) + " (" + l.azim + "°)", "linkinfo");
 		html += CzfHtml.clear();
-		
 		html += this.createSpeedInfo(l);
 		html += CzfHtml.clear();
 		return html;
@@ -221,8 +220,11 @@ var CzfLinkInfo =
 	showDistance: function(node)
 	{
 		var dist = CzfNeighb.formatDist(CzfNeighb.distance(this.info, node));
-		alert(CzfLang.format("Distance from node '%s' to node '%s' is %s.",
-		                     this.info.name, node.name, dist));
+		var azim = CzfNeighb.azimuth(this.info, node);
+		if(
+			confirm(CzfLang.format("Distance from node '%s' to node '%s' is %s. Azimuth is %s degrees. Do you wish to see the height profile?",
+			this.info.name, node.name, dist, azim))
+		) window.open(CzfNeighb.heightProfile(this.info, node), '_blank');
 	}
 	,
 	addLink: function(node)

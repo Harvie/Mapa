@@ -63,6 +63,40 @@ var CzfNeighb =
 		return latlng1.distanceFrom(latlng2);
 	}
 	,
+	azimuth: function(node1, node2)
+	{
+		//azimuth != bearing. Bearing is never greater than 90 degrees.
+		//THX2: http://stackoverflow.com/questions/3225803/calculate-endpoint-given-distance-bearing-starting-point
+
+		function rad2deg(angle) {	return 180.0 * angle / Math.PI; }
+		function deg2rad(angle) {	return Math.PI * angle / 180.0; }
+
+		//Convert input values to radians
+		var lat1 = deg2rad(node1.lat);
+		var long1 = deg2rad(node1.lng);
+		var lat2 = deg2rad(node2.lat);
+		var long2 = deg2rad(node2.lng);
+
+		var deltaLong = long2 - long1;
+
+		var y = Math.sin(deltaLong) * Math.cos(lat2);
+		var x = Math.cos(lat1) * Math.sin(lat2) -
+		Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLong);
+		var azimuth = rad2deg(Math.atan2(y, x));
+		if(azimuth<0) azimuth+=360;
+		azimuth = Math.round(azimuth*100)/100;
+		return(azimuth);
+
+	}
+	,
+	heightProfile: function(node1, node2)
+	{
+		var url="http://www.heywhatsthat.com/bin/profile-0904.cgi?src=profiler-0904&axes=1&los=1&greatcircle=1&metric=1&freq=&refraction=&exaggeration=";
+		url+="&pt0="+node1.lat+","+node1.lng+",ff0000";
+		url+="&pt1="+node2.lat+","+node2.lng;
+		return url;
+	}
+	,
 	formatDist: function(meters)
 	{
 		str = Math.round(meters).toString();
@@ -83,7 +117,10 @@ var CzfNeighb =
 	,
 	calcDistances: function(nodes, fromNode)
 	{
-		for (i in nodes)
+		for (i in nodes) {
 			nodes[i].dist = this.distance(nodes[i], fromNode);
+			nodes[i].heightp = this.heightProfile(fromNode, nodes[i]);
+			nodes[i].azim = this.azimuth(fromNode, nodes[i]);
+		}
 	}
 }
