@@ -22,6 +22,10 @@ class Config
 
         public static $profilePrefix = "http://www.czfree.net/forum/member.php?action=getinfo&userid=";
         public static $robotURL = "http://czfree.net/forum/showthread.php?postid=223095#post223095";
+	public static $galleryPrefix = "http://panorama.spoje.net/?dir=AP/";
+        public static $dokuwikiPrefix = "https://wiki.spoje.net/doku.php/firma/network/ap/";
+        public static $dokuwikiLogin = "u=user&p=password";
+
         public static $mailFrom = "mapa@czfree.net";
 
         public static $languages = array("cs", "en-us", "en");

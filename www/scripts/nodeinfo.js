@@ -127,8 +127,6 @@ var CzfNodeInfo =
 		
 		html += '<p>';
 		html += CzfHtml.info(tr("Name"), CzfHtml.click(info.name, "CzfInfo.center()"));
-		html += CzfHtml.info(tr("Wiki"), CzfHtml.link(info.name, "https://wiki.spoje.net/doku.php/firma/network/ap/"+info.name));
-		html += CzfHtml.info(tr("Photos"), CzfHtml.link(info.name, "http://panorama.spoje.net/?dir=AP/"+info.name));
 		
 		if (info.network)
 		{
@@ -137,9 +135,22 @@ var CzfNodeInfo =
 		}
 		
 		html += CzfHtml.info(tr("Type"), tr("nodeTypes")[info.type]);
+
+
+		function decodeHtml(html) {
+		    var txt = document.createElement("textarea");
+		    txt.innerHTML = html;
+		    return txt.value;
+		}
+
+		html += CzfHtml.info(tr("Photos"), CzfHtml.link(info.name, info.galleryurl));
+		html += CzfHtml.info(tr("Wiki"), CzfHtml.link(info.name, info.wikiurl));
+		if (info.wikitable)
+			html += decodeHtml(info.wikitable);
+		
 		html += CzfHtml.info(tr("Status"), tr("nodeStates")[info.status]);
 		html += CzfHtml.info(tr("Owner"), CzfInfo.userLink(info.owner));
-		
+
 		var more = CzfHtml.info(tr("Node ID"), info.id);
 		
 		if (info.people_count !== null)
