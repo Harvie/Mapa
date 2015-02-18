@@ -23,6 +23,7 @@ var CzfLinkInfo =
 	updateInfo: function()
 	{
 		var element = document.getElementById(this.elementID);
+		if (!element) return;
 		
 		if (this.info && this.info.links)
 			element.innerHTML = this.createInfo(this.info);
@@ -71,6 +72,7 @@ var CzfLinkInfo =
 		var media = CzfHtml.expl(tr("mediaInfo")[l.media], shortName);
 		html += CzfHtml.div(media + ' - ' + CzfHtml.link(CzfNeighb.formatDist(l.dist),l.heightp) + " (" + l.azim + "°)", "linkinfo");
 		html += CzfHtml.clear();
+		
 		html += this.createSpeedInfo(l);
 		html += CzfHtml.clear();
 		return html;
@@ -206,7 +208,13 @@ var CzfLinkInfo =
 				form[fields[i]].value = CzfHtml.nullFix(this.opened[fields[i]]);
 	}
 	,
-	rightClick: function(node)
+	rightClick: function(latlng)
+	{
+		if (this.info)
+			this.showDistance(latlng);
+	}
+	,
+	nodeRightClick: function(node)
 	{
 		if (!this.info)
 			return;
@@ -214,17 +222,25 @@ var CzfLinkInfo =
 		if (this.info.editing)
 			this.addLink(node);
 		else
-			this.showDistance(node);
+			this.showDistance(CzfNeighb.nodeLatLng(node), node.name);
 	}
 	,
-	showDistance: function(node)
+	showDistance: function(latlng2, name)
 	{
-		var dist = CzfNeighb.formatDist(CzfNeighb.distance(this.info, node));
-		var azim = CzfNeighb.azimuth(this.info, node);
-		if(
-			confirm(CzfLang.format("Distance from node '%s' to node '%s' is %s. Azimuth is %s degrees. Do you wish to see the height profile?",
-			this.info.name, node.name, dist, azim))
-		) window.open(CzfNeighb.heightProfile(this.info, node), '_blank');
+		var distance = CzfNeighb.formatDist(CzfNeighb.distance(this.info, latlng2));
+		var heading = CzfNeighb.heading(this.info, latlng2).toFixed(2);
+		
+		if (name) {
+			if(
+				confirm(CzfLang.format("Distance from node '%s' to node '%s' is %s, azimuth is %s°. Do you want to see height profile?",
+			                     this.info.name, name, distance, heading))
+			) window.open(CzfNeighb.heightProfile(this.info, latlng2), '_blank');
+		} else {
+			if(
+				confirm(CzfLang.format("Distance from node '%s' to clicked point is %s, azimuth is %s°. Do you want to see height profile?",
+			                     this.info.name, distance, heading))
+			) window.open(CzfNeighb.heightProfile(this.info, latlng2), '_blank');
+		}
 	}
 	,
 	addLink: function(node)

@@ -1,16 +1,10 @@
 var CzfMain =
 {
 	state: null,
-	defaults: { lat: 50.087803, lng: 14.406481, zoom: 15, autofilter: 1, type: "k" },
+	defaults: { lat: 50.087803, lng: 14.406481, zoom: 15, tilt: 0, heading: 0, autofilter: 1, type: "satellite" },
 	
 	start: function(mapID, panelID)
 	{
-		if (!GBrowserIsCompatible())
-		{
-			alert("Please upgrade your browser.");
-			return;
-		}
-		
 		var map = document.getElementById(mapID);
 		var panel = document.getElementById(panelID);
 		
@@ -18,13 +12,8 @@ var CzfMain =
 		CzfMap.initialize(map, !panel);
 		this.initPanel(panel);
 		
-		var callback = GEvent.callback(this, this.anchorChanged);
+		var callback = CzfMain.callback(this, this.anchorChanged);
 		CzfAnchor.initialize(callback, this.defaults);
-	}
-	,
-	stop: function()
-	{
-		GUnload();
 	}
 	,
 	initPanel: function(element)
@@ -39,7 +28,7 @@ var CzfMain =
 			html += '<div class="subtitle">';
 			html += CzfHtml.link(tr("CZF Mapa"), "http://mapa.czfree.net");
 			if (CzfConfig.nodeRights.edit)
-				html += " " + CzfHtml.click(tr("New node"), "CzfInfo.addNode()");
+				html += " " + CzfHtml.click(tr("Create new node"), "CzfInfo.addNode()");
 			html += '</div>';
 			
 			html += CzfHtml.panelPart(this.createLegend(), "legend", tr("Legend"));
@@ -144,11 +133,15 @@ var CzfMain =
 		if (this.state.goto)
 			delete this.state.goto;
 		
+		var newNodeMarker = !!this.state.newnode;
+		if (this.state.newnode)
+			delete this.state.newnode;
+		
 		if (this.state.node)
 			this.setNode(this.state.node, showOnMap);
 		
 		if (this.state.geolocate)
-			CzfSearch.remoteAddressSearch(this.state.geolocate, showOnMap);
+			CzfSearch.remoteAddressSearch(this.state.geolocate, showOnMap, newNodeMarker);
 		
 		CzfFilters.updateControls(this.state);
 		CzfMap.setPosition(this.state);
@@ -189,5 +182,10 @@ var CzfMain =
 			copy[i] = obj[i];
 		
 		return copy;
+	}
+	,
+	callback: function(object, method)
+	{
+		return function() { method.apply(object, arguments); };
 	}
 }

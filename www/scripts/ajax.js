@@ -3,25 +3,30 @@ var CzfAjax =
 	get: function(reqName, params, callback)
 	{
 		var query = this.makeQuery(reqName);
-		var fn = this.makeCallback(callback);
-		GDownloadUrl(query + this.serialize(params), fn);
+		this.request("GET", query + this.serialize(params), null, callback);
 	}
 	,
 	post: function(reqName, data, callback)
 	{
 		var query = this.makeQuery(reqName);
-		var fn = this.makeCallback(callback);
-		GDownloadUrl(query, fn, this.serialize(data));
+		this.request("POST", query, this.serialize(data), callback);
+	}
+	,
+	request: function(method, url, data, callback)
+	{
+		var req = new XMLHttpRequest();
+		req.open(method, url, true);
+		req.onload = function (e) {
+			if (req.readyState == 4 && req.status == 200 && req.responseText.length > 0)
+				callback(eval('(' + req.responseText + ')'));
+		}
+		req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		req.send(data);
 	}
 	,
 	makeQuery: function(reqName)
 	{
 		return "index.php?request=" + reqName;
-	}
-	,
-	makeCallback: function(fn)
-	{
-		return function(doc) { return doc.length ? fn(eval('(' + doc + ')')) : null; };
 	}
 	,
 	// PHP deserializes this as nested associative arrays

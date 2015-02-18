@@ -2,6 +2,7 @@
 
 class Config
 {
+	public static $gMapKey = "abced";
         public static $gmapKeys = array(
                 "mapa.example.cz" => "abced",
         );

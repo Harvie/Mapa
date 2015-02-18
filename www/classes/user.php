@@ -216,4 +216,19 @@ class User
 		else
 			return iconv("WINDOWS-1250", "UTF-8", $name);
 	}
+	
+	public static function getProfile($id)
+	{
+		$owner_name = self::getNameByID($id);
+		if ($owner_name !== false)
+			return array(
+				'name' => $owner_name,
+				'profile' => Config::$profilePrefix . $id,
+			);
+		else
+			return array(
+				'name' => "(deleted)",
+				'profile' => null,
+			);
+	}
 }

@@ -12,9 +12,11 @@ var CzfNodeInfo =
 	{
 		this.elementID = elementID;
 		
-		var callback = GEvent.callback(this, this.markerMoved);
-		this.marker = CzfMap.createMarker({draggable: true});
-		GEvent.addListener(this.marker, "dragend", callback);
+		this.marker = CzfMap.createMarker();
+		this.marker.setDraggable(true);
+		
+		var callback = CzfMain.callback(this, this.markerMoved);
+		google.maps.event.addListener(this.marker, "dragend", callback);
 	}
 	,
 	setInfo: function(newInfo)
@@ -30,6 +32,7 @@ var CzfNodeInfo =
 	updateInfo: function()
 	{
 		var element = document.getElementById(this.elementID);
+		if (!element) return;
 		
 		// The form stays in DOM even after it's replaced
 		if (document.nodeform)
@@ -46,24 +49,26 @@ var CzfNodeInfo =
 	,
 	updateMarker: function()
 	{
-		this.marker.hide();
+		this.marker.setVisible(false);
 		
 		if (this.info && this.info.editing)
 		{
-			var pos = new GLatLng(this.info.lat, this.info.lng);
-			this.marker.setLatLng(pos);
-			this.marker.show();
+			var pos = new google.maps.LatLng(this.info.lat, this.info.lng);
+			this.marker.setPosition(pos);
+			this.marker.setVisible(true);
 		}
 	}
 	,
-	markerMoved: function(pos)
+	markerMoved: function()
 	{
+		var pos = this.marker.getPosition();
 		this.info.lat = pos.lat();
 		this.info.lng = pos.lng();
 		this.info.moved = true;
 		
 		this.copyFormData();
 		CzfInfo.updateInfo();
+		CzfMain.postMessage("markerMoved", [ this.info.lat, this.info.lng ]);
 	}
 	,
 	copyFormData: function()

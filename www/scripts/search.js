@@ -9,14 +9,14 @@ var CzfSearch =
 	nameSelect: null,
 	currentAddress: null,
 	gotoResult: true,
+	newNodeMarker: false,
 	
 	initialize: function(element)
 	{
-		this.geocoder = new GClientGeocoder();
+		this.geocoder = new google.maps.Geocoder();
 		
-		var icon = new GIcon(G_DEFAULT_ICON);
-		icon.image = "images/marker-cyan.png";
-		this.marker = CzfMap.createMarker({icon: icon});
+		this.marker = CzfMap.createMarker();
+		this.marker.setIcon({url: "images/marker-cyan.png"});
 		
 		if (!element) return;
 		
@@ -34,7 +34,7 @@ var CzfSearch =
 	,
 	addressChanged: function()
 	{
-		this.marker.hide();
+		this.marker.setVisible(false);
 	}
 	,
 	addressSearch: function()
@@ -49,11 +49,12 @@ var CzfSearch =
 		return false;
 	}
 	,
-	remoteAddressSearch: function(encoded, goto)
+	remoteAddressSearch: function(encoded, goto, newnode)
 	{
 		var address = this.decodeAddress(encoded);
 		this.currentAddress = address;
 		this.gotoResult = goto;
+		this.newNodeMarker = newnode;
 		
 		if (this.addressField)
 			this.addressField.value = address;
@@ -63,27 +64,36 @@ var CzfSearch =
 	,
 	runAddressSearch: function(address)
 	{
-		this.geocoder.getLatLng(address, GEvent.callback(this, this.addressDone));
+		this.geocoder.geocode({address: address}, CzfMain.callback(this, this.addressDone));
 	}
 	,
-	addressDone: function(latlng)
+	addressDone: function(results)
 	{
 		if (this.addressField)
 		{
 			this.addressField.disabled = false;
-			this.addressField.className = latlng ? "normal" : "error";
+			this.addressField.className = results[0] ? "normal" : "error";
 		}
 		
-		if (latlng == null)
+		if (!results[0])
 			return;
 		
+		var latlng = results[0].geometry.location;
 		CzfMain.setGeolocate(this.encodeAddress(this.currentAddress));
 		
 		if (this.gotoResult)
 			CzfMain.setPos(latlng.lat(), latlng.lng());
 		
-		this.marker.setLatLng(latlng);
-		this.marker.show();
+		if (this.newNodeMarker)
+		{
+			CzfInfo.addNode();
+			CzfMain.postMessage("markerMoved", [ latlng.lat(), latlng.lng() ]);
+		}
+		else
+		{
+			this.marker.setPosition(latlng);
+			this.marker.setVisible(true);
+		}
 	}
 	,
 	nodeSearch: function()
@@ -91,7 +101,7 @@ var CzfSearch =
 		this.nameField.disabled = true;
 		
 		var params = { query: this.nameField.value };
-		CzfAjax.get("search", params, GEvent.callback(this, this.nodeDone));
+		CzfAjax.get("search", params, CzfMain.callback(this, this.nodeDone));
 		return false;
 	}
 	,
@@ -109,7 +119,7 @@ var CzfSearch =
 		this.nameField.className = "normal";
 		
 		select = document.createElement("SELECT");
-		select.onchange = GEvent.callback(this, this.nodeChange);
+		select.onchange = CzfMain.callback(this, this.nodeChange);
 		select.options.add(new Option(tr("(new search)"), -2))
 		
 		if (this.results.length > 1)

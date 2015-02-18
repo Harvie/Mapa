@@ -10,7 +10,7 @@ var CzfAnchor =
 		this.defaults = defaults;
 		
 		this.check();
-		window.setInterval(GEvent.callback(this, this.check), 500);
+		window.setInterval(CzfMain.callback(this, this.check), 500);
 	}
 	,
 	update: function(state)

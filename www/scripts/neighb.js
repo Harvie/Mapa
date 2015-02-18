@@ -56,13 +56,26 @@ var CzfNeighb =
 		return imgHtml + CzfHtml.click(nodeName, action);
 	}
 	,
-	distance: function(node1, node2)
+	nodeLatLng: function(node)
 	{
-		var latlng1 = new GLatLng(node1.lat, node1.lng);
-		var latlng2 = new GLatLng(node2.lat, node2.lng);
-		return latlng1.distanceFrom(latlng2);
+		return new google.maps.LatLng(node.lat, node.lng);
 	}
 	,
+	distance: function(node, latlng2)
+	{
+		var latlng1 = this.nodeLatLng(node);
+		return google.maps.geometry.spherical.computeDistanceBetween(latlng1, latlng2);
+	}
+	,
+	heading: function(node, latlng2)
+	{
+		var latlng1 = this.nodeLatLng(node);
+		var heading = google.maps.geometry.spherical.computeHeading(latlng1, latlng2);
+		if (heading < 0) heading += 360;
+		return heading;
+	}
+	,
+/*
 	azimuth: function(node1, node2)
 	{
 		//azimuth != bearing. Bearing is never greater than 90 degrees.
@@ -89,11 +102,12 @@ var CzfNeighb =
 
 	}
 	,
-	heightProfile: function(node1, node2)
+*/
+	heightProfile: function(node1, latlng2)
 	{
 		var url="http://www.heywhatsthat.com/bin/profile-0904.cgi?src=profiler-0904&axes=1&los=1&greatcircle=1&metric=1&freq=&refraction=&exaggeration=";
 		url+="&pt0="+node1.lat+","+node1.lng+",ff0000";
-		url+="&pt1="+node2.lat+","+node2.lng;
+		url+="&pt1="+latlng2.lat()+","+latlng2.lng();
 		return url;
 	}
 	,
@@ -117,10 +131,13 @@ var CzfNeighb =
 	,
 	calcDistances: function(nodes, fromNode)
 	{
+		//var latlng2 = this.nodeLatLng(fromNode);
 		for (i in nodes) {
-			nodes[i].dist = this.distance(nodes[i], fromNode);
-			nodes[i].heightp = this.heightProfile(fromNode, nodes[i]);
-			nodes[i].azim = this.azimuth(fromNode, nodes[i]);
+			var latlng1 = this.nodeLatLng(nodes[i]);
+			nodes[i].dist = this.distance(fromNode, latlng1);
+			nodes[i].heightp = this.heightProfile(fromNode, latlng1);
+	                nodes[i].azim = CzfNeighb.heading(fromNode, latlng1).toFixed(2);
+			//nodes[i].azim = this.azimuth(fromNode, nodes[i]);
 		}
 	}
 }
